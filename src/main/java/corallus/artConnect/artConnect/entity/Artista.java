@@ -12,6 +12,11 @@ public class Artista extends Usuario{
 	private String cpf;
 	private char sexo;
 	private List<Arte> tiposArte;
+	
+	public Artista(String email, String senha) {
+		this.setEmail(email);
+		this.setSenha(senha);
+	}
 	/* 
 	 * private List<File> publicacoes
 	 * publicacoes será implementado mais tarde...
