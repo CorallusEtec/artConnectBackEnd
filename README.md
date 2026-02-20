@@ -18,6 +18,6 @@
 - <code>testes</code> Realização de Testes unitários e de integração.
 ## Imagens de apoio
 ### Diagrama de Classes
-![Image](https://github.com/user-attachments/assets/184ce9ab-6b5a-493e-a463-16e67ce89e7c)
+<img width="1582" height="664" alt="Image" src="https://github.com/user-attachments/assets/5dba6166-40c9-419a-b324-674f2de23d41" />
 ### Rascunho do Back-End
 <img width="6296" height="2170" alt="Image" src="https://github.com/user-attachments/assets/d4d6e6f4-388e-4b7d-b67c-baa24ffdb2f1" />
