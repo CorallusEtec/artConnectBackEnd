@@ -4,6 +4,7 @@
 - Linguagem: Java 21.
 ## Regras de Desenvolvimento
 - Antes de começar a programar, use <code>git pull origin &lt;nome-da-branch&gt; </code> para garantir o versionamento.
+- Não fazer commits diretamente na branch <code>main</code>.
 - Usar camelCase.
 - exceto nas controllers e rotas, usar nome de variáveis em português.
 - Identação no código.
