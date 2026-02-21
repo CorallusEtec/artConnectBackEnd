@@ -8,6 +8,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class Artista extends Usuario{
+	private Long id;
 	private LocalDate dataNasc;
 	private String cpf;
 	private char sexo;
