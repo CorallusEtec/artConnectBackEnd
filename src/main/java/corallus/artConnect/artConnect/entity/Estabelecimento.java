@@ -16,4 +16,14 @@ public class Estabelecimento extends Usuario{
 		this.setEmail(email);
 		this.setSenha(senha);
 	}
+
+	private void setSenha(String senha) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	private void setEmail(String email) {
+		// TODO Auto-generated method stub
+		
+	}
 }
