@@ -13,12 +13,8 @@
 - funções e variáveis com nomes claros e se possível comente.
 
 ## Divisão de Branchs
-- <code>entity</code> Implementação das entidades previstas no Diagrama de Classes.
-- <code>controller</code> Desenvolvimento das rotas e endpoints.
-- <code>service</code> Desenvolvimento das regras de negócio e intermédio entre controller e repository.
-- <code>repository</code> Integração com o banco de dados.
-- <code>testes</code> Realização de Testes unitários e de integração.
-- <code>dto</code> Classes que fazem intermédio entre a API e o banco de dados.
+- <code>regra-negócio</code> Implementa as regras impostas pelo sistema na API.
+- <code>estrutura</code> Implmenta entidades, e todas as camadas necessárias para o projeto.
 ## Imagens de apoio
 ### Diagrama de Classes
 <img width="1644" height="1388" alt="ClassesBack" src="https://github.com/user-attachments/assets/ef862f94-9b77-4605-b956-087be0e9b8d3" />
