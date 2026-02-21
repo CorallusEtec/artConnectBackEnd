@@ -11,13 +11,16 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
+// Nome da tabela igual no banco
+@Table(name = "tbEstabelecimento")
 @Entity
+// Get Set e Construtores (Código boitherplate)
 @Getter @Setter
 @AllArgsConstructor @NoArgsConstructor
-@Table(name = "tbEstabelecimento")
 public class EstabelecimentoDTO {
+	// Marcar a chave primária no banco
 	@Id
+	// Identity para criar os Id automaticamente
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long idEstabelecimento;
 	private String nomeEstabelecimento;
