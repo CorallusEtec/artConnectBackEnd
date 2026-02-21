@@ -9,7 +9,7 @@ import corallus.artConnect.artConnect.entity.Artista;
 import corallus.artConnect.artConnect.repository.ArtistasRepository;
 
 @Service
-public class ArteService {
+public class ArtistaService {
 	
 	@Autowired
 	private ArtistasRepository artistaRepository;
