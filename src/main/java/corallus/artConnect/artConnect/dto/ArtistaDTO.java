@@ -55,6 +55,7 @@ public class ArtistaDTO {
 		this.sexoArtista = pojo.getSexo();
 	}
 	
+	// Método para converter um objeto do tipo ArtistaDTO para um objeto do tipo Artista
 	public Artista toEntity() {
 		Artista artista = new Artista();
 		artista.setNome(this.nomeArtista);

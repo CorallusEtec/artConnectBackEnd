@@ -52,6 +52,28 @@ public class EstabelecimentoDTO {
 	@Column(name = "razaosocialestabelecimento")
 	private String razaoSocial;
 
+	// Método para converter um objeto do tipo EstabelecimentoDTO para um objeto do tipo Estabelecimento
+	public Estabelecimento toEntity() {
+		Estabelecimento estabelecimento = new Estabelecimento();
+		estabelecimento.setNome(this.nome);
+		estabelecimento.setEmail(this.email);
+		estabelecimento.setSenha(this.senha);
+		estabelecimento.setCnpj(this.cnpj);
+		estabelecimento.setEndereco(Endereco.builder()
+				.tipoLogra(this.tipoLog)
+				.nomeLogra(this.nomeLog)
+				.numLogra(this.numLog)
+				.complemento(this.complemento)
+				.cep(this.cep)
+				.bairro(this.bairro)
+				.cidade(this.cidade)
+				.estado(this.estado)
+				.build());
+		estabelecimento.setRazaoSocial(this.razaoSocial);
+		estabelecimento.setId(this.id);
+		return estabelecimento;
+	}
+
 	// Método construtor que converte um objeto do tipo Estabelecimento para um objeto do tipo EstabelecimentoDTO
 	public EstabelecimentoDTO(Estabelecimento pojo) {
 		this.nome = pojo.getNome();

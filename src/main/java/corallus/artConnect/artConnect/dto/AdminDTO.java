@@ -1,5 +1,5 @@
 package corallus.artConnect.artConnect.dto;
-
+import corallus.artConnect.artConnect.entity.Endereco;
 import corallus.artConnect.artConnect.entity.Admin;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -44,5 +44,25 @@ public class AdminDTO {
 		this.bairro = pojo.getEndereco().getBairro();
 		this.cidade = pojo.getEndereco().getCidade();
 		this.estado = pojo.getEndereco().getEstado();
+	}
+
+	// Método para converter um AdminDTO em Admin
+	public Admin toEntity() {
+		Admin admin = new Admin();
+		admin.setNome(this.nomeAdmin);
+		admin.setEmail(this.emailAdmin);
+		admin.setSenha(this.senhaAdmin);
+		admin.setEndereco(Endereco.builder()
+				.tipoLogra(this.tipoLogra)
+				.nomeLogra(this.nomeLogra)
+				.numLogra(this.numero)
+				.complemento(this.complemento)
+				.cep(this.cep)
+				.bairro(this.bairro)
+				.cidade(this.cidade)
+				.estado(this.estado)
+				.build());
+		admin.setId(this.idAdmin);
+		return admin;
 	}
 }
