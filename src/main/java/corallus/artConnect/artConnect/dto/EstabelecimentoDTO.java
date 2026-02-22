@@ -17,77 +17,63 @@ import lombok.Setter;
 @Getter @Setter
 @AllArgsConstructor @NoArgsConstructor
 @Entity
-@Table(name = "tbestabelecimento")
+@Table(name = "tb_estabelecimento")
 public class EstabelecimentoDTO {
 	// Marcar a chave primária no banco
 	@Id
 	// Identity para criar os Id automaticamente
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "idestabelecimento")
-	private Long id;
-	@Column(name = "nomeestabelecimento")
-	private String nome;
-	@Column(name = "emailestabelecimento")
-	private String email;
-	@Column(name = "senhaestabelecimento")
-	private String senha;
-	@Column(name = "cnpjestabelecimento")
-	private String cnpj;
-	@Column(name = "tipologestabelecimento")
-	private String tipoLog;
-	@Column(name = "nomelogestabelecimento")
-	private String nomeLog;
-	@Column(name = "numlogestabelecimento")
-	private Integer numLog;
-	@Column(name = "complementoestabelecimento")
-	private String complemento;
-	@Column(name = "cepestabelecimento")
-	private String cep;
-	@Column(name = "bairroestabelecimento")
-	private String bairro;
-	@Column(name = "cidadeestabelecimento")
-	private String cidade;
-	@Column(name = "estadoestabelecimento")
-	private String estado;
-	@Column(name = "razaosocialestabelecimento")
-	private String razaoSocial;
+	private Long idEstabelecimento;
+	private String nomeEsbelecimento;
+	private String emailEstabelecimento;
+	private String senhaEstabelecimento;
+	private String cnpjEstabelecimento;
+	private String tipoLogEstabelecimento;
+	private String nomeLogEstabelecimento;
+	private Integer numLogEstabelecimento;
+	private String complementoEstabelecimento;
+	private String cepEstabelecimento;
+	private String bairroEstabelecimento;
+	private String cidadeEstabelecimento;
+	private String estadoEstabelecimento;
+	private String razaoSocialEstabelecimento;
 
 	// Método para converter um objeto do tipo EstabelecimentoDTO para um objeto do tipo Estabelecimento
 	public Estabelecimento toEntity() {
 		Estabelecimento estabelecimento = new Estabelecimento();
-		estabelecimento.setNome(this.nome);
-		estabelecimento.setEmail(this.email);
-		estabelecimento.setSenha(this.senha);
-		estabelecimento.setCnpj(this.cnpj);
+		estabelecimento.setNome(this.nomeEsbelecimento);
+		estabelecimento.setEmail(this.emailEstabelecimento);
+		estabelecimento.setSenha(this.senhaEstabelecimento);
+		estabelecimento.setCnpj(this.cnpjEstabelecimento);
 		estabelecimento.setEndereco(Endereco.builder()
-				.tipoLogra(this.tipoLog)
-				.nomeLogra(this.nomeLog)
-				.numLogra(this.numLog)
-				.complemento(this.complemento)
-				.cep(this.cep)
-				.bairro(this.bairro)
-				.cidade(this.cidade)
-				.estado(this.estado)
+				.tipoLogra(this.tipoLogEstabelecimento)
+				.nomeLogra(this.nomeLogEstabelecimento)
+				.numLogra(this.numLogEstabelecimento)
+				.complemento(this.complementoEstabelecimento)
+				.cep(this.cepEstabelecimento)
+				.bairro(this.bairroEstabelecimento)
+				.cidade(this.cidadeEstabelecimento)
+				.estado(this.estadoEstabelecimento)
 				.build());
-		estabelecimento.setRazaoSocial(this.razaoSocial);
-		estabelecimento.setId(this.id);
+		estabelecimento.setRazaoSocial(this.razaoSocialEstabelecimento);
+		estabelecimento.setId(this.idEstabelecimento);
 		return estabelecimento;
 	}
 
 	// Método construtor que converte um objeto do tipo Estabelecimento para um objeto do tipo EstabelecimentoDTO
 	public EstabelecimentoDTO(Estabelecimento pojo) {
-		this.nome = pojo.getNome();
-		this.email = pojo.getEmail();
-		this.senha = pojo.getSenha();
-		this.cnpj = pojo.getCnpj();
-		this.tipoLog = pojo.getEndereco().getTipoLogra();
-		this.nomeLog = pojo.getEndereco().getNomeLogra();
-		this.numLog = pojo.getEndereco().getNumLogra();
-		this.complemento = pojo.getEndereco().getComplemento();
-		this.cep = pojo.getEndereco().getCep();
-		this.bairro = pojo.getEndereco().getBairro();
-		this.cidade = pojo.getEndereco().getCidade();
-		this.estado = pojo.getEndereco().getEstado();
-		this.razaoSocial = pojo.getRazaoSocial();
+		this.nomeEsbelecimento = pojo.getNome();
+		this.emailEstabelecimento = pojo.getEmail();
+		this.senhaEstabelecimento = pojo.getSenha();
+		this.cnpjEstabelecimento = pojo.getCnpj();
+		this.tipoLogEstabelecimento = pojo.getEndereco().getTipoLogra();
+		this.nomeLogEstabelecimento = pojo.getEndereco().getNomeLogra();
+		this.numLogEstabelecimento = pojo.getEndereco().getNumLogra();
+		this.complementoEstabelecimento = pojo.getEndereco().getComplemento();
+		this.cepEstabelecimento = pojo.getEndereco().getCep();
+		this.bairroEstabelecimento = pojo.getEndereco().getBairro();
+		this.cidadeEstabelecimento = pojo.getEndereco().getCidade();
+		this.estadoEstabelecimento = pojo.getEndereco().getEstado();
+		this.razaoSocialEstabelecimento = pojo.getRazaoSocial();
 	}
 }
