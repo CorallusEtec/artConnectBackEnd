@@ -3,6 +3,7 @@ package corallus.artConnect.artConnect.dto;
 import java.time.LocalDate;
 import corallus.artConnect.artConnect.entity.Artista;
 import corallus.artConnect.artConnect.entity.Endereco;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -16,8 +17,8 @@ import lombok.Setter;
 @Getter @Setter
 @AllArgsConstructor @NoArgsConstructor
 
-@Entity
 @Table(name= "tbartista")
+@Entity(name = "tbartista")
 public class ArtistaDTO {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -42,14 +43,16 @@ public class ArtistaDTO {
 		this.nomeArtista = pojo.getNome();
 		this.emailArtista = pojo.getEmail();
 		this.senhaArtista = pojo.getSenha();
-		this.tipoLogArtista = pojo.getEndereco().getTipoLogra();
-		this.nomeLogArtista = pojo.getEndereco().getNomeLogra();
-		this.numLogArtista = pojo.getEndereco().getNumLogra();
-		this.complementoArtista = pojo.getEndereco().getComplemento();
-		this.cepArtista = pojo.getEndereco().getCep();
-		this.bairroArtista = pojo.getEndereco().getBairro();
-		this.cidadeArtista = pojo.getEndereco().getCidade();
-		this.estadoArtista = pojo.getEndereco().getEstado();
+		if(pojo.getEndereco() != null) {
+			this.tipoLogArtista = pojo.getEndereco().getTipoLogra();
+			this.nomeLogArtista = pojo.getEndereco().getNomeLogra();
+			this.numLogArtista = pojo.getEndereco().getNumLogra();
+			this.complementoArtista = pojo.getEndereco().getComplemento();
+			this.cepArtista = pojo.getEndereco().getCep();
+			this.bairroArtista = pojo.getEndereco().getBairro();
+			this.cidadeArtista = pojo.getEndereco().getCidade();
+			this.estadoArtista = pojo.getEndereco().getEstado();
+		}
 		this.dataNascArtista = pojo.getDataNasc();
 		this.cpfArtista = pojo.getCpf();
 		this.sexoArtista = pojo.getSexo();
