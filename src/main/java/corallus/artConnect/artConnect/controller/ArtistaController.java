@@ -23,6 +23,8 @@ public class ArtistaController {
     @Autowired
     private ArtistaService artistaService;
 
+
+    // Endpoint para cadastrar um novo artista
     @PostMapping("/cadastro")
     public ResponseEntity<String> cadastro(@RequestBody ArtistaDTO artista) {
         try {
@@ -32,7 +34,7 @@ public class ArtistaController {
             return new ResponseEntity<>("erro: "+e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
-
+    // Endpoint para buscar todos os artistas cadastrados
     @GetMapping("/todos")
     public ResponseEntity<List<ArtistaDTO>> findAll() {
         try {
@@ -43,6 +45,7 @@ public class ArtistaController {
         }
     }
 
+    // Endpoint de teste para verificar se o controller está funcionando
     @GetMapping("/teste")
     public ResponseEntity<String> teste() {
         try {

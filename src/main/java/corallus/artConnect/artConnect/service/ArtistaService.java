@@ -14,6 +14,7 @@ public class ArtistaService {
     @Autowired
     private ArtistaRepository artistaRepository;
 
+    // Salva um novo artista no banco de dados
     public String cadastro(ArtistaDTO artista) {
         try {
             artistaRepository.save(artista);
@@ -22,7 +23,7 @@ public class ArtistaService {
             return "Erro ao cadastrar artista: " + e.getMessage();
         }
     }
-
+    // Busca todos os artistas cadastrados no banco de dados
     public List<ArtistaDTO> findAll() {
         try {
             List<ArtistaDTO> artistas = artistaRepository.findAll();
