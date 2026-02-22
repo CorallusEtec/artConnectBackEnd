@@ -2,11 +2,13 @@ package corallus.artConnect.artConnect.entity;
 
 import java.time.LocalDate;
 import java.util.List;
-import lombok.Getter;
-import lombok.Setter;
 
-@Getter
-@Setter
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+@NoArgsConstructor @AllArgsConstructor
+@Getter @Setter
 public class Artista extends Usuario{
 	private Long id;
 	private LocalDate dataNasc;

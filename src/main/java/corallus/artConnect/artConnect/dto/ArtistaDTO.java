@@ -2,6 +2,7 @@ package corallus.artConnect.artConnect.dto;
 
 import java.time.LocalDate;
 import corallus.artConnect.artConnect.entity.Artista;
+import corallus.artConnect.artConnect.entity.Endereco;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -52,5 +53,28 @@ public class ArtistaDTO {
 		this.dataNascArtista = pojo.getDataNasc();
 		this.cpfArtista = pojo.getCpf();
 		this.sexoArtista = pojo.getSexo();
+	}
+	
+	public Artista toEntity() {
+		Artista artista = new Artista();
+		artista.setNome(this.nomeArtista);
+		artista.setEmail(this.emailArtista);
+		artista.setSenha(this.senhaArtista);
+		artista.setDataNasc(this.dataNascArtista);
+		artista.setCpf(this.cpfArtista);
+		artista.setSexo(this.sexoArtista);
+		artista.setEndereco(Endereco.builder()
+				.tipoLogra(this.tipoLogArtista)
+				.nomeLogra(this.nomeLogArtista)
+				.numLogra(this.numLogArtista)
+				.complemento(this.complementoArtista)
+				.cep(this.cepArtista)
+				.bairro(this.bairroArtista)
+				.cidade(this.cidadeArtista)
+				.estado(this.estadoArtista)
+				.build());
+		artista.setId(this.idArtista);
+		//artista.setPublicacoes(null); // A lista de publicações será implementada posteriormente
+		return artista;
 	}
 }
