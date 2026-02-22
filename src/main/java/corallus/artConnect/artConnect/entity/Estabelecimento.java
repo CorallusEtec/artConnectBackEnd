@@ -9,7 +9,7 @@ import lombok.Setter;
 public class Estabelecimento extends Usuario{
 
 	private Long id;
-	private String razaoScial;
+	private String razaoSocial;
 	private String cnpj;
 	
 	public Estabelecimento(String email, String senha) {

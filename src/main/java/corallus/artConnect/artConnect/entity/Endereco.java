@@ -11,8 +11,8 @@ import lombok.Setter;
 public class Endereco {
 	private String tipoLogra;
 	private String nomeLogra;
-	private int numLogra;
-	private Optional<String> complemento;
+	private Integer numLogra;
+	private String complemento;
 	private String cep;
 	private String bairro;
 	private String cidade;

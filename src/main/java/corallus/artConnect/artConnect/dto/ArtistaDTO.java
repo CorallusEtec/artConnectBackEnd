@@ -1,7 +1,7 @@
 package corallus.artConnect.artConnect.dto;
 
 import java.time.LocalDate;
-
+import corallus.artConnect.artConnect.entity.Artista;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -36,4 +36,21 @@ public class ArtistaDTO {
 	private String cpfArtista;
 	private Character sexoArtista;
 
+	// Método construtor que converte um objeto do tipo Artista para um objeto do tipo ArtistaDTO
+	public ArtistaDTO(Artista pojo) {
+		this.nomeArtista = pojo.getNome();
+		this.emailArtista = pojo.getEmail();
+		this.senhaArtista = pojo.getSenha();
+		this.tipoLogArtista = pojo.getEndereco().getTipoLogra();
+		this.nomeLogArtista = pojo.getEndereco().getNomeLogra();
+		this.numLogArtista = pojo.getEndereco().getNumLogra();
+		this.complementoArtista = pojo.getEndereco().getComplemento();
+		this.cepArtista = pojo.getEndereco().getCep();
+		this.bairroArtista = pojo.getEndereco().getBairro();
+		this.cidadeArtista = pojo.getEndereco().getCidade();
+		this.estadoArtista = pojo.getEndereco().getEstado();
+		this.dataNascArtista = pojo.getDataNasc();
+		this.cpfArtista = pojo.getCpf();
+		this.sexoArtista = pojo.getSexo();
+	}
 }

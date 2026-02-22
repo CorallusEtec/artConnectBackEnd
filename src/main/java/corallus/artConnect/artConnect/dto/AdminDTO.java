@@ -1,5 +1,6 @@
 package corallus.artConnect.artConnect.dto;
 
+import corallus.artConnect.artConnect.entity.Admin;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -17,7 +18,7 @@ import lombok.Setter;
 public class AdminDTO {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long idAdin;
+	private Long idAdmin;
 	private String nomeAdmin;
 	private String emailAdmin;
 	private String senhaAdmin;
@@ -29,4 +30,19 @@ public class AdminDTO {
 	private String bairro;
 	private String cidade;
 	private String estado;
+	
+	// Método construtor para converter um Admin em AdminDTO
+	public AdminDTO(Admin pojo) {
+		this.nomeAdmin = pojo.getNome();
+		this.emailAdmin = pojo.getEmail();
+		this.senhaAdmin = pojo.getSenha();
+		this.tipoLogra = pojo.getEndereco().getTipoLogra();
+		this.nomeLogra = pojo.getEndereco().getNomeLogra();
+		this.numero = pojo.getEndereco().getNumLogra();
+		this.complemento = pojo.getEndereco().getComplemento();
+		this.cep = pojo.getEndereco().getCep();
+		this.bairro = pojo.getEndereco().getBairro();
+		this.cidade = pojo.getEndereco().getCidade();
+		this.estado = pojo.getEndereco().getEstado();
+	}
 }
