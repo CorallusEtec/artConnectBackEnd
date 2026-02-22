@@ -16,7 +16,8 @@
 Quando for fazer uma nova issue, crie uma branch nova a partir da `main` com a seguinte notação `feature/<nome-da-branch>`.
 ## Imagens de apoio
 ### Diagrama de Classes
-<img width="1644" height="1388" alt="ClassesBack" src="https://github.com/user-attachments/assets/ef862f94-9b77-4605-b956-087be0e9b8d3" />
+
+<img width="1644" height="1388" alt="ClassesBack" src="https://github.com/user-attachments/assets/24e8065f-ee2e-4cdd-a287-5749b70fc176" />
 
 ### Rascunho do Back-End
 <img width="6296" height="2170" alt="Image" src="https://github.com/user-attachments/assets/d4d6e6f4-388e-4b7d-b67c-baa24ffdb2f1" />
