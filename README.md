@@ -13,8 +13,7 @@
 - funções e variáveis com nomes claros e se possível comente.
 
 ## Divisão de Branchs
-- <code>regra-negócio</code> Implementa as regras impostas pelo sistema na API.
-- <code>estrutura</code> Implmenta entidades, e todas as camadas necessárias para o projeto.
+Quando for fazer uma nova issue, crie uma branch nova a partir da `main` com a seguinte notação `feature/<nome-da-branch>`.
 ## Imagens de apoio
 ### Diagrama de Classes
 <img width="1644" height="1388" alt="ClassesBack" src="https://github.com/user-attachments/assets/ef862f94-9b77-4605-b956-087be0e9b8d3" />
