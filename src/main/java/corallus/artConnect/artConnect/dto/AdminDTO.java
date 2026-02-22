@@ -14,7 +14,7 @@ import lombok.Setter;
 @NoArgsConstructor @AllArgsConstructor
 @Getter @Setter
 @Entity
-@Table(name = "tbadmin")
+@Table(name = "tb_admin")
 public class AdminDTO {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
