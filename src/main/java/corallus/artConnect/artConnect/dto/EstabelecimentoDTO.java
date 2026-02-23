@@ -24,7 +24,7 @@ public class EstabelecimentoDTO {
 	// Identity para criar os Id automaticamente
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long idEstabelecimento;
-	private String nomeEsbelecimento;
+	private String nomeEstabelecimento;
 	private String emailEstabelecimento;
 	private String senhaEstabelecimento;
 	private String cnpjEstabelecimento;
@@ -41,7 +41,7 @@ public class EstabelecimentoDTO {
 	// Método para converter um objeto do tipo EstabelecimentoDTO para um objeto do tipo Estabelecimento
 	public Estabelecimento toEntity() {
 		Estabelecimento estabelecimento = new Estabelecimento();
-		estabelecimento.setNome(this.nomeEsbelecimento);
+		estabelecimento.setNome(this.nomeEstabelecimento);
 		estabelecimento.setEmail(this.emailEstabelecimento);
 		estabelecimento.setSenha(this.senhaEstabelecimento);
 		estabelecimento.setCnpj(this.cnpjEstabelecimento);
@@ -62,7 +62,7 @@ public class EstabelecimentoDTO {
 
 	// Método construtor que converte um objeto do tipo Estabelecimento para um objeto do tipo EstabelecimentoDTO
 	public EstabelecimentoDTO(Estabelecimento pojo) {
-		this.nomeEsbelecimento = pojo.getNome();
+		this.nomeEstabelecimento = pojo.getNome();
 		this.emailEstabelecimento = pojo.getEmail();
 		this.senhaEstabelecimento = pojo.getSenha();
 		this.cnpjEstabelecimento = pojo.getCnpj();

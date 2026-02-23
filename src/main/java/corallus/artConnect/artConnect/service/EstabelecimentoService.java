@@ -15,6 +15,15 @@ public class EstabelecimentoService {
 	@Autowired
 	private EstabelecimentoRepository estabelecimentoRepository;
 	
+	public String cadastro(EstabelecimentoDTO estabelecimento) {
+		try {
+			estabelecimentoRepository.save(estabelecimento);
+			return "Estabelecimento cadastrado!";
+		} catch (Exception e) {
+			return "Não foi possivel cadastrar estabelecimento " + e.getMessage();
+		}
+	}
+
 	public String teste() {
 		return "Olá Mundo";
 	}
@@ -23,4 +32,6 @@ public class EstabelecimentoService {
 		List<EstabelecimentoDTO> lista = estabelecimentoRepository.findAll();
 		return lista;
 	}
+
+
 }
