@@ -5,7 +5,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import corallus.artConnect.artConnect.dto.EstabelecimentoDTO;
 import corallus.artConnect.artConnect.entity.Estabelecimento;
 import corallus.artConnect.artConnect.repository.EstabelecimentoRepository;
 
@@ -15,7 +14,7 @@ public class EstabelecimentoService {
 	@Autowired
 	private EstabelecimentoRepository estabelecimentoRepository;
 	
-	public String cadastro(EstabelecimentoDTO estabelecimento) {
+	public String cadastro(Estabelecimento estabelecimento) {
 		try {
 			estabelecimentoRepository.save(estabelecimento);
 			return "Estabelecimento cadastrado!";
@@ -28,10 +27,8 @@ public class EstabelecimentoService {
 		return "Olá Mundo";
 	}
 
-	public List<EstabelecimentoDTO> findAll() {
-		List<EstabelecimentoDTO> lista = estabelecimentoRepository.findAll();
+	public List<Estabelecimento> findAll() {
+		List<Estabelecimento> lista = estabelecimentoRepository.findAll();
 		return lista;
 	}
-
-
 }

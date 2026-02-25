@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import corallus.artConnect.artConnect.dto.ArtistaDTO;
+import corallus.artConnect.artConnect.entity.Artista;
 import corallus.artConnect.artConnect.repository.ArtistaRepository;
 
 @Service
@@ -15,7 +15,7 @@ public class ArtistaService {
     private ArtistaRepository artistaRepository;
 
     // Salva um novo artista no banco de dados
-    public String cadastro(ArtistaDTO artista) {
+    public String cadastro(Artista artista) {
         try {
             artistaRepository.save(artista);
             return "Cadastro realizado com sucesso!";
@@ -24,9 +24,9 @@ public class ArtistaService {
         }
     }
     // Busca todos os artistas cadastrados no banco de dados
-    public List<ArtistaDTO> findAll() {
+    public List<Artista> findAll() {
         try {
-            List<ArtistaDTO> artistas = artistaRepository.findAll();
+            List<Artista> artistas = artistaRepository.findAll();
             return artistas;
         } catch (Exception e) {
             e.printStackTrace();

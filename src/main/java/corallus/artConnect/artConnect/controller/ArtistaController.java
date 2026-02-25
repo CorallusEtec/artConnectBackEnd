@@ -11,8 +11,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import corallus.artConnect.artConnect.dto.ArtistaDTO;
 import corallus.artConnect.artConnect.entity.Artista;
 import corallus.artConnect.artConnect.service.ArtistaService;
 
@@ -26,7 +24,7 @@ public class ArtistaController {
 
     // Endpoint para cadastrar um novo artista
     @PostMapping("/cadastro")
-    public ResponseEntity<String> cadastro(@RequestBody ArtistaDTO artista) {
+    public ResponseEntity<String> cadastro(@RequestBody Artista artista) {
         try {
             String msg = this.artistaService.cadastro(artista);
             return new ResponseEntity<>(msg, HttpStatus.OK);
@@ -36,9 +34,9 @@ public class ArtistaController {
     }
     // Endpoint para buscar todos os artistas cadastrados
     @GetMapping("/todos")
-    public ResponseEntity<List<ArtistaDTO>> findAll() {
+    public ResponseEntity<List<Artista>> findAll() {
         try {
-            List<ArtistaDTO> artistas = artistaService.findAll();
+            List<Artista> artistas = artistaService.findAll();
             return new ResponseEntity<>(artistas, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(new ArrayList<>(), HttpStatus.BAD_REQUEST);
