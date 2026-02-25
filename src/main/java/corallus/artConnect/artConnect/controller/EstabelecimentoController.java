@@ -12,9 +12,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import corallus.artConnect.artConnect.dto.EstabelecimentoDTO;
-import corallus.artConnect.artConnect.service.EstabelecimentoService;
 import corallus.artConnect.artConnect.entity.Estabelecimento;
+import corallus.artConnect.artConnect.service.EstabelecimentoService;
 
 @RestController
 @RequestMapping("/parceiros")
@@ -25,7 +24,7 @@ public class EstabelecimentoController {
 
 	//Endpoint para cadastrar nova conta de estabelecimento
 	@PostMapping("/cadastro")
-	public ResponseEntity<String> cadastro(@RequestBody EstabelecimentoDTO estabelecimento) {
+	public ResponseEntity<String> cadastro(@RequestBody Estabelecimento estabelecimento) {
 		try {
 			String mensagem = this.estabelecimentoService.cadastro(estabelecimento);
 			return new ResponseEntity<>(mensagem, HttpStatus.OK);
@@ -47,9 +46,9 @@ public class EstabelecimentoController {
 	
 	//Endpoint para procurar todos as contas de estabelecimento cadastradas
 	@GetMapping("/findAll")
-	public ResponseEntity<List<EstabelecimentoDTO>> findAll() {
+	public ResponseEntity<List<Estabelecimento>> findAll() {
 		try {
-			List<EstabelecimentoDTO> lista = estabelecimentoService.findAll();
+			List<Estabelecimento> lista = estabelecimentoService.findAll();
 			return new ResponseEntity<>(lista, HttpStatus.FOUND);
 		} catch(Exception e) {
 			e.printStackTrace();
