@@ -21,10 +21,10 @@ public class Estabelecimento extends Usuario {
 	@Id
 	// Identity para criar os Id automaticamente
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long idEstabelecimento;
-	private String cnpjEstabelecimento;
-	private String razaoSocialEstabelecimento;
+	private Long id;
+	private String cnpj;
+	private String razaoSocial;
 
 	@Transient // Essa coluna não será mapeada para o banco de dados, apenas para retorno para endpoints GET
-	private List<TelefoneEstabelecimento> telefoneEstabelecimento;
+	private List<TelefoneEstabelecimento> telefone;
 }

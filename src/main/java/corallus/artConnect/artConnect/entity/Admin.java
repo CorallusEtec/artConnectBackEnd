@@ -17,5 +17,5 @@ import lombok.Setter;
 public class Admin extends Usuario {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long idAdmin;
+	private Long id;
 }

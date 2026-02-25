@@ -21,12 +21,12 @@ import lombok.Setter;
 public class Artista extends Usuario {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long idArtista;
-	private LocalDate dataNascArtista;
-	private String cpfArtista;
-	private Character sexoArtista;
+	private Long id;
+	private LocalDate dataNasc;
+	private String cpf;
+	private Character sexo;
 
 	@Transient // Essa coluna não será mapeada para o banco de dados, apenas para retorno para endpoints GET
-	private List<TelefoneArtista> telefoneArtista;
+	private List<TelefoneArtista> telefone;
 }
 

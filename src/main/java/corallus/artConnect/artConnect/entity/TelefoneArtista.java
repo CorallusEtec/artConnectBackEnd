@@ -24,7 +24,5 @@ public class TelefoneArtista {
     private Long idTelArtista;
     private String numTelArtista;
     
-    @ManyToOne
-    @JoinColumn(name = "id_artista")
     private Long idArtista;
 }
