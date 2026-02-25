@@ -24,7 +24,5 @@ public class TelefoneEstabelecimento {
     private Long idTelEstabelecimento;
     private String numTelEstabelecimento;
     
-    @ManyToOne
-    @JoinColumn(name = "id_estabelecimento")
     private Long idEstabelecimento;
 }

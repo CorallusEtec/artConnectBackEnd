@@ -45,7 +45,7 @@ public class EstabelecimentoController {
 	}
 	
 	//Endpoint para procurar todos as contas de estabelecimento cadastradas
-	@GetMapping("/findAll")
+	@GetMapping("/todos")
 	public ResponseEntity<List<Estabelecimento>> findAll() {
 		try {
 			List<Estabelecimento> lista = estabelecimentoService.findAll();
