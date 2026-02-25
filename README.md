@@ -16,8 +16,10 @@
 Quando for fazer uma nova issue, crie uma branch nova a partir da `main` com a seguinte notação `feature/<nome-da-branch>`.
 ## Imagens de apoio
 ### Diagrama de Classes
+* Nota: atributos com `<<NotNull>>` equivalem às annotations do Spring `@Column(nullable = false)`
+* Nota: Classes com cabeçalho `<<tb_entidade>>` equivalem a anotation `@Table(name'tb_entidade')`
+<img width="1622" height="1118" alt="ClassesBack" src="https://github.com/user-attachments/assets/70a0e98b-f266-48f3-9a77-5c2500702176" />
 
-<img width="1644" height="1388" alt="ClassesBack" src="https://github.com/user-attachments/assets/24e8065f-ee2e-4cdd-a287-5749b70fc176" />
 
-### Rascunho do Back-End
-<img width="6296" height="2170" alt="Image" src="https://github.com/user-attachments/assets/d4d6e6f4-388e-4b7d-b67c-baa24ffdb2f1" />
+### Arvore do Back End
+<img width="7575" height="4155" alt="Arvore BackEnd" src="https://github.com/user-attachments/assets/58878cfa-0dba-4998-9077-3f1f26d19a97" />
