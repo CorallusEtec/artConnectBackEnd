@@ -14,19 +14,8 @@ import lombok.Setter;
 @Getter @Setter
 @Entity
 @Table(name = "tb_admin")
-public class Admin {
+public class Admin extends Usuario {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long idAdmin;
-	private String nomeAdmin;
-	private String emailAdmin;
-	private String senhaAdmin;
-	private String tipoLogra;
-	private String nomeLogra;
-	private Integer numero;
-	private String complemento;
-	private String cep;
-	private String bairro;
-	private String cidade;
-	private String estado;
 }
