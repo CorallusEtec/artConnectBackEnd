@@ -18,21 +18,10 @@ import lombok.Setter;
 @Getter @Setter
 @Table(name= "tb_artista")
 @Entity(name = "tb_artista")
-public class Artista {
+public class Artista extends Usuario {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long idArtista;
-	private String nomeArtista;
-	private String emailArtista;
-	private String senhaArtista;
-	private String tipoLogArtista;
-	private String nomeLogArtista;
-	private Integer numLogArtista;
-	private String complementoArtista;
-	private String cepArtista;
-	private String bairroArtista;
-	private String cidadeArtista;
-	private String estadoArtista;
 	private LocalDate dataNascArtista;
 	private String cpfArtista;
 	private Character sexoArtista;
