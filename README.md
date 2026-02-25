@@ -22,4 +22,4 @@ Quando for fazer uma nova issue, crie uma branch nova a partir da `main` com a s
 
 
 ### Arvore do Back End
-<img width="7575" height="4155" alt="Arvore BackEnd" src="https://github.com/user-attachments/assets/58878cfa-0dba-4998-9077-3f1f26d19a97" />
+<img width="7575" height="4155" alt="Arvore BackEnd" src="https://github.com/user-attachments/assets/d98fe264-581d-4c54-94b9-c82ba620ae15" />
