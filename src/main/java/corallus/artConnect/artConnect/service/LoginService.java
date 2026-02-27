@@ -18,15 +18,25 @@ public class LoginService {
     @Autowired
     private EstabelecimentoRepository estabelecimentoRepository;
 
+    public List<Usuario>[] findAll() {
+        List<Usuario>[] usuarios = new ArrayList[2];
+        usuarios[0] = new ArrayList<>(artistaRepository.findAll());
+        usuarios[1] = new ArrayList<>(estabelecimentoRepository.findAll());
+        return usuarios;
+    }
 
     public Usuario login(String email, String senha) {
         List<Usuario> usuarios = buscaUsuariosEmail();
+        Usuario alvo = null;
         for (Usuario usuario : usuarios) {
             if (usuario.getEmail().equals(email) && usuario.getSenha().equals(senha)) {
-                return usuario;
+                alvo = usuario;
             }
         }
-        return null;
+        if(alvo == null) {
+            throw new RuntimeException("Usuário não encontrado");
+        }
+        return alvo;
     }
 
     private List<Usuario> buscaUsuariosEmail() {
