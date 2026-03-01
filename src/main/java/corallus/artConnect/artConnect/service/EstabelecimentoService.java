@@ -1,9 +1,11 @@
 package corallus.artConnect.artConnect.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 
 import corallus.artConnect.artConnect.entity.Estabelecimento;
 import corallus.artConnect.artConnect.repository.EstabelecimentoRepository;
@@ -31,4 +33,24 @@ public class EstabelecimentoService {
 		List<Estabelecimento> lista = estabelecimentoRepository.findAll();
 		return lista;
 	}
+
+	//Metodo para troca de senha
+    public String replacePass (Long idEstabelecimento, String novaSenha) {
+        try{
+        Optional<Estabelecimento> estabelecimentoOpt = estabelecimentoRepository.findById(idEstabelecimento);
+
+        if(estabelecimentoOpt.isPresent()) {
+            Estabelecimento estabelecimento = estabelecimentoOpt.get();
+
+            estabelecimento.setSenha(novaSenha);
+            estabelecimentoRepository.save(estabelecimento);
+
+            return "Senha alterada";
+        } else {
+            return "id não encontrada: " + idEstabelecimento;
+        }
+        } catch(Exception e) {
+            return "Erro ao alterar senha:" + e.getMessage();
+        }
+    } 
 }
