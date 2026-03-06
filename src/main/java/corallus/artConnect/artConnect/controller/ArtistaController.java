@@ -62,7 +62,7 @@ public class ArtistaController {
         try {
             String msg = artistaService.replacePass(id, novaSenha);
 
-            if(msg.contains("Sucesso")) {
+            if(msg.contains("Senha de artista alterada")) {
                 return new ResponseEntity<>(msg, HttpStatus.OK);
             } else {
                 return new ResponseEntity<>(msg, HttpStatus.BAD_REQUEST);

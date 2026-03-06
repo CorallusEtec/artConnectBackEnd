@@ -62,9 +62,8 @@ public class EstabelecimentoController {
 	public ResponseEntity<String> replacePass(@RequestParam Long id, @RequestParam String novaSenha) {
 		try {
 			String msg = estabelecimentoService.replacePass(id, novaSenha);
-			System.out.println(">>> Mensagem do service: " + msg); // LOG para debug
 
-			if(msg.contains("Senha alterada")) { // CORRIGIDO: verifica a mensagem real
+			if(msg.contains("Senha de estabelecimento alterada")) {
 				return new ResponseEntity<>(msg, HttpStatus.OK);
 			} else {
 				return new ResponseEntity<>(msg, HttpStatus.BAD_REQUEST);
