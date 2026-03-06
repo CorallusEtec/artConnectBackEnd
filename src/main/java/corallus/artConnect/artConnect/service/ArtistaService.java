@@ -1,6 +1,7 @@
 package corallus.artConnect.artConnect.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -33,4 +34,24 @@ public class ArtistaService {
             throw new RuntimeException("Erro ao buscar artistas: " + e.getMessage());
         }
     }
+
+    //Metodo para troca de senha
+    public String replacePass (Long idArtista, String novaSenha) {
+        try{
+        Optional<Artista> artistaOpt = artistaRepository.findById(idArtista);
+
+        if(artistaOpt.isPresent()) {
+            Artista artista = artistaOpt.get();
+
+            artista.setSenha(novaSenha);
+            artistaRepository.save(artista);
+
+            return "Senha alterada";
+        } else {
+            return "id não encontrada: " + idArtista;
+        }
+        } catch(Exception e) {
+            return "Erro ao alterar senha:" + e.getMessage();
+        }
+    } 
 }

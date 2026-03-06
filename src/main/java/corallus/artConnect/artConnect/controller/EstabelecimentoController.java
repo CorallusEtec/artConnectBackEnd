@@ -9,8 +9,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import corallus.artConnect.artConnect.entity.Estabelecimento;
@@ -55,6 +57,21 @@ public class EstabelecimentoController {
 		} catch(Exception e) {
 			e.printStackTrace();
 			return new ResponseEntity<>(new ArrayList<>(), HttpStatus.BAD_REQUEST);
+		}
+	}
+
+	@PutMapping("/troca-senha")
+	public ResponseEntity<String> replacePass(@RequestParam Long id, @RequestParam String novaSenha) {
+		try {
+			String msg = estabelecimentoService.replacePass(id, novaSenha);
+
+			if(msg.contains("Senha de estabelecimento alterada")) {
+				return new ResponseEntity<>(msg, HttpStatus.OK);
+			} else {
+				return new ResponseEntity<>(msg, HttpStatus.BAD_REQUEST);
+			}
+		} catch (Exception e) {
+			return new ResponseEntity<>("Erro: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 }

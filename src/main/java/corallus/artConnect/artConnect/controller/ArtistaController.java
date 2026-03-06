@@ -9,8 +9,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import corallus.artConnect.artConnect.entity.Artista;
 import corallus.artConnect.artConnect.service.ArtistaService;
@@ -27,6 +29,7 @@ public class ArtistaController {
     // Endpoint para cadastrar um novo artista
     @PostMapping("/cadastro")
     public ResponseEntity<String> cadastro(@RequestBody Artista artista) {
+        System.out.println(">>> NOME: " + artista.getNome());
         try {
             String msg = this.artistaService.cadastro(artista);
             return new ResponseEntity<>(msg, HttpStatus.OK);
@@ -52,6 +55,22 @@ public class ArtistaController {
             return new ResponseEntity<>("Teste de endpoint do ArtistaController", HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>("erro: "+e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    //endpoint para troca de senha
+    @PutMapping("/troca-senha")
+    public ResponseEntity<String> replacePass(@RequestParam Long id, @RequestParam String novaSenha) {
+        try {
+            String msg = artistaService.replacePass(id, novaSenha);
+
+            if(msg.contains("Senha de artista alterada")) {
+                return new ResponseEntity<>(msg, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(msg, HttpStatus.BAD_REQUEST);
+            }
+        } catch (Exception e) {
+            return new ResponseEntity<>("Erro" + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }
