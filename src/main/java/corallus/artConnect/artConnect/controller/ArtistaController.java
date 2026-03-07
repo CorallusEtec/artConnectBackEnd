@@ -73,4 +73,16 @@ public class ArtistaController {
             return new ResponseEntity<>("Erro" + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+
+    //endpoint para alterar um artista
+    @PutMapping("/alterar")
+    public ResponseEntity<String> alterar(@RequestBody Artista artista) {
+        try {
+            String msg = artistaService.alterarArtista(artista);
+            return new ResponseEntity<>(msg, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>("Erro" + e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
 }

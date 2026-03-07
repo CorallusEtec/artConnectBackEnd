@@ -74,4 +74,15 @@ public class EstabelecimentoController {
 			return new ResponseEntity<>("Erro: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
+
+	@PutMapping("/alterar")
+	public ResponseEntity<String> alterarEstabelecimento(@RequestBody Estabelecimento estabelecimento) {
+		try {
+			String msg = estabelecimentoService.alterarEstabelecimento(estabelecimento);
+
+			return new ResponseEntity<>(msg, HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<>("Erro: " + e.getMessage(), HttpStatus.BAD_REQUEST);
+		}
+	}
 }
