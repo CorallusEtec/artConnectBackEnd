@@ -54,4 +54,41 @@ public class ArtistaService {
             return "Erro ao alterar senha:" + e.getMessage();
         }
     } 
+
+    public String alterarArtista(Artista artista) {
+        try {
+            if(artistaRepository.existsById(artista.getId())) {
+                Artista artistaAlterado = modificarCamposArtista(artista);
+                artistaRepository.save(artistaAlterado);
+                return "Artista alterado com sucesso!";
+            } else {
+                throw new RuntimeException("Artista não encontrado: " + artista.getId());
+            }
+        } catch(Exception e) {
+            return "Erro ao alterar artista: " + e.getMessage();
+        }
+    }
+
+    private Artista modificarCamposArtista(Artista artistaMod) {
+        Artista artistaExistente = artistaRepository.findById(artistaMod.getId()).get();
+        Artista artistaAlterado = new Artista();
+        artistaAlterado.setId(artistaExistente.getId());
+        // Abaixo só altera os campos que foram modificados, os outros permanecem iguais
+        artistaAlterado.setDataNasc(artistaMod.getDataNasc()!=null?artistaMod.getDataNasc():artistaExistente.getDataNasc());
+        artistaAlterado.setCpf(artistaMod.getCpf()!=null?artistaMod.getCpf():artistaExistente.getCpf());
+        artistaAlterado.setSexo(artistaMod.getSexo()!=null?artistaMod.getSexo():artistaExistente.getSexo());
+        artistaAlterado.setTelefone(artistaMod.getTelefone()!=null?artistaMod.getTelefone():artistaExistente.getTelefone());
+        artistaAlterado.setBairro(artistaMod.getBairro()!=null?artistaMod.getBairro():artistaExistente.getBairro());
+        artistaAlterado.setCep(artistaMod.getCep()!=null?artistaMod.getCep():artistaExistente.getCep());
+        artistaAlterado.setCidade(artistaMod.getCidade()!=null?artistaMod.getCidade():artistaExistente.getCidade());
+        artistaAlterado.setComplemento(artistaMod.getComplemento()!=null?artistaMod.getComplemento():artistaExistente.getComplemento());
+        artistaAlterado.setEmail(artistaMod.getEmail()!=null?artistaMod.getEmail():artistaExistente.getEmail());
+        artistaAlterado.setEstado(artistaMod.getEstado()!=null?artistaMod.getEstado():artistaExistente.getEstado());
+        artistaAlterado.setNome(artistaMod.getNome()!=null?artistaMod.getNome():artistaExistente.getNome());
+        artistaAlterado.setNomeLog(artistaMod.getNomeLog()!=null?artistaMod.getNomeLog():artistaExistente.getNomeLog());
+        artistaAlterado.setNumLog(artistaMod.getNumLog()!=null?artistaMod.getNumLog():artistaExistente.getNumLog());
+        artistaAlterado.setSenha(artistaMod.getSenha()!=null?artistaMod.getSenha():artistaExistente.getSenha());
+        artistaAlterado.setTipoLog(artistaMod.getTipoLog()!=null?artistaMod.getTipoLog():artistaExistente.getTipoLog());
+        return artistaAlterado;
+    }
 }
