@@ -74,6 +74,7 @@ public class ArtistaService {
         Artista artistaAlterado = new Artista();
         artistaAlterado.setId(artistaExistente.getId());
         // Abaixo só altera os campos que foram modificados, os outros permanecem iguais
+        artistaAlterado.setIdArte(artistaMod.getIdArte()!=null?artistaMod.getIdArte():artistaExistente.getIdArte());
         artistaAlterado.setDataNasc(artistaMod.getDataNasc()!=null?artistaMod.getDataNasc():artistaExistente.getDataNasc());
         artistaAlterado.setCpf(artistaMod.getCpf()!=null?artistaMod.getCpf():artistaExistente.getCpf());
         artistaAlterado.setSexo(artistaMod.getSexo()!=null?artistaMod.getSexo():artistaExistente.getSexo());

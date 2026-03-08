@@ -26,6 +26,8 @@ public class Artista extends Usuario {
 	private String cpf;
 	private Character sexo;
 
+	private Long idArte;
+
 	@Transient // Essa coluna não será mapeada para o banco de dados, apenas para retorno para endpoints GET
 	private List<TelefoneArtista> telefone;
 }
