@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -29,5 +31,15 @@ public class tipoContatoController {
         } catch (Exception e) {
             return new ResponseEntity<>(new ArrayList<>(), HttpStatus.BAD_REQUEST);
         }
+    }
+    
+    @PostMapping("/criar-tipo")
+    public ResponseEntity<String> criarTipo(@RequestBody tipoContato tipoContato) {
+    	try {
+    		String msg = this.tipoContatoService.criarTipo(tipoContato);
+            return new ResponseEntity<>(msg, HttpStatus.OK);
+    	} catch (Exception e) {
+    		return new ResponseEntity<>("Erro ao cadastrar: "+e.getMessage(), HttpStatus.BAD_REQUEST);
+    	}
     }
 }

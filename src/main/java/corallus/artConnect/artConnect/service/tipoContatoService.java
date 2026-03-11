@@ -12,7 +12,19 @@ import corallus.artConnect.artConnect.repository.tipoContatoRepository;
 public class tipoContatoService {
 	@Autowired
     private tipoContatoRepository tipoContatoRepository;
+	
+	//lista todos os tipos de contato cadastrados
     public List<tipoContato> findAll() {
         return tipoContatoRepository.findAll();
+    }
+    
+    //cria um tipo de contato
+    public String criarTipo(tipoContato tipoContato) {
+    	try {
+    		tipoContatoRepository.save(tipoContato);
+    		return "Tipo de contato cadastrado com sucesso!";
+    	} catch (Exception e) {
+    		return "Erro ao cadastrar tipo de contato: "+e.getMessage();
+    		}
     }
 }
