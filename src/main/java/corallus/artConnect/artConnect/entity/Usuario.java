@@ -2,6 +2,7 @@ package corallus.artConnect.artConnect.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.MappedSuperclass;
+import jakarta.persistence.Transient;
 import lombok.Getter;
 import lombok.Setter;
 
