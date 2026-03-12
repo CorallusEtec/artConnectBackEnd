@@ -5,14 +5,14 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import corallus.artConnect.artConnect.entity.contatoEstabelecimento;
-import corallus.artConnect.artConnect.repository.contatoEstabelecimentoRepository;
+import corallus.artConnect.artConnect.entity.ContatoEstabelecimento;
+import corallus.artConnect.artConnect.repository.ContatoEstabelecimentoRepository;
 
 @Service
-public class contatoEstabelecimentoService {
+public class ContatoEstabelecimentoService {
     @Autowired
-    private contatoEstabelecimentoRepository contatoEstabelecimentoRepository;
-    public List<contatoEstabelecimento> findAll() {
+    private ContatoEstabelecimentoRepository contatoEstabelecimentoRepository;
+    public List<ContatoEstabelecimento> findAll() {
         return contatoEstabelecimentoRepository.findAll();
     }
 }

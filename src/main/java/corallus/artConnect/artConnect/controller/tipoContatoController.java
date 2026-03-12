@@ -13,20 +13,20 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import corallus.artConnect.artConnect.entity.tipoContato;
-import corallus.artConnect.artConnect.service.tipoContatoService;
+import corallus.artConnect.artConnect.entity.TipoContato;
+import corallus.artConnect.artConnect.service.TipoContatoService;
 
 @RestController()
 @RequestMapping("/tipo-contato")
 @CrossOrigin(origins = "*", allowedHeaders = "*")
-public class tipoContatoController {
+public class TipoContatoController {
 	@Autowired
-    private tipoContatoService tipoContatoService;
+    private TipoContatoService tipoContatoService;
 
     @GetMapping("/todos")
-    public ResponseEntity<List<tipoContato>> findAll() {
+    public ResponseEntity<List<TipoContato>> findAll() {
         try {
-            List<tipoContato> lista = tipoContatoService.findAll();
+            List<TipoContato> lista = tipoContatoService.findAll();
             return new ResponseEntity<>(lista, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(new ArrayList<>(), HttpStatus.BAD_REQUEST);
@@ -34,7 +34,7 @@ public class tipoContatoController {
     }
     
     @PostMapping("/criar-tipo")
-    public ResponseEntity<String> criarTipo(@RequestBody tipoContato tipoContato) {
+    public ResponseEntity<String> criarTipo(@RequestBody TipoContato tipoContato) {
     	try {
     		String msg = this.tipoContatoService.criarTipo(tipoContato);
             return new ResponseEntity<>(msg, HttpStatus.OK);

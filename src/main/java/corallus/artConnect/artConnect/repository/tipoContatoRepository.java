@@ -2,8 +2,8 @@ package corallus.artConnect.artConnect.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import corallus.artConnect.artConnect.entity.tipoContato;
+import corallus.artConnect.artConnect.entity.TipoContato;
 
-public interface tipoContatoRepository extends JpaRepository<tipoContato, Long> {
+public interface tipoContatoRepository extends JpaRepository<TipoContato, Long> {
 
 }

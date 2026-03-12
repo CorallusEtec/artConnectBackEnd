@@ -8,7 +8,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import jakarta.persistence.Transient;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,14 +17,11 @@ import lombok.Setter;
 @Getter @Setter
 @Table(name= "tb_contato_artista")
 @Entity(name = "tb_contato_artista")
-public class contatoArtista {
+public class ContatoArtista {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long idContatoArtista;
 	private Long idTipoContato;
 	private String valorContatoArtista;
 	private Long idArtista;
-
-	private Long idArte;
-
 }

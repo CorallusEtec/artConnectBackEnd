@@ -5,21 +5,21 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import corallus.artConnect.artConnect.entity.tipoContato;
+import corallus.artConnect.artConnect.entity.TipoContato;
 import corallus.artConnect.artConnect.repository.tipoContatoRepository;
 
 @Service
-public class tipoContatoService {
+public class TipoContatoService {
 	@Autowired
     private tipoContatoRepository tipoContatoRepository;
 	
 	//lista todos os tipos de contato cadastrados
-    public List<tipoContato> findAll() {
+    public List<TipoContato> findAll() {
         return tipoContatoRepository.findAll();
     }
     
     //cria um tipo de contato
-    public String criarTipo(tipoContato tipoContato) {
+    public String criarTipo(TipoContato tipoContato) {
     	try {
     		tipoContatoRepository.save(tipoContato);
     		return "Tipo de contato cadastrado com sucesso!";

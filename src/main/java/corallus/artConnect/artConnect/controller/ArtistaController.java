@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import corallus.artConnect.artConnect.entity.Artista;
 import corallus.artConnect.artConnect.service.ArtistaService;
+import corallus.artConnect.artConnect.service.ContatoArtistaService;
+import corallus.artConnect.artConnect.entity.ContatoArtista;
 
 @RestController
 @RequestMapping("/artista")
@@ -24,6 +27,8 @@ public class ArtistaController {
     
     @Autowired
     private ArtistaService artistaService;
+    @Autowired
+    private ContatoArtistaService contArtistaService;
 
 
     // Endpoint para cadastrar um novo artista
@@ -83,6 +88,29 @@ public class ArtistaController {
             return new ResponseEntity<>(msg, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>("Erro" + e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    //endpoint listar todos os contatos de determinado artista
+    @GetMapping("/contatos")
+    public ResponseEntity<List<ContatoArtista>> findAllContatos() {
+        try {
+            List<ContatoArtista> contArtista = contArtistaService.findAll();
+            return new ResponseEntity<>(contArtista, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(new ArrayList<>(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    //criar contato do artista
+    @PostMapping("/criar-contato/{id}")
+    public ResponseEntity<String> cadastrarContato(@PathVariable Long id, @RequestBody ContatoArtista contato) {
+        try {
+            contato.setIdArtista(id);
+            String msg = contArtistaService.cadastrarContato(contato);
+            return new ResponseEntity<>(msg, HttpStatus.OK);
+        }catch (Exception e) {
+            return new ResponseEntity<>("Erro: "+e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 }
