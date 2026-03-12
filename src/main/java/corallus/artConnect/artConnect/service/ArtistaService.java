@@ -55,10 +55,11 @@ public class ArtistaService {
         }
     } 
 
-    public String alterarArtista(Artista artista) {
+    public String alterarArtista(Long id,Artista artista) {
         try {
-            if(artistaRepository.existsById(artista.getId())) {
+            if(artistaRepository.existsById(id)) {
                 Artista artistaAlterado = modificarCamposArtista(artista);
+                artistaAlterado.setId(id);
                 artistaRepository.save(artistaAlterado);
                 return "Artista alterado com sucesso!";
             } else {

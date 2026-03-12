@@ -53,10 +53,11 @@ public class EstabelecimentoService {
         }
     } 
 
-	public String alterarEstabelecimento(Estabelecimento estabelecimento) {
+	public String alterarEstabelecimento(Long id, Estabelecimento estabelecimento) {
 		try {
-			if(estabelecimentoRepository.existsById(estabelecimento.getId())) {
+			if(estabelecimentoRepository.existsById(id)) {
 				Estabelecimento estabelecimentoAlterado = modificarCamposEstabelecimento(estabelecimento);
+				estabelecimentoAlterado.setId(id);
 				estabelecimentoRepository.save(estabelecimentoAlterado);
 				return "Estabelecimento alterado!";
 			} else {
