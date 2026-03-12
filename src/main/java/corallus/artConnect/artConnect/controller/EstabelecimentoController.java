@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -75,10 +76,10 @@ public class EstabelecimentoController {
 		}
 	}
 
-	@PutMapping("/alterar")
-	public ResponseEntity<String> alterarEstabelecimento(@RequestBody Estabelecimento estabelecimento) {
+	@PutMapping("/alterar/{id}")
+	public ResponseEntity<String> alterarEstabelecimento(@PathVariable Long id, @RequestBody Estabelecimento estabelecimento) {
 		try {
-			String msg = estabelecimentoService.alterarEstabelecimento(estabelecimento);
+			String msg = estabelecimentoService.alterarEstabelecimento(id, estabelecimento);
 
 			return new ResponseEntity<>(msg, HttpStatus.OK);
 		} catch (Exception e) {
