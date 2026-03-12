@@ -1,7 +1,6 @@
 package corallus.artConnect.artConnect.entity;
 
 import java.time.LocalDate;
-import java.util.List;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -28,7 +27,8 @@ public class Artista extends Usuario {
 
 	private Long idArte;
 
-	@Transient // Essa coluna não será mapeada para o banco de dados, apenas para retorno para endpoints GET
-	private List<TelefoneArtista> telefone;
+
+	@Transient
+	private String tipoUsuario = "ARTISTA";
 }
 
