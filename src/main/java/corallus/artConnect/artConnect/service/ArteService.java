@@ -25,7 +25,6 @@ public class ArteService {
 			return e.getMessage();
 		}
     }
-    
     public String inserirArte(Arte arte) {
     	try {
     		this.arteRepository.save(arte);
@@ -34,6 +33,9 @@ public class ArteService {
     		e.printStackTrace();
     		return "Erro: "+e.getMessage();
     	}
+    }
+    public Arte findById(Long id) {
+        return arteRepository.findById(id).orElse(null);
     }
     public String deletarArte(Long idArte) {
     	try {

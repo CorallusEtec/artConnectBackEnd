@@ -64,4 +64,13 @@ public class ArteController {
 			return new ResponseEntity<>("Erro"+e.getMessage(), HttpStatus.BAD_REQUEST);
 		}
     }
+    @GetMapping("/{id}")
+    public ResponseEntity<Arte> findById(@PathVariable Long id) {
+        try {
+            Arte arte = this.arteService.findById(id);
+            return new ResponseEntity<>(arte, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
 }
