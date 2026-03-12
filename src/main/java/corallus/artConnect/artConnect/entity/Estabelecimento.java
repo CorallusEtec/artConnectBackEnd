@@ -1,7 +1,5 @@
 package corallus.artConnect.artConnect.entity;
 
-import java.util.List;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -25,6 +23,6 @@ public class Estabelecimento extends Usuario {
 	private String cnpj;
 	private String razaoSocial;
 
-	@Transient // Essa coluna não será mapeada para o banco de dados, apenas para retorno para endpoints GET
-	private List<TelefoneEstabelecimento> telefone;
+	@Transient
+	private String tipoUsuario = "ESTABELECIMENTO";
 }

@@ -6,7 +6,6 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import corallus.artConnect.artConnect.entity.Artista;
 import corallus.artConnect.artConnect.entity.Estabelecimento;
 import corallus.artConnect.artConnect.repository.EstabelecimentoRepository;
 
@@ -74,7 +73,6 @@ public class EstabelecimentoService {
         // Abaixo só altera os campos que foram modificados, os outros permanecem iguais
         estabelecimentoAlterado.setCnpj(estabelecimentoMod.getCnpj()!=null?estabelecimentoMod.getCnpj():estabelecimentoExistente.getCnpj());
         estabelecimentoAlterado.setRazaoSocial(estabelecimentoMod.getRazaoSocial()!=null?estabelecimentoMod.getRazaoSocial():estabelecimentoExistente.getRazaoSocial());
-		estabelecimentoAlterado.setTelefone(estabelecimentoMod.getTelefone()!=null?estabelecimentoMod.getTelefone():estabelecimentoExistente.getTelefone());
         estabelecimentoAlterado.setBairro(estabelecimentoMod.getBairro()!=null?estabelecimentoMod.getBairro():estabelecimentoExistente.getBairro());
         estabelecimentoAlterado.setCep(estabelecimentoMod.getCep()!=null?estabelecimentoMod.getCep():estabelecimentoExistente.getCep());
         estabelecimentoAlterado.setCidade(estabelecimentoMod.getCidade()!=null?estabelecimentoMod.getCidade():estabelecimentoExistente.getCidade());

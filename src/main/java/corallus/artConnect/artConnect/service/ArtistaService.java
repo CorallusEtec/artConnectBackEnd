@@ -78,7 +78,6 @@ public class ArtistaService {
         artistaAlterado.setDataNasc(artistaMod.getDataNasc()!=null?artistaMod.getDataNasc():artistaExistente.getDataNasc());
         artistaAlterado.setCpf(artistaMod.getCpf()!=null?artistaMod.getCpf():artistaExistente.getCpf());
         artistaAlterado.setSexo(artistaMod.getSexo()!=null?artistaMod.getSexo():artistaExistente.getSexo());
-        artistaAlterado.setTelefone(artistaMod.getTelefone()!=null?artistaMod.getTelefone():artistaExistente.getTelefone());
         artistaAlterado.setBairro(artistaMod.getBairro()!=null?artistaMod.getBairro():artistaExistente.getBairro());
         artistaAlterado.setCep(artistaMod.getCep()!=null?artistaMod.getCep():artistaExistente.getCep());
         artistaAlterado.setCidade(artistaMod.getCidade()!=null?artistaMod.getCidade():artistaExistente.getCidade());
