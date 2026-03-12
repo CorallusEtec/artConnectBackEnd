@@ -18,10 +18,10 @@ public class LoginService {
     @Autowired
     private EstabelecimentoRepository estabelecimentoRepository;
 
-    public List<Usuario>[] findAll() {
-        List<Usuario>[] usuarios = new ArrayList[2];
-        usuarios[0] = new ArrayList<>(artistaRepository.findAll());
-        usuarios[1] = new ArrayList<>(estabelecimentoRepository.findAll());
+    public List<List<Usuario>> findAll() {
+        List<List<Usuario>> usuarios = new ArrayList<>();
+        usuarios.add(new ArrayList<>(artistaRepository.findAll()));
+        usuarios.add(new ArrayList<>(estabelecimentoRepository.findAll())); 
         return usuarios;
     }
 

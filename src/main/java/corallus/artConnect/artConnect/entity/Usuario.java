@@ -2,6 +2,7 @@ package corallus.artConnect.artConnect.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.MappedSuperclass;
+import jakarta.persistence.Transient;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -19,6 +20,8 @@ public abstract class Usuario {
 	private Integer numLog;
 	private String complemento;
 	private String cep;
+	@Transient
+	private String tipoUsuario;
 	private String bairro;
 	private String cidade;
 	private String estado;

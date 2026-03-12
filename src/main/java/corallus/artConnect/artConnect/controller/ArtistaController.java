@@ -81,10 +81,10 @@ public class ArtistaController {
 
 
     //endpoint para alterar um artista
-    @PutMapping("/alterar")
-    public ResponseEntity<String> alterar(@RequestBody Artista artista) {
+    @PutMapping("/alterar/{id}")
+    public ResponseEntity<String> alterar(@PathVariable Long id, @RequestBody Artista artista) {
         try {
-            String msg = artistaService.alterarArtista(artista);
+            String msg = artistaService.alterarArtista(id, artista);
             return new ResponseEntity<>(msg, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>("Erro" + e.getMessage(), HttpStatus.BAD_REQUEST);

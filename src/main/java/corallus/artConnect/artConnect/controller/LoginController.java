@@ -1,6 +1,5 @@
 package corallus.artConnect.artConnect.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,9 +33,9 @@ public class LoginController {
 
 
     @GetMapping("/todos")
-    public ResponseEntity<List<Usuario>[]> findAll() {
+    public ResponseEntity<List<List<Usuario>>> findAll() {
         try {
-            List<Usuario>[] usuarios = loginService.findAll();
+            List<List<Usuario>> usuarios = loginService.findAll();
             return new ResponseEntity<>(usuarios, HttpStatus.FOUND);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
