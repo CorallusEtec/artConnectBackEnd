@@ -6,12 +6,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import corallus.artConnect.artConnect.entity.TipoContato;
-import corallus.artConnect.artConnect.repository.tipoContatoRepository;
+import corallus.artConnect.artConnect.repository.TipoContatoRepository;
 
 @Service
 public class TipoContatoService {
 	@Autowired
-    private tipoContatoRepository tipoContatoRepository;
+    private TipoContatoRepository tipoContatoRepository;
 	
 	//lista todos os tipos de contato cadastrados
     public List<TipoContato> findAll() {
