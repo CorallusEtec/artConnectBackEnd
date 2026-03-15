@@ -27,14 +27,25 @@ public class ContatoArtistaService {
 
     //alterar contato de artista
     public String alterarContato(Long idContatoArtista, ContatoArtista contArtistaAlterado) {
-    	try {
-    		contArtistaAlterado.setIdContatoArtista(idContatoArtista);
-    		this.contatoArtistaRepository.save(contArtistaAlterado);
-    		return "Contato alterado com sucesso!";
-    	} catch (Exception e) {
-			return e.getMessage();
-		}
+    try {
+        ContatoArtista contatoExistente = contatoArtistaRepository
+            .findById(idContatoArtista)
+            .orElseThrow(() -> new RuntimeException("Contato não encontrado"));
+        
+        ContatoArtista contatoParaSalvar = new ContatoArtista();
+        
+        contatoParaSalvar.setIdContatoArtista(contatoExistente.getIdContatoArtista());
+        contatoParaSalvar.setIdTipoContato(contArtistaAlterado.getIdTipoContato() != null ? contArtistaAlterado.getIdTipoContato() : contatoExistente.getIdTipoContato());
+        contatoParaSalvar.setValorContatoArtista(contArtistaAlterado.getValorContatoArtista() != null ? contArtistaAlterado.getValorContatoArtista() : contatoExistente.getValorContatoArtista());
+        contatoParaSalvar.setIdArtista(contArtistaAlterado.getIdArtista() != null ? contArtistaAlterado.getIdArtista() : contatoExistente.getIdArtista());
+        
+        this.contatoArtistaRepository.save(contatoParaSalvar);
+        return "Contato alterado com sucesso!";
+        
+    } catch (Exception e) {
+        return e.getMessage();
     }
+}
 
     //deletar contato de artista
     public String deletarContato(Long idContatoArtista) {

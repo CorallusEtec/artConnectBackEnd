@@ -17,8 +17,8 @@ import lombok.Setter;
 public class ContatoEstabelecimento {
     @Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long idContatoArtista;
+	private Long idContatoEstabelecimento;
 	private Long idTipoContato;
-	private String valorContatoArtista;
-	private Long idArtista;
+	private String valorContatoEstabelecimento;
+	private Long idEstabelecimento;
 }

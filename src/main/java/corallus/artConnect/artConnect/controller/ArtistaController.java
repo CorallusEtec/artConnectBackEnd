@@ -96,17 +96,6 @@ public class ArtistaController {
     }
 
     //ENDPOINTS DE CONTATOS DO ARTISTA
-    //endpoint listar todos os contatos de determinado artista
-    @GetMapping("/contatos")
-    public ResponseEntity<List<ContatoArtista>> findAllContatos() {
-        try {
-            List<ContatoArtista> contArtista = contArtistaService.findAll();
-            return new ResponseEntity<>(contArtista, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(new ArrayList<>(), HttpStatus.BAD_REQUEST);
-        }
-    }
-
     //criar contato do artista
     @PostMapping("/criar-contato/{id}")
     public ResponseEntity<String> cadastrarContato(@PathVariable Long id, @RequestBody ContatoArtista contato) {
