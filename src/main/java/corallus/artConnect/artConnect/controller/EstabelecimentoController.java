@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,7 +17,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import corallus.artConnect.artConnect.entity.ContatoEstabelecimento;
 import corallus.artConnect.artConnect.entity.Estabelecimento;
+import corallus.artConnect.artConnect.service.ContatoEstabelecimentoService;
 import corallus.artConnect.artConnect.service.EstabelecimentoService;
 
 @RestController
@@ -26,6 +29,8 @@ public class EstabelecimentoController {
 
 	@Autowired
 	private EstabelecimentoService estabelecimentoService;
+	@Autowired
+	private ContatoEstabelecimentoService contEstabelecimentoService;
 
 	//Endpoint para cadastrar nova conta de estabelecimento
 	@PostMapping("/cadastro")
@@ -86,4 +91,51 @@ public class EstabelecimentoController {
 			return new ResponseEntity<>("Erro: " + e.getMessage(), HttpStatus.BAD_REQUEST);
 		}
 	}
+
+	//ENDPOINTS DE CONTATOS DO ESTABELECIMENTO
+    //criar contato do estabelecimento
+    @PostMapping("/criar-contato/{id}")
+    public ResponseEntity<String> cadastrarContato(@PathVariable Long id, @RequestBody ContatoEstabelecimento contato) {
+        try {
+            contato.setIdEstabelecimento(id);
+            String msg = contEstabelecimentoService.cadastrarContato(contato);
+            return new ResponseEntity<>(msg, HttpStatus.OK);
+        }catch (Exception e) {
+            return new ResponseEntity<>("Erro: "+e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    //Alterar contato
+    @PutMapping("/alterar-contato/{id}")
+    public ResponseEntity<String> alterarContato(@PathVariable Long id, @RequestBody ContatoEstabelecimento contEstabelecimentoAlterado){
+        try {
+    		String msg = this.contEstabelecimentoService.alterarContato(id, contEstabelecimentoAlterado);
+    		return new ResponseEntity<>(msg, HttpStatus.OK);
+    	} catch (Exception e) {
+    		e.printStackTrace();
+    		return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+		}
+    }
+
+    //Deletar contato
+    @DeleteMapping("/deletar-contato/{id}")
+    public ResponseEntity<String> deletarContato(@PathVariable Long id) {
+    	try {
+    		String msg = this.contEstabelecimentoService.deletarContato(id);
+    		return new ResponseEntity<>(msg, HttpStatus.OK);
+    	} catch (Exception e) {
+    		e.printStackTrace();
+			return new ResponseEntity<>("Erro"+e.getMessage(), HttpStatus.BAD_REQUEST);
+		}
+    }
+
+    @GetMapping("/{idEstabelecimento}/todos")
+    public ResponseEntity<List<ContatoEstabelecimento>> findByIdEstabelecimento(@PathVariable Long idEstabelecimento) {
+        try {
+            List<ContatoEstabelecimento> contatos = this.contEstabelecimentoService.findByIdEstabelecimento(idEstabelecimento);
+            return new ResponseEntity<>(contatos, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }
