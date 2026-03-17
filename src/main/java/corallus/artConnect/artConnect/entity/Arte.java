@@ -15,7 +15,17 @@ import lombok.Setter;
 @Entity(name = "tb_arte")
 @Table(name = "tb_arte")
 public class Arte {
-    @Id
+    public Arte(Long id, String nomeArte, String descricaoArte) {
+		super();
+		this.id = id;
+		this.nomeArte = nomeArte;
+		this.descricaoArte = descricaoArte;
+	}
+    public Arte() {
+    	
+    }
+
+	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
@@ -24,4 +34,31 @@ public class Arte {
     
     @Column(nullable = true)
     private String descricaoArte;
+
+    
+    
+    // GET E SET
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getNomeArte() {
+		return nomeArte;
+	}
+
+	public void setNomeArte(String nomeArte) {
+		this.nomeArte = nomeArte;
+	}
+
+	public String getDescricaoArte() {
+		return descricaoArte;
+	}
+
+	public void setDescricaoArte(String descricaoArte) {
+		this.descricaoArte = descricaoArte;
+	}
 }

@@ -15,10 +15,35 @@ import lombok.Setter;
 @Table(name = "tb_tipo_contato")
 public class TipoContato {
 
+	public TipoContato(Long idTipoContato, String nomeTipoContato) {
+		super();
+		this.idTipoContato = idTipoContato;
+		this.nomeTipoContato = nomeTipoContato;
+	}
+	public TipoContato() {
+		
+	}
+
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idTipoContato;
 
     private String nomeTipoContato;
+
+	public Long getIdTipoContato() {
+		return idTipoContato;
+	}
+
+	public void setIdTipoContato(Long idTipoContato) {
+		this.idTipoContato = idTipoContato;
+	}
+
+	public String getNomeTipoContato() {
+		return nomeTipoContato;
+	}
+
+	public void setNomeTipoContato(String nomeTipoContato) {
+		this.nomeTipoContato = nomeTipoContato;
+	}
 	
 }
