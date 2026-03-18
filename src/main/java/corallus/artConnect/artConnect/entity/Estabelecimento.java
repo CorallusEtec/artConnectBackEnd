@@ -15,15 +15,17 @@ import lombok.Setter;
 @Entity(name = "tb_estabelecimento")
 @Table(name = "tb_estabelecimento")
 public class Estabelecimento extends Usuario {
+	
 	public Estabelecimento(String nome, String email, String senha, String tipoLog, String nomeLog, Integer numLog,
-			String complemento, String cep, String tipoUsuario, String bairro, String cidade, String estado, Long id,
-			String cnpj, String razaoSocial, String tipoUsuario2) {
-		super(nome, email, senha, tipoLog, nomeLog, numLog, complemento, cep, tipoUsuario, bairro, cidade, estado);
+			String complemento, String cep, String tipoUsuario, Long idStatusConta, String bairro, String cidade,
+			String estado, Long id, String cnpj, String razaoSocial) {
+		super(nome, email, senha, tipoLog, nomeLog, numLog, complemento, cep, tipoUsuario, idStatusConta, bairro,
+				cidade, estado);
 		this.id = id;
 		this.cnpj = cnpj;
 		this.razaoSocial = razaoSocial;
-		tipoUsuario = tipoUsuario2;
 	}
+
 	public Estabelecimento() {
 		
 	}

@@ -19,16 +19,18 @@ import lombok.Setter;
 @Entity(name = "tb_artista")
 public class Artista extends Usuario {
 	public Artista(String nome, String email, String senha, String tipoLog, String nomeLog, Integer numLog,
-			String complemento, String cep, String tipoUsuario, String bairro, String cidade, String estado, Long id,
-			LocalDate dataNasc, String cpf, Character sexo, Long idArte, String tipoUsuario2) {
-		super(nome, email, senha, tipoLog, nomeLog, numLog, complemento, cep, tipoUsuario, bairro, cidade, estado);
+			String complemento, String cep, String tipoUsuario, Long idStatusConta, String bairro, String cidade,
+			String estado, Long id, LocalDate dataNasc, String cpf, Character sexo, Long idArte) {
+		super(nome, email, senha, tipoLog, nomeLog, numLog, complemento, cep, tipoUsuario, idStatusConta, bairro,
+				cidade, estado);
 		this.id = id;
 		this.dataNasc = dataNasc;
 		this.cpf = cpf;
 		this.sexo = sexo;
 		this.idArte = idArte;
-		tipoUsuario = tipoUsuario2;
 	}
+
+
 	public Artista() {
 		super();
 	}

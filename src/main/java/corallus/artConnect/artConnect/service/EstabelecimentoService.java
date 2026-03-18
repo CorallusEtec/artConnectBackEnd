@@ -14,9 +14,12 @@ public class EstabelecimentoService {
 
 	@Autowired
 	private EstabelecimentoRepository estabelecimentoRepository;
+	@Autowired
+	private StatusContaService statusContaService;
 	
 	public String cadastro(Estabelecimento estabelecimento) {
 		try {
+			estabelecimento.setIdStatusConta(this.statusContaService.findByName("Pendente").getId());
 			estabelecimentoRepository.save(estabelecimento);
 			return "Estabelecimento cadastrado!";
 		} catch (Exception e) {

@@ -9,8 +9,10 @@ import lombok.Setter;
 @Getter @Setter
 @MappedSuperclass
 public abstract class Usuario {
+    
     public Usuario(String nome, String email, String senha, String tipoLog, String nomeLog, Integer numLog,
-			String complemento, String cep, String tipoUsuario, String bairro, String cidade, String estado) {
+			String complemento, String cep, String tipoUsuario, Long idStatusConta, String bairro, String cidade,
+			String estado) {
 		super();
 		this.nome = nome;
 		this.email = email;
@@ -21,11 +23,12 @@ public abstract class Usuario {
 		this.complemento = complemento;
 		this.cep = cep;
 		this.tipoUsuario = tipoUsuario;
+		this.idStatusConta = idStatusConta;
 		this.bairro = bairro;
 		this.cidade = cidade;
 		this.estado = estado;
 	}
-    public Usuario() {
+	public Usuario() {
     	
     }
 	@Column(nullable = false)
@@ -41,11 +44,19 @@ public abstract class Usuario {
 	private String cep;
 	@Transient
 	private String tipoUsuario;
+	private Long idStatusConta;
+	
 	private String bairro;
 	private String cidade;
 	private String estado;
 	
 	
+	public Long getIdStatusConta() {
+		return idStatusConta;
+	}
+	public void setIdStatusConta(Long idStatusConta) {
+		this.idStatusConta = idStatusConta;
+	}
 	
 	public String getNome() {
 		return nome;
