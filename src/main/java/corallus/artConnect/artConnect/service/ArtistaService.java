@@ -3,7 +3,6 @@ package corallus.artConnect.artConnect.service;
 import java.util.List;
 import java.util.Optional;
 
-import javax.management.RuntimeErrorException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,10 +15,12 @@ public class ArtistaService {
     
     @Autowired
     private ArtistaRepository artistaRepository;
-
+    @Autowired
+    private StatusContaService statusContaService;
     // Salva um novo artista no banco de dados
     public String cadastro(Artista artista) {
         try {
+        	artista.setIdStatusConta(this.statusContaService.findByName("Ativo").getId());
             artistaRepository.save(artista);
             return "Cadastro realizado com sucesso!";
         } catch (Exception e) {
