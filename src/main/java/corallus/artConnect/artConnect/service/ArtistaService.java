@@ -3,6 +3,8 @@ package corallus.artConnect.artConnect.service;
 import java.util.List;
 import java.util.Optional;
 
+import javax.management.RuntimeErrorException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -35,6 +37,15 @@ public class ArtistaService {
         }
     }
 
+    public Artista findById(Long idArtista) {
+    	try {
+    		Artista artista = this.artistaRepository.findById(idArtista).get();
+        	return artista;
+    	} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+    }
+    
     //Metodo para troca de senha
     public String replacePass (Long idArtista, String novaSenha) {
         try{
@@ -58,9 +69,9 @@ public class ArtistaService {
     public String alterarArtista(Long id,Artista artista) {
         try {
             if(artistaRepository.existsById(id)) {
-                Artista artistaAlterado = modificarCamposArtista(artista);
-                artistaAlterado.setId(id);
-                artistaRepository.save(artistaAlterado);
+                
+                artista.setId(id);
+                artistaRepository.save(artista);
                 return "Artista alterado com sucesso!";
             } else {
                 throw new RuntimeException("Artista não encontrado: " + artista.getId());
@@ -69,27 +80,6 @@ public class ArtistaService {
             return "Erro ao alterar artista: " + e.getMessage();
         }
     }
-
-    private Artista modificarCamposArtista(Artista artistaMod) {
-        Artista artistaExistente = artistaRepository.findById(artistaMod.getId()).get();
-        Artista artistaAlterado = new Artista();
-        artistaAlterado.setId(artistaExistente.getId());
-        // Abaixo só altera os campos que foram modificados, os outros permanecem iguais
-        artistaAlterado.setIdArte(artistaMod.getIdArte()!=null?artistaMod.getIdArte():artistaExistente.getIdArte());
-        artistaAlterado.setDataNasc(artistaMod.getDataNasc()!=null?artistaMod.getDataNasc():artistaExistente.getDataNasc());
-        artistaAlterado.setCpf(artistaMod.getCpf()!=null?artistaMod.getCpf():artistaExistente.getCpf());
-        artistaAlterado.setSexo(artistaMod.getSexo()!=null?artistaMod.getSexo():artistaExistente.getSexo());
-        artistaAlterado.setBairro(artistaMod.getBairro()!=null?artistaMod.getBairro():artistaExistente.getBairro());
-        artistaAlterado.setCep(artistaMod.getCep()!=null?artistaMod.getCep():artistaExistente.getCep());
-        artistaAlterado.setCidade(artistaMod.getCidade()!=null?artistaMod.getCidade():artistaExistente.getCidade());
-        artistaAlterado.setComplemento(artistaMod.getComplemento()!=null?artistaMod.getComplemento():artistaExistente.getComplemento());
-        artistaAlterado.setEmail(artistaMod.getEmail()!=null?artistaMod.getEmail():artistaExistente.getEmail());
-        artistaAlterado.setEstado(artistaMod.getEstado()!=null?artistaMod.getEstado():artistaExistente.getEstado());
-        artistaAlterado.setNome(artistaMod.getNome()!=null?artistaMod.getNome():artistaExistente.getNome());
-        artistaAlterado.setNomeLog(artistaMod.getNomeLog()!=null?artistaMod.getNomeLog():artistaExistente.getNomeLog());
-        artistaAlterado.setNumLog(artistaMod.getNumLog()!=null?artistaMod.getNumLog():artistaExistente.getNumLog());
-        artistaAlterado.setSenha(artistaMod.getSenha()!=null?artistaMod.getSenha():artistaExistente.getSenha());
-        artistaAlterado.setTipoLog(artistaMod.getTipoLog()!=null?artistaMod.getTipoLog():artistaExistente.getTipoLog());
-        return artistaAlterado;
-    }
+    
+    
 }

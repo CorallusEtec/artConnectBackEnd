@@ -66,6 +66,16 @@ public class EstabelecimentoController {
 		}
 	}
 
+	@GetMapping("/{id}")
+	public ResponseEntity<Estabelecimento> findById(@PathVariable Long id) {
+		try {
+			Estabelecimento es = this.estabelecimentoService.findById(id);
+			return new ResponseEntity<>(es, HttpStatus.FOUND);
+		} catch (Exception e) {
+			return null;
+		}
+	}
+	
 	@PutMapping("/troca-senha")
 	public ResponseEntity<String> replacePass(@RequestParam Long id, @RequestParam String novaSenha) {
 		try {
