@@ -56,7 +56,16 @@ public class ArtistaController {
             return new ResponseEntity<>(new ArrayList<>(), HttpStatus.BAD_REQUEST);
         }
     }
-
+    @GetMapping("/{id}")
+    public ResponseEntity<Artista> findById(@PathVariable Long id) {
+    	try {
+    		Artista artista = this.artistaService.findById(id);
+    		return new ResponseEntity<>(artista, HttpStatus.FOUND);
+    	} catch (Exception e) {
+    		return new ResponseEntity<Artista>(new Artista(), HttpStatus.BAD_REQUEST);
+		}
+    }
+    
     // Endpoint de teste para verificar se o controller está funcionando
     @GetMapping("/teste")
     public ResponseEntity<String> teste() {

@@ -33,6 +33,15 @@ public class EstabelecimentoService {
 		return lista;
 	}
 
+	public Estabelecimento findById(Long id) {
+		try {
+			Estabelecimento es = this.estabelecimentoRepository.findById(id).get();
+			return es;
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+	
 	//Metodo para troca de senha
     public String replacePass (Long idEstabelecimento, String novaSenha) {
         try{
@@ -56,9 +65,8 @@ public class EstabelecimentoService {
 	public String alterarEstabelecimento(Long id, Estabelecimento estabelecimento) {
 		try {
 			if(estabelecimentoRepository.existsById(id)) {
-				Estabelecimento estabelecimentoAlterado = modificarCamposEstabelecimento(estabelecimento);
-				estabelecimentoAlterado.setId(id);
-				estabelecimentoRepository.save(estabelecimentoAlterado);
+				estabelecimento.setId(id);
+				estabelecimentoRepository.save(estabelecimento);
 				return "Estabelecimento alterado!";
 			} else {
 				throw new RuntimeException("Estabelecimento não encontrado");
@@ -67,24 +75,4 @@ public class EstabelecimentoService {
 			return "Não foi possivel alterar estabelecimento " + e.getMessage();
 		}
 	}
-	private Estabelecimento modificarCamposEstabelecimento(Estabelecimento estabelecimentoMod) {
-        Estabelecimento estabelecimentoExistente = estabelecimentoRepository.findById(estabelecimentoMod.getId()).get();
-        Estabelecimento estabelecimentoAlterado = new Estabelecimento();
-        estabelecimentoAlterado.setId(estabelecimentoExistente.getId());
-        // Abaixo só altera os campos que foram modificados, os outros permanecem iguais
-        estabelecimentoAlterado.setCnpj(estabelecimentoMod.getCnpj()!=null?estabelecimentoMod.getCnpj():estabelecimentoExistente.getCnpj());
-        estabelecimentoAlterado.setRazaoSocial(estabelecimentoMod.getRazaoSocial()!=null?estabelecimentoMod.getRazaoSocial():estabelecimentoExistente.getRazaoSocial());
-        estabelecimentoAlterado.setBairro(estabelecimentoMod.getBairro()!=null?estabelecimentoMod.getBairro():estabelecimentoExistente.getBairro());
-        estabelecimentoAlterado.setCep(estabelecimentoMod.getCep()!=null?estabelecimentoMod.getCep():estabelecimentoExistente.getCep());
-        estabelecimentoAlterado.setCidade(estabelecimentoMod.getCidade()!=null?estabelecimentoMod.getCidade():estabelecimentoExistente.getCidade());
-        estabelecimentoAlterado.setComplemento(estabelecimentoMod.getComplemento()!=null?estabelecimentoMod.getComplemento():estabelecimentoExistente.getComplemento());
-        estabelecimentoAlterado.setEmail(estabelecimentoMod.getEmail()!=null?estabelecimentoMod.getEmail():estabelecimentoExistente.getEmail());
-        estabelecimentoAlterado.setEstado(estabelecimentoMod.getEstado()!=null?estabelecimentoMod.getEstado():estabelecimentoExistente.getEstado());
-        estabelecimentoAlterado.setNome(estabelecimentoMod.getNome()!=null?estabelecimentoMod.getNome():estabelecimentoExistente.getNome());
-        estabelecimentoAlterado.setNomeLog(estabelecimentoMod.getNomeLog()!=null?estabelecimentoMod.getNomeLog():estabelecimentoExistente.getNomeLog());
-        estabelecimentoAlterado.setNumLog(estabelecimentoMod.getNumLog()!=null?estabelecimentoMod.getNumLog():estabelecimentoExistente.getNumLog());
-        estabelecimentoAlterado.setSenha(estabelecimentoMod.getSenha()!=null?estabelecimentoMod.getSenha():estabelecimentoExistente.getSenha());
-        estabelecimentoAlterado.setTipoLog(estabelecimentoMod.getTipoLog()!=null?estabelecimentoMod.getTipoLog():estabelecimentoExistente.getTipoLog());
-        return estabelecimentoAlterado;
-    }
 }
