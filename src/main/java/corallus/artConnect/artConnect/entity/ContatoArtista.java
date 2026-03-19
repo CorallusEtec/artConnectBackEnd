@@ -16,40 +16,35 @@ import lombok.Setter;
 @Table(name= "tb_contato_artista")
 @Entity(name = "tb_contato_artista")
 public class ContatoArtista {
-	public ContatoArtista(Long idContatoArtista, Long idTipoContato, String valorContatoArtista, Long idArtista) {
-		super();
-		this.idContatoArtista = idContatoArtista;
-		this.idTipoContato = idTipoContato;
-		this.valorContatoArtista = valorContatoArtista;
-		this.idArtista = idArtista;
-	}
+	
 	public ContatoArtista() {
 		
 	}
+	public ContatoArtista(Long id, String valorContato, Long idArtista) {
+		super();
+		this.id = id;
+		this.valorContato = valorContato;
+		this.idArtista = idArtista;
+	}
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long idContatoArtista;
-	private Long idTipoContato;
-	private String valorContatoArtista;
+	private Long id;
+	
+	private String valorContato;
 	private Long idArtista;
 	
-	public Long getIdContatoArtista() {
-		return idContatoArtista;
+	public Long getId() {
+		return id;
 	}
-	public void setIdContatoArtista(Long idContatoArtista) {
-		this.idContatoArtista = idContatoArtista;
+	public void setId(Long id) {
+		this.id = id;
 	}
-	public Long getIdTipoContato() {
-		return idTipoContato;
+	public String getValorContato() {
+		return valorContato;
 	}
-	public void setIdTipoContato(Long idTipoContato) {
-		this.idTipoContato = idTipoContato;
-	}
-	public String getValorContatoArtista() {
-		return valorContatoArtista;
-	}
-	public void setValorContatoArtista(String valorContatoArtista) {
-		this.valorContatoArtista = valorContatoArtista;
+	public void setValorContato(String valorContato) {
+		this.valorContato = valorContato;
 	}
 	public Long getIdArtista() {
 		return idArtista;
@@ -57,4 +52,5 @@ public class ContatoArtista {
 	public void setIdArtista(Long idArtista) {
 		this.idArtista = idArtista;
 	}
+	
 }

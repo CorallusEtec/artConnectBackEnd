@@ -15,42 +15,35 @@ import lombok.Setter;
 @Table(name= "tb_contato_admin")
 @Entity(name = "tb_contato_admin")
 public class ContatoAdmin {
-    public ContatoAdmin(Long idContatoAdmin, Long idTipoContato, String valorContatoAdmin, Long idAdmin) {
+	
+	
+    public ContatoAdmin(Long id, String valorContato, Long idAdmin) {
 		super();
-		this.idContatoAdmin = idContatoAdmin;
-		this.idTipoContato = idTipoContato;
-		this.valorContatoAdmin = valorContatoAdmin;
+		this.id = id;
+		this.valorContato = valorContato;
 		this.idAdmin = idAdmin;
 	}
-    public ContatoAdmin() {
+	public ContatoAdmin() {
     	
     }
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long idContatoAdmin;
-	private Long idTipoContato;
-	private String valorContatoAdmin;
+	private Long id;
+	private String valorContato;
 	private Long idAdmin;
 	
 	
-	
-	public Long getIdContatoAdmin() {
-		return idContatoAdmin;
+	public Long getId() {
+		return id;
 	}
-	public void setIdContatoAdmin(Long idContatoAdmin) {
-		this.idContatoAdmin = idContatoAdmin;
+	public void setId(Long id) {
+		this.id = id;
 	}
-	public Long getIdTipoContato() {
-		return idTipoContato;
+	public String getValorContato() {
+		return valorContato;
 	}
-	public void setIdTipoContato(Long idTipoContato) {
-		this.idTipoContato = idTipoContato;
-	}
-	public String getValorContatoAdmin() {
-		return valorContatoAdmin;
-	}
-	public void setValorContatoAdmin(String valorContatoAdmin) {
-		this.valorContatoAdmin = valorContatoAdmin;
+	public void setValorContato(String valorContato) {
+		this.valorContato = valorContato;
 	}
 	public Long getIdAdmin() {
 		return idAdmin;
@@ -58,4 +51,7 @@ public class ContatoAdmin {
 	public void setIdAdmin(Long idAdmin) {
 		this.idAdmin = idAdmin;
 	}
+	
+	
+
 }

@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import corallus.artConnect.artConnect.entity.ContatoEstabelecimento;
 import corallus.artConnect.artConnect.entity.Estabelecimento;
 import corallus.artConnect.artConnect.repository.EstabelecimentoRepository;
 
@@ -85,4 +86,6 @@ public class EstabelecimentoService {
 			return "Não foi possivel alterar estabelecimento " + e.getMessage();
 		}
 	}
+	
+
 }
