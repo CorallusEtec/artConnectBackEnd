@@ -15,42 +15,34 @@ import lombok.Setter;
 @Table(name= "tb_contato_estabelecimento")
 @Entity(name = "tb_contato_estabelecimento")
 public class ContatoEstabelecimento {
-    public ContatoEstabelecimento(Long idContatoEstabelecimento, Long idTipoContato, String valorContatoEstabelecimento,
-			Long idEstabelecimento) {
+    
+	
+	
+    public ContatoEstabelecimento(Long id, String valorContato, Long idEstabelecimento) {
 		super();
-		this.idContatoEstabelecimento = idContatoEstabelecimento;
-		this.idTipoContato = idTipoContato;
-		this.valorContatoEstabelecimento = valorContatoEstabelecimento;
+		this.id = id;
+		this.valorContato = valorContato;
 		this.idEstabelecimento = idEstabelecimento;
 	}
-    public ContatoEstabelecimento() {
+	public ContatoEstabelecimento() {
     	
     }
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long idContatoEstabelecimento;
-	private Long idTipoContato;
-	private String valorContatoEstabelecimento;
+	private Long id;
+	private String valorContato;
 	private Long idEstabelecimento;
-	
-	
-	public Long getIdContatoEstabelecimento() {
-		return idContatoEstabelecimento;
+	public Long getId() {
+		return id;
 	}
-	public void setIdContatoEstabelecimento(Long idContatoEstabelecimento) {
-		this.idContatoEstabelecimento = idContatoEstabelecimento;
+	public void setId(Long id) {
+		this.id = id;
 	}
-	public Long getIdTipoContato() {
-		return idTipoContato;
+	public String getValorContato() {
+		return valorContato;
 	}
-	public void setIdTipoContato(Long idTipoContato) {
-		this.idTipoContato = idTipoContato;
-	}
-	public String getValorContatoEstabelecimento() {
-		return valorContatoEstabelecimento;
-	}
-	public void setValorContatoEstabelecimento(String valorContatoEstabelecimento) {
-		this.valorContatoEstabelecimento = valorContatoEstabelecimento;
+	public void setValorContato(String valorContato) {
+		this.valorContato = valorContato;
 	}
 	public Long getIdEstabelecimento() {
 		return idEstabelecimento;
@@ -58,4 +50,6 @@ public class ContatoEstabelecimento {
 	public void setIdEstabelecimento(Long idEstabelecimento) {
 		this.idEstabelecimento = idEstabelecimento;
 	}
+	
+	
 }

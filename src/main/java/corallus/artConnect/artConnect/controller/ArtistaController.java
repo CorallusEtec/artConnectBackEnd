@@ -115,17 +115,7 @@ public class ArtistaController {
         }
     }
 
-    //Alterar contato
-    @PutMapping("/alterar-contato/{id}")
-    public ResponseEntity<String> alterarContato(@PathVariable Long id, @RequestBody ContatoArtista contArtistaAlterado){
-        try {
-    		String msg = this.contArtistaService.alterarContato(id, contArtistaAlterado);
-    		return new ResponseEntity<>(msg, HttpStatus.OK);
-    	} catch (Exception e) {
-    		e.printStackTrace();
-    		return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
-		}
-    }
+
 
     //Deletar contato
     @DeleteMapping("/deletar-contato/{id}")

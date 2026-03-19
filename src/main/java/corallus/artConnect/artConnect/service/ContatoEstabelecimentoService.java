@@ -23,26 +23,7 @@ public class ContatoEstabelecimentoService {
         return "Contato cadastrado";
     }
 
-    //alterar contato de estabelecimento
-    public String alterarContato(Long idContatoEstabelecimento, ContatoEstabelecimento contEstabelecimentoAlterado) {
-    try {
-        ContatoEstabelecimento contatoExistente = contatoEstabelecimentoRepository
-            .findById(idContatoEstabelecimento)
-            .orElseThrow(() -> new RuntimeException("Contato não encontrado"));
-        
-        ContatoEstabelecimento contatoParaSalvar = new ContatoEstabelecimento();
-        
-        contatoParaSalvar.setIdContatoEstabelecimento(contatoExistente.getIdContatoEstabelecimento());
-        contatoParaSalvar.setIdTipoContato(contEstabelecimentoAlterado.getIdTipoContato() != null ? contEstabelecimentoAlterado.getIdTipoContato() : contatoExistente.getIdTipoContato());
-        contatoParaSalvar.setValorContatoEstabelecimento(contEstabelecimentoAlterado.getValorContatoEstabelecimento() != null ? contEstabelecimentoAlterado.getValorContatoEstabelecimento() : contatoExistente.getValorContatoEstabelecimento());
-        contatoParaSalvar.setIdEstabelecimento(contEstabelecimentoAlterado.getIdEstabelecimento() != null ? contEstabelecimentoAlterado.getIdEstabelecimento() : contatoExistente.getIdEstabelecimento());
-        contatoEstabelecimentoRepository.save(contatoParaSalvar);
-        return "Contato alterado com sucesso!";
-        
-    } catch (Exception e) {
-        return "Erro: " + e.getMessage();
-    }
-}
+
 
     //deletar contato de estabelecimento
     public String deletarContato(Long idContatoEstabelecimento) {
@@ -53,10 +34,13 @@ public class ContatoEstabelecimentoService {
 			return e.getMessage();
 		}
     }
-
-    //listar contato por id
-    public List<ContatoEstabelecimento> findByIdEstabelecimento(Long idEstabelecimento) {
-        return contatoEstabelecimentoRepository.findByIdEstabelecimento(idEstabelecimento);
+    public List<ContatoEstabelecimento> findByIdParceiro(Long idParceiro) {
+    		try {
+    			return this.contatoEstabelecimentoRepository.findByIdEstabelecimento(idParceiro);
+    		} catch (Exception e) {
+				throw new RuntimeException();
+			}
     }
+
     
 }

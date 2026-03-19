@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import corallus.artConnect.artConnect.entity.ContatoArtista;
 import corallus.artConnect.artConnect.entity.ContatoEstabelecimento;
 import corallus.artConnect.artConnect.entity.Estabelecimento;
 import corallus.artConnect.artConnect.service.ContatoEstabelecimentoService;
@@ -115,18 +116,6 @@ public class EstabelecimentoController {
         }
     }
 
-    //Alterar contato
-    @PutMapping("/alterar-contato/{id}")
-    public ResponseEntity<String> alterarContato(@PathVariable Long id, @RequestBody ContatoEstabelecimento contEstabelecimentoAlterado){
-        try {
-    		String msg = this.contEstabelecimentoService.alterarContato(id, contEstabelecimentoAlterado);
-    		return new ResponseEntity<>(msg, HttpStatus.OK);
-    	} catch (Exception e) {
-    		e.printStackTrace();
-    		return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
-		}
-    }
-
     //Deletar contato
     @DeleteMapping("/deletar-contato/{id}")
     public ResponseEntity<String> deletarContato(@PathVariable Long id) {
@@ -138,13 +127,13 @@ public class EstabelecimentoController {
 			return new ResponseEntity<>("Erro"+e.getMessage(), HttpStatus.BAD_REQUEST);
 		}
     }
-
-    @GetMapping("/{idEstabelecimento}/todos")
-    public ResponseEntity<List<ContatoEstabelecimento>> findByIdEstabelecimento(@PathVariable Long idEstabelecimento) {
+    @GetMapping("/{id}/todos")
+    public ResponseEntity<List<ContatoEstabelecimento>> findByIdParceiro(@PathVariable Long id) {
         try {
-            List<ContatoEstabelecimento> contatos = this.contEstabelecimentoService.findByIdEstabelecimento(idEstabelecimento);
+            List<ContatoEstabelecimento> contatos = this.contEstabelecimentoService.findByIdParceiro(id);
             return new ResponseEntity<>(contatos, HttpStatus.OK);
         } catch (Exception e) {
+        	e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
