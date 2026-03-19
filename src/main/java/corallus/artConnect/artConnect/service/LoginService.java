@@ -39,6 +39,18 @@ public class LoginService {
         return alvo;
     }
 
+    public Usuario findByEmail(String email) {
+    	List<List<Usuario>> lista = this.findAll();
+    	for(int i=0; i<lista.size(); i++) {
+    		for(int j=0; j<lista.get(i).size(); j++) {
+    			if(lista.get(i).get(j).getEmail().equals(email)) {
+        			return lista.get(i).get(j);
+        		}
+    		}
+    	}
+    	return null;
+    }
+    
     private List<Usuario> buscaUsuariosEmail() {
         List<Usuario> usuarios = new ArrayList<>(artistaRepository.findAll());
         usuarios.addAll(estabelecimentoRepository.findAll());

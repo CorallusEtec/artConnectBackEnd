@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import corallus.artConnect.artConnect.entity.Arte;
+
 import corallus.artConnect.artConnect.entity.ContatoArtista;
 import corallus.artConnect.artConnect.repository.ContatoArtistaRepository;
 
