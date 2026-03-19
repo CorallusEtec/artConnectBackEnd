@@ -13,17 +13,24 @@ import corallus.artConnect.artConnect.repository.EstabelecimentoRepository;
 public class EstabelecimentoService {
 
 	@Autowired
+	private LoginService loginService;
+	@Autowired
 	private EstabelecimentoRepository estabelecimentoRepository;
 	@Autowired
 	private StatusContaService statusContaService;
 	
 	public String cadastro(Estabelecimento estabelecimento) {
 		try {
-			estabelecimento.setIdStatusConta(this.statusContaService.findByName("Pendente").getId());
-			estabelecimentoRepository.save(estabelecimento);
-			return "Estabelecimento cadastrado!";
+			if(this.loginService.findByEmail(estabelecimento.getEmail()) == null) {
+				System.out.println(this.loginService.findByEmail(estabelecimento.getEmail()).getNome());
+				estabelecimento.setIdStatusConta(this.statusContaService.findByName("Pendente").getId());
+				estabelecimentoRepository.save(estabelecimento);
+				return "Estabelecimento cadastrado!";
+			} else {
+				throw new RuntimeException("Email ja cadastrado");
+			}
 		} catch (Exception e) {
-			return "Não foi possivel cadastrar estabelecimento " + e.getMessage();
+			throw new RuntimeException("Erro: "+e.getMessage());
 		}
 	}
 

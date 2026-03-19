@@ -39,7 +39,7 @@ public class EstabelecimentoController {
 			String mensagem = this.estabelecimentoService.cadastro(estabelecimento);
 			return new ResponseEntity<>(mensagem, HttpStatus.OK);
 		} catch (Exception e) {
-			return new ResponseEntity<>("erro: "+e.getMessage(), HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
 		}
 	}
 

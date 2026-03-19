@@ -3,7 +3,6 @@ package corallus.artConnect.artConnect.controller;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.catalina.connector.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import corallus.artConnect.artConnect.entity.Arte;
 import corallus.artConnect.artConnect.entity.Artista;
 import corallus.artConnect.artConnect.service.ArtistaService;
 import corallus.artConnect.artConnect.service.ContatoArtistaService;
@@ -43,7 +41,7 @@ public class ArtistaController {
             String msg = this.artistaService.cadastro(artista);
             return new ResponseEntity<>(msg, HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity<>("erro: "+e.getMessage(), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
     // Endpoint para buscar todos os artistas cadastrados
