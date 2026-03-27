@@ -17,4 +17,4 @@ Quando for fazer uma nova issue, crie uma branch nova a partir da `main` com a s
 ## Imagens de apoio
 ### Diagrama de Classes
 
-<img width="2384" height="2658" alt="ArtConnect-Classes" src="https://github.com/user-attachments/assets/f0f37d8b-29eb-4627-a00f-6f64c68269b0" />
+<img width="2384" height="2658" alt="ArtConnect-Classes" src="https://github.com/user-attachments/assets/a5f394fe-d2a9-45f9-a62f-f2e46c0bdcca" />
