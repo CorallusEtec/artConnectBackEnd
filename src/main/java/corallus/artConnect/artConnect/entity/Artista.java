@@ -1,112 +1,147 @@
 package corallus.artConnect.artConnect.entity;
 
 import java.time.LocalDate;
+import java.util.List;
 
+import corallus.artConnect.artConnect.entity.contato.ContatoArtista;
+import corallus.artConnect.artConnect.entity.publicacao.Publicacao;
+import corallus.artConnect.artConnect.entity.publicacao.Reacao;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import jakarta.persistence.Transient;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 
-@NoArgsConstructor @AllArgsConstructor
-@Getter @Setter
-@Table(name= "tb_artista")
-@Entity(name = "tb_artista")
+@Entity
 public class Artista extends Usuario {
-	public Artista(String nome, String email, String senha, String tipoLog, String nomeLog, Integer numLog,
-			String complemento, String cep, String tipoUsuario, Long idStatusConta, String bairro, String cidade,
-			String estado, Long id, LocalDate dataNasc, String cpf, Character sexo, Long idArte) {
-		super(nome, email, senha, tipoLog, nomeLog, numLog, complemento, cep, tipoUsuario, idStatusConta, bairro,
-				cidade, estado);
-		this.id = id;
-		this.dataNasc = dataNasc;
-		this.cpf = cpf;
-		this.sexo = sexo;
-		this.idArte = idArte;
-	}
+    private String nomeArtistico;
+    private LocalDate dataNasc;
+    private String cpf;
+    private Character sexo;
+    private String statusConta;
+    
+    @ManyToOne
+    private Arte arte;
+
+    @OneToMany(mappedBy = "artista")
+    private List<ContatoArtista> contatos;
+    
+    
+    @OneToMany(mappedBy = "autor")
+    private List<Publicacao> publicacoes;
+
+    @OneToMany(mappedBy = "artista")
+    private List<Reacao> reacoes;
+
+    // CONSTRUTOR
+
+    public Artista() {
+    }
+
+    public Artista(Long id, String nome, String email, String senha, String tipoConta, String nomeLog, Short numLog,
+            String cep, String bairro, String complemento, String cidade, String uf, String nomeArtistico,
+            LocalDate dataNasc, String cpf, Character sexo, String statusConta, Arte arte,
+            List<ContatoArtista> contatos, List<Publicacao> publicacoes, List<Reacao> reacoes) {
+        super(id, nome, email, senha, tipoConta, nomeLog, numLog, cep, bairro, complemento, cidade, uf);
+        this.nomeArtistico = nomeArtistico;
+        this.dataNasc = dataNasc;
+        this.cpf = cpf;
+        this.sexo = sexo;
+        this.statusConta = statusConta;
+        this.arte = arte;
+        this.contatos = contatos;
+        this.publicacoes = publicacoes;
+        this.reacoes = reacoes;
+    }
+
+    // GET E SET
+
+    public String getNomeArtistico() {
+        return nomeArtistico;
+    }
 
 
-	public Artista() {
-		super();
-	}
-
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
-	private LocalDate dataNasc;
-	private String cpf;
-	private Character sexo;
-
-	private Long idArte;
+    public void setNomeArtistico(String nomeArtistico) {
+        this.nomeArtistico = nomeArtistico;
+    }
 
 
-	@Transient
-	private String tipoUsuario = "ARTISTA";
-
-	// GET E SET
-	
-	public Long getId() {
-		return id;
-	}
+    public LocalDate getDataNasc() {
+        return dataNasc;
+    }
 
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+    public void setDataNasc(LocalDate dataNasc) {
+        this.dataNasc = dataNasc;
+    }
 
 
-	public LocalDate getDataNasc() {
-		return dataNasc;
-	}
+    public String getCpf() {
+        return cpf;
+    }
 
 
-	public void setDataNasc(LocalDate dataNasc) {
-		this.dataNasc = dataNasc;
-	}
+    public void setCpf(String cpf) {
+        this.cpf = cpf;
+    }
 
 
-	public String getCpf() {
-		return cpf;
-	}
+    public Character getSexo() {
+        return sexo;
+    }
 
 
-	public void setCpf(String cpf) {
-		this.cpf = cpf;
-	}
+    public void setSexo(Character sexo) {
+        this.sexo = sexo;
+    }
 
 
-	public Character getSexo() {
-		return sexo;
-	}
+    public String getStatusConta() {
+        return statusConta;
+    }
 
 
-	public void setSexo(Character sexo) {
-		this.sexo = sexo;
-	}
+    public void setStatusConta(String statusConta) {
+        this.statusConta = statusConta;
+    }
 
 
-	public Long getIdArte() {
-		return idArte;
-	}
+    public Arte getArte() {
+        return arte;
+    }
 
 
-	public void setIdArte(Long idArte) {
-		this.idArte = idArte;
-	}
+    public void setArte(Arte arte) {
+        this.arte = arte;
+    }
 
 
-	public String getTipoUsuario() {
-		return tipoUsuario;
-	}
+    public List<ContatoArtista> getContatos() {
+        return contatos;
+    }
 
 
-	public void setTipoUsuario(String tipoUsuario) {
-		this.tipoUsuario = tipoUsuario;
-	}
+    public void setContatos(List<ContatoArtista> contatos) {
+        this.contatos = contatos;
+    }
+
+
+    public List<Publicacao> getPublicacoes() {
+        return publicacoes;
+    }
+
+
+    public void setPublicacoes(List<Publicacao> publicacoes) {
+        this.publicacoes = publicacoes;
+    }
+
+
+    public List<Reacao> getReacoes() {
+        return reacoes;
+    }
+
+
+    public void setReacoes(List<Reacao> reacoes) {
+        this.reacoes = reacoes;
+    }
+
+    
 }
-

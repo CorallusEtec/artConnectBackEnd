@@ -1,64 +1,59 @@
 package corallus.artConnect.artConnect.entity;
 
-import jakarta.persistence.Column;
+import java.util.List;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-@Getter @Setter
-@NoArgsConstructor @AllArgsConstructor
-@Entity(name = "tb_arte")
-@Table(name = "tb_arte")
-public class Arte {
-    public Arte(Long id, String nomeArte, String descricaoArte) {
-		super();
-		this.id = id;
-		this.nomeArte = nomeArte;
-		this.descricaoArte = descricaoArte;
-	}
-    public Arte() {
-    	
-    }
+import jakarta.persistence.OneToMany;
 
-	@Id
+@Entity
+public class Arte {
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @Column(nullable = false)
     private String nomeArte;
-    
-    @Column(nullable = true)
-    private String descricaoArte;
 
-    
-    
+    @OneToMany(mappedBy = "arte")
+    private List<Artista> artistas;
+
+    // CONSTRUTOR
+
+    public Arte() {
+    }
+
+    public Arte(Long id, String nomeArte, List<Artista> artistas) {
+        this.id = id;
+        this.nomeArte = nomeArte;
+        this.artistas = artistas;
+    }
+
     // GET E SET
-	public Long getId() {
-		return id;
-	}
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+    public Long getId() {
+        return id;
+    }
 
-	public String getNomeArte() {
-		return nomeArte;
-	}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-	public void setNomeArte(String nomeArte) {
-		this.nomeArte = nomeArte;
-	}
+    public String getNomeArte() {
+        return nomeArte;
+    }
 
-	public String getDescricaoArte() {
-		return descricaoArte;
-	}
+    public void setNomeArte(String nomeArte) {
+        this.nomeArte = nomeArte;
+    }
 
-	public void setDescricaoArte(String descricaoArte) {
-		this.descricaoArte = descricaoArte;
-	}
+    public List<Artista> getArtistas() {
+        return artistas;
+    }
+
+    public void setArtistas(List<Artista> artistas) {
+        this.artistas = artistas;
+    }
+
+    
 }
