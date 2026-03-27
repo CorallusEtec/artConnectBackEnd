@@ -3,8 +3,8 @@ package corallus.artConnect.artConnect.controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+@RequestMapping("/contratante")
 @RestController
-@RequestMapping("/artista")
-public class ArtistaController {
+public class ContratanteController {
     
 }

@@ -1,54 +1,40 @@
 package corallus.artConnect.artConnect.entity;
 
+import java.util.List;
 
-
+import corallus.artConnect.artConnect.entity.contato.ContatoAdmin;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import jakarta.persistence.Transient;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import jakarta.persistence.OneToMany;
 
-@NoArgsConstructor @AllArgsConstructor
-@Getter @Setter
 @Entity
-@Table(name = "tb_admin")
 public class Admin extends Usuario {
-	public Admin(String tipoUsuario, Long id) {
-		super();
-		this.tipoUsuario = tipoUsuario;
-		this.id = id;
-	}
-	public Admin() {
-		super();
-	}
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+    @OneToMany(mappedBy = "admin")
+    private List<ContatoAdmin> contatos;
 
-	@Transient
-	private String tipoUsuario = "ADMIN";
+    // CONSTRUTOR
 
-	
-	// GET E SET
-	public Long getId() {
-		return id;
-	}
+    public Admin() {
+    }   
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+    public Admin(Long id, String nome, String email, String senha, String tipoConta, String nomeLog, Short numLog,
+            String cep, String bairro, String complemento, String cidade, String uf, List<ContatoAdmin> contatos) {
+        super(id, nome, email, senha, tipoConta, nomeLog, numLog, cep, bairro, complemento, cidade, uf);
+        this.contatos = contatos;
+    }
 
-	public String getTipoUsuario() {
-		return tipoUsuario;
-	}
+    // GET E SET
 
-	public void setTipoUsuario(String tipoUsuario) {
-		this.tipoUsuario = tipoUsuario;
-	}
+    public List<ContatoAdmin> getContatos() {
+        return contatos;
+    }
+
+    public void setContatos(List<ContatoAdmin> contatos) {
+        this.contatos = contatos;
+    }
+
+   
+
+
+    
 }
