@@ -3,10 +3,9 @@ package corallus.artConnect.artConnect.dto.contratante;
 import java.time.LocalDate;
 import java.util.List;
 
-
 import corallus.artConnect.artConnect.entity.contato.ContatoContratante;
 
-public record ContratanteCadastro(
+public record ContratanteCadastroDTO(
     String nome,
     String razaoSocial,
     Character sexo,
@@ -22,4 +21,12 @@ public record ContratanteCadastro(
     String cidade,
     String uf,
     List<ContatoContratante> contatos
-) {}
+) {
+    /* IMPLEMENTAR FUTURAMENTE
+        public static Contratante convertDTO(ContratanteDTO dto) {
+        
+        }
+    
+    */
+    
+}
