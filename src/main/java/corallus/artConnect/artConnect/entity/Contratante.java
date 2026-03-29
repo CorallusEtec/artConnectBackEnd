@@ -16,6 +16,10 @@ public class Contratante extends Usuario {
     private String cnpj;
     private LocalDate dataNasc;
     private String razaoSocial;
+    private Character sexo;
+
+
+    
 
     @OneToMany(mappedBy = "contratante")
     private List<ContatoContratante> contatos;
@@ -27,10 +31,9 @@ public class Contratante extends Usuario {
 
     public Contratante() {
     }
-
     public Contratante(Long id, String nome, String email, String senha, String tipoConta, String nomeLog, Short numLog,
             String cep, String bairro, String complemento, String cidade, String uf, String statusConta, String cpf,
-            String cnpj, LocalDate dataNasc, String razaoSocial, List<ContatoContratante> contatos,
+            String cnpj, LocalDate dataNasc, String razaoSocial, Character sexo, List<ContatoContratante> contatos,
             List<Reacao> reacoes) {
         super(id, nome, email, senha, tipoConta, nomeLog, numLog, cep, bairro, complemento, cidade, uf);
         this.statusConta = statusConta;
@@ -38,11 +41,21 @@ public class Contratante extends Usuario {
         this.cnpj = cnpj;
         this.dataNasc = dataNasc;
         this.razaoSocial = razaoSocial;
+        this.sexo = sexo;
         this.contatos = contatos;
         this.reacoes = reacoes;
     }
 
     // GET E SET
+
+    
+    public Character getSexo() {
+        return sexo;
+    }
+
+    public void setSexo(Character sexo) {
+        this.sexo = sexo;
+    }
 
     public String getStatusConta() {
         return statusConta;

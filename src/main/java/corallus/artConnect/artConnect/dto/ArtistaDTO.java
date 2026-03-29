@@ -14,7 +14,8 @@ public record ArtistaDTO(
 		String nomeArtistico,
 		LocalDate dataNasc,
 		Character sexo,
-		
+		String statusConta,
+		String tipoConta,
 		// LOGRADOURO / ENDEREÇO
 		
 		String nomeLog,
