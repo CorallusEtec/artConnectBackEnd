@@ -15,21 +15,28 @@ public class TipoContato {
     private Long id;
     private String tipoContato;
 
-    @OneToMany(mappedBy = "tipoContato")
-    private List<Contato> contatos;
+    @OneToMany(mappedBy = "tipoContatoAdmin")
+    private List<ContatoAdmin> contatosAdmin;
+
+    @OneToMany(mappedBy = "tipoContatoArtista")
+    private List<ContatoArtista> contatosArtista;
+
+    @OneToMany(mappedBy = "tipoContatoContratante")
+    private List<ContatoContratante> contatosContratante;
 
     // CONSTRUTOR
 
     public TipoContato() {
     }
 
-    public TipoContato(Long id, String tipoContato, List<Contato> contatos) {
+    public TipoContato(Long id, String tipoContato, List<ContatoAdmin> contatosAdmin,
+            List<ContatoArtista> contatosArtista, List<ContatoContratante> contatosContratante) {
         this.id = id;
         this.tipoContato = tipoContato;
-        this.contatos = contatos;
+        this.contatosAdmin = contatosAdmin;
+        this.contatosArtista = contatosArtista;
+        this.contatosContratante = contatosContratante;
     }
-
-    // GET E SET
 
     public Long getId() {
         return id;
@@ -47,13 +54,34 @@ public class TipoContato {
         this.tipoContato = tipoContato;
     }
 
-    public List<Contato> getContatos() {
-        return contatos;
+    public List<ContatoAdmin> getContatosAdmin() {
+        return contatosAdmin;
     }
 
-    public void setContatos(List<Contato> contatos) {
-        this.contatos = contatos;
+    public void setContatosAdmin(List<ContatoAdmin> contatosAdmin) {
+        this.contatosAdmin = contatosAdmin;
     }
+
+    public List<ContatoArtista> getContatosArtista() {
+        return contatosArtista;
+    }
+
+    public void setContatosArtista(List<ContatoArtista> contatosArtista) {
+        this.contatosArtista = contatosArtista;
+    }
+
+    public List<ContatoContratante> getContatosContratante() {
+        return contatosContratante;
+    }
+
+    public void setContatosContratante(List<ContatoContratante> contatosContratante) {
+        this.contatosContratante = contatosContratante;
+    }
+
+
+    // GET E SET
+
+ 
 
     
 }

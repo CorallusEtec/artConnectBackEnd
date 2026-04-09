@@ -1,11 +1,15 @@
 package corallus.artConnect.artConnect.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import corallus.artConnect.artConnect.entity.Artista;
+import corallus.artConnect.artConnect.entity.contato.ContatoArtista;
+import corallus.artConnect.artConnect.entity.publicacao.Publicacao;
+import corallus.artConnect.artConnect.entity.publicacao.Reacao;
 import corallus.artConnect.artConnect.repository.ArtistaRepository;
 
 @Service
@@ -17,6 +21,11 @@ public class ArtistaService {
         return this.artistaRepository.findAll();
     }
     public String save(Artista artista) {
+
+        artista.setContatos(new ArrayList<ContatoArtista>());
+        artista.setPublicacoes(new ArrayList<Publicacao>());
+        artista.setReacoes(new ArrayList<Reacao>());
+
         this.artistaRepository.save(artista);
         return "Artista cadastrado com sucesso!";
     }
