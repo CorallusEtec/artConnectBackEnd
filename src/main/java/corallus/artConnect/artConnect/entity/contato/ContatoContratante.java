@@ -10,23 +10,39 @@ public class ContatoContratante extends Contato {
     @ManyToOne
     private Contratante contratante;
 
+    @ManyToOne
+    private TipoContato tipoContatoContratante;
+
     // CONSTRUTOR
 
     public ContatoContratante() {
     }
 
-    public ContatoContratante(Long id, String valorContato, TipoContato tipoContato, Contratante contratante) {
+    public ContatoContratante(Long id, String valorContato, TipoContato tipoContato, Contratante contratante,
+            TipoContato tipoContatoContratante) {
         super(id, valorContato, tipoContato);
         this.contratante = contratante;
+        this.tipoContatoContratante = tipoContatoContratante;
     }
-
-    // GET E SET
 
     public Contratante getContratante() {
         return contratante;
     }
 
-    public void setContratante(Contratante contratante) {
+   
+
+    // GET E SET
+
+     public void setContratante(Contratante contratante) {
         this.contratante = contratante;
     }
+
+    public TipoContato getTipoContatoContratante() {
+        return tipoContatoContratante;
+    }
+
+    public void setTipoContatoContratante(TipoContato tipoContatoContratante) {
+        this.tipoContatoContratante = tipoContatoContratante;
+    }
+    
 }

@@ -3,6 +3,8 @@ package corallus.artConnect.artConnect.entity;
 import java.time.LocalDate;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import corallus.artConnect.artConnect.entity.contato.ContatoArtista;
 import corallus.artConnect.artConnect.entity.publicacao.Publicacao;
 import corallus.artConnect.artConnect.entity.publicacao.Reacao;
@@ -28,6 +30,7 @@ public class Artista extends Usuario {
     @OneToMany(mappedBy = "autor")
     private List<Publicacao> publicacoes;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "artista")
     private List<Reacao> reacoes;
 

@@ -10,18 +10,25 @@ public class ContatoArtista extends Contato {
     @ManyToOne
     private Artista artista;
 
+    @ManyToOne
+    private TipoContato tipoContatoArtista;
+
     // CONSTRUTOR
 
     public ContatoArtista() {
         
     }
-
-    public ContatoArtista(Long id, String valorContato, TipoContato tipoContato, Artista artista) {
+    public ContatoArtista(Long id, String valorContato, TipoContato tipoContato, Artista artista,
+            TipoContato tipoContatoArtista) {
         super(id, valorContato, tipoContato);
         this.artista = artista;
+        this.tipoContatoArtista = tipoContatoArtista;
     }
 
+
     // GET E SET
+
+   
 
     public Artista getArtista() {
         return artista;
@@ -29,6 +36,12 @@ public class ContatoArtista extends Contato {
 
     public void setArtista(Artista artista) {
         this.artista = artista;
+    }
+    public TipoContato getTipoContatoArtista() {
+        return tipoContatoArtista;
+    }
+    public void setTipoContatoArtista(TipoContato tipoContatoArtista) {
+        this.tipoContatoArtista = tipoContatoArtista;
     }
 
 
