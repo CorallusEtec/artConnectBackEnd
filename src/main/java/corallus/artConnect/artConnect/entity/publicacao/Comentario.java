@@ -1,15 +1,16 @@
 package corallus.artConnect.artConnect.entity.publicacao;
 
-import java.util.List;
+import java.time.LocalDateTime;
+import java.util.Set;
 
-import corallus.artConnect.artConnect.entity.Artista;
-import corallus.artConnect.artConnect.entity.Contratante;
+import corallus.artConnect.artConnect.entity.Status;
+
+import corallus.artConnect.artConnect.entity.atores.Usuario;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
+
 
 @Entity
 public class Comentario {
@@ -18,35 +19,23 @@ public class Comentario {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String statusComentario;
+    private Status statusComentario;
+    private LocalDateTime dataComentario;
     private String mensagem;
-
-    @ManyToOne
-    private Artista artista;
-
-    @ManyToOne
-    private Contratante contratante;
-
-    @ManyToOne
-    private Publicacao publicacao;
-
-    @OneToMany(mappedBy = "comentario")
-    private List<Reacao> reacoes;
-
+    private Usuario usuario;
+    private Set<Reacao> reacoes;
+    
     // CONSTRUTOR
 
-    public Comentario() {
+    public Comentario() {}
 
-    }
-
-    public Comentario(Long id, String statusComentario, String mensagem, Artista artista, Contratante contratante,
-            Publicacao publicacao, List<Reacao> reacoes) {
+    public Comentario(Long id, Status statusComentario, LocalDateTime dataComentario, String mensagem, Usuario usuario,
+            Set<Reacao> reacoes) {
         this.id = id;
         this.statusComentario = statusComentario;
+        this.dataComentario = dataComentario;
         this.mensagem = mensagem;
-        this.artista = artista;
-        this.contratante = contratante;
-        this.publicacao = publicacao;
+        this.usuario = usuario;
         this.reacoes = reacoes;
     }
 
@@ -60,12 +49,20 @@ public class Comentario {
         this.id = id;
     }
 
-    public String getStatusComentario() {
+    public Status getStatusComentario() {
         return statusComentario;
     }
 
-    public void setStatusComentario(String statusComentario) {
+    public void setStatusComentario(Status statusComentario) {
         this.statusComentario = statusComentario;
+    }
+
+    public LocalDateTime getDataComentario() {
+        return dataComentario;
+    }
+
+    public void setDataComentario(LocalDateTime dataComentario) {
+        this.dataComentario = dataComentario;
     }
 
     public String getMensagem() {
@@ -76,37 +73,23 @@ public class Comentario {
         this.mensagem = mensagem;
     }
 
-    public Artista getArtista() {
-        return artista;
+    public Usuario getUsuario() {
+        return usuario;
     }
 
-    public void setArtista(Artista artista) {
-        this.artista = artista;
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
     }
 
-    public Contratante getContratante() {
-        return contratante;
-    }
-
-    public void setContratante(Contratante contratante) {
-        this.contratante = contratante;
-    }
-
-    public Publicacao getPublicacao() {
-        return publicacao;
-    }
-
-    public void setPublicacao(Publicacao publicacao) {
-        this.publicacao = publicacao;
-    }
-
-    public List<Reacao> getReacoes() {
+    public Set<Reacao> getReacoes() {
         return reacoes;
     }
 
-    public void setReacoes(List<Reacao> reacoes) {
+    public void setReacoes(Set<Reacao> reacoes) {
         this.reacoes = reacoes;
     }
+
+  
 
     
 

@@ -5,8 +5,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import corallus.artConnect.artConnect.entity.Contratante;
-import corallus.artConnect.artConnect.repository.ContratanteRepository;
+import corallus.artConnect.artConnect.entity.atores.Contratante;
+import corallus.artConnect.artConnect.repository.atores.ContratanteRepository;
 
 @Service
 public class ContratanteService {

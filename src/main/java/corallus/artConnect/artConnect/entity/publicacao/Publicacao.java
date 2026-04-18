@@ -1,14 +1,17 @@
 package corallus.artConnect.artConnect.entity.publicacao;
 
-import java.util.List;
 
-import corallus.artConnect.artConnect.entity.Artista;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Set;
+
+import corallus.artConnect.artConnect.entity.Status;
+import corallus.artConnect.artConnect.entity.atores.Usuario;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
+
 
 @Entity
 public class Publicacao {
@@ -16,44 +19,34 @@ public class Publicacao {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String statusPublicacao;
     
-    @ManyToOne
-    private Artista autor;
-    
-    @OneToMany(mappedBy = "publicacao")
-    private List<Reacao> reacoes;
+    private Status statusPublicacao;
+    private Usuario autor;
+    private LocalDateTime dataPublicacao = LocalDateTime.now();
 
-    @OneToMany(mappedBy = "publicacao")
+    private Set<Reacao> reacoes;
     private List<Comentario> comentarios;
-
-
-    private String mensagem;
+    private String legenda;
+    private String urlMidia;
     
-    private String urlFoto;
-    private String urlVideo;
-    private String urlAudio;
-
     // CONSTRUTOR
 
-    public Publicacao() {
-    }
+    public Publicacao() {}
 
-    public Publicacao(Long id, String statusPublicacao, Artista autor, List<Reacao> reacoes,
-            List<Comentario> comentarios, String mensagem, String urlFoto, String urlVideo, String urlAudio) {
+    public Publicacao(Long id, Status statusPublicacao, Usuario autor, LocalDateTime dataPublicacao,
+            Set<Reacao> reacoes, List<Comentario> comentarios, String legenda, String urlMidia) {
         this.id = id;
         this.statusPublicacao = statusPublicacao;
         this.autor = autor;
+        this.dataPublicacao = dataPublicacao;
         this.reacoes = reacoes;
         this.comentarios = comentarios;
-        this.mensagem = mensagem;
-        this.urlFoto = urlFoto;
-        this.urlVideo = urlVideo;
-        this.urlAudio = urlAudio;
+        this.legenda = legenda;
+        this.urlMidia = urlMidia;
     }
 
     // GET E SET
-
+    
     public Long getId() {
         return id;
     }
@@ -62,27 +55,35 @@ public class Publicacao {
         this.id = id;
     }
 
-    public String getStatusPublicacao() {
+    public Status getStatusPublicacao() {
         return statusPublicacao;
     }
 
-    public void setStatusPublicacao(String statusPublicacao) {
+    public void setStatusPublicacao(Status statusPublicacao) {
         this.statusPublicacao = statusPublicacao;
     }
 
-    public Artista getAutor() {
+    public Usuario getAutor() {
         return autor;
     }
 
-    public void setAutor(Artista autor) {
+    public void setAutor(Usuario autor) {
         this.autor = autor;
     }
 
-    public List<Reacao> getReacoes() {
+    public LocalDateTime getDataPublicacao() {
+        return dataPublicacao;
+    }
+
+    public void setDataPublicacao(LocalDateTime dataPublicacao) {
+        this.dataPublicacao = dataPublicacao;
+    }
+
+    public Set<Reacao> getReacoes() {
         return reacoes;
     }
 
-    public void setReacoes(List<Reacao> reacoes) {
+    public void setReacoes(Set<Reacao> reacoes) {
         this.reacoes = reacoes;
     }
 
@@ -94,38 +95,22 @@ public class Publicacao {
         this.comentarios = comentarios;
     }
 
-    public String getMensagem() {
-        return mensagem;
+    public String getLegenda() {
+        return legenda;
     }
 
-    public void setMensagem(String mensagem) {
-        this.mensagem = mensagem;
+    public void setLegenda(String legenda) {
+        this.legenda = legenda;
     }
 
-    public String getUrlFoto() {
-        return urlFoto;
+    public String getUrlMidia() {
+        return urlMidia;
     }
 
-    public void setUrlFoto(String urlFoto) {
-        this.urlFoto = urlFoto;
+    public void setUrlMidia(String urlMidia) {
+        this.urlMidia = urlMidia;
     }
-
-    public String getUrlVideo() {
-        return urlVideo;
-    }
-
-    public void setUrlVideo(String urlVideo) {
-        this.urlVideo = urlVideo;
-    }
-
-    public String getUrlAudio() {
-        return urlAudio;
-    }
-
-    public void setUrlAudio(String urlAudio) {
-        this.urlAudio = urlAudio;
-    }
-
+   
     
 
 }

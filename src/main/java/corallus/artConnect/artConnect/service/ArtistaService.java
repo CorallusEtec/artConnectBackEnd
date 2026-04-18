@@ -6,11 +6,10 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import corallus.artConnect.artConnect.entity.Artista;
-import corallus.artConnect.artConnect.entity.contato.ContatoArtista;
+import corallus.artConnect.artConnect.entity.atores.Artista;
 import corallus.artConnect.artConnect.entity.publicacao.Publicacao;
 import corallus.artConnect.artConnect.entity.publicacao.Reacao;
-import corallus.artConnect.artConnect.repository.ArtistaRepository;
+import corallus.artConnect.artConnect.repository.atores.ArtistaRepository;
 
 @Service
 public class ArtistaService {
@@ -21,11 +20,11 @@ public class ArtistaService {
         return this.artistaRepository.findAll();
     }
     public String save(Artista artista) {
-
+/* 
         artista.setContatos(new ArrayList<ContatoArtista>());
         artista.setPublicacoes(new ArrayList<Publicacao>());
         artista.setReacoes(new ArrayList<Reacao>());
-
+*/
         this.artistaRepository.save(artista);
         return "Artista cadastrado com sucesso!";
     }

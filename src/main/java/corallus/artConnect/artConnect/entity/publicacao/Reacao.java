@@ -1,12 +1,14 @@
 package corallus.artConnect.artConnect.entity.publicacao;
 
-import corallus.artConnect.artConnect.entity.Artista;
-import corallus.artConnect.artConnect.entity.Contratante;
+
+import java.time.LocalDateTime;
+
+import corallus.artConnect.artConnect.entity.atores.Usuario;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
+
 
 @Entity
 public class Reacao {
@@ -17,37 +19,29 @@ public class Reacao {
 
     private Boolean like;
     private Boolean deslike;
-    
-    @ManyToOne
-    private Artista artista;
-    
-    @ManyToOne
-    private Contratante contratante;
-
-    @ManyToOne
+    private Usuario usuario;
     private Comentario comentario;
 
-    @ManyToOne
+    private LocalDateTime dataReacao = LocalDateTime.now();
     private Publicacao publicacao;
-
+   
     // CONSTRUTOR
 
-    public Reacao() {
-    }
+    public Reacao() {}
 
-    public Reacao(Long id, Boolean like, Boolean deslike, Artista artista, Contratante contratante,
-            Comentario comentario, Publicacao publicacao) {
+    public Reacao(Long id, Boolean like, Boolean deslike, Usuario usuario, Comentario comentario,
+            LocalDateTime dataReacao, Publicacao publicacao) {
         this.id = id;
         this.like = like;
         this.deslike = deslike;
-        this.artista = artista;
-        this.contratante = contratante;
+        this.usuario = usuario;
         this.comentario = comentario;
+        this.dataReacao = dataReacao;
         this.publicacao = publicacao;
     }
 
-    // GET E SET
-
+    // GET E SET 
+    
     public Long getId() {
         return id;
     }
@@ -72,20 +66,12 @@ public class Reacao {
         this.deslike = deslike;
     }
 
-    public Artista getArtista() {
-        return artista;
+    public Usuario getUsuario() {
+        return usuario;
     }
 
-    public void setArtista(Artista artista) {
-        this.artista = artista;
-    }
-
-    public Contratante getContratante() {
-        return contratante;
-    }
-
-    public void setContratante(Contratante contratante) {
-        this.contratante = contratante;
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
     }
 
     public Comentario getComentario() {
@@ -94,6 +80,14 @@ public class Reacao {
 
     public void setComentario(Comentario comentario) {
         this.comentario = comentario;
+    }
+
+    public LocalDateTime getDataReacao() {
+        return dataReacao;
+    }
+
+    public void setDataReacao(LocalDateTime dataReacao) {
+        this.dataReacao = dataReacao;
     }
 
     public Publicacao getPublicacao() {
@@ -105,4 +99,5 @@ public class Reacao {
     }
 
     
+
 }
