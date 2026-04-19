@@ -8,31 +8,35 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 
 
-@Entity
+@Entity(name = "reacao")
 public class Reacao {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Boolean like;
+    private Boolean liked;
     private Boolean deslike;
+    @ManyToOne
     private Usuario usuario;
+    @ManyToOne
     private Comentario comentario;
 
     private LocalDateTime dataReacao = LocalDateTime.now();
+    @ManyToOne
     private Publicacao publicacao;
    
     // CONSTRUTOR
 
     public Reacao() {}
 
-    public Reacao(Long id, Boolean like, Boolean deslike, Usuario usuario, Comentario comentario,
+    public Reacao(Long id, Boolean liked, Boolean deslike, Usuario usuario, Comentario comentario,
             LocalDateTime dataReacao, Publicacao publicacao) {
         this.id = id;
-        this.like = like;
+        this.liked = liked;
         this.deslike = deslike;
         this.usuario = usuario;
         this.comentario = comentario;
@@ -50,12 +54,12 @@ public class Reacao {
         this.id = id;
     }
 
-    public Boolean getLike() {
-        return like;
+    public Boolean getLiked() {
+        return liked;
     }
 
-    public void setLike(Boolean like) {
-        this.like = like;
+    public void setLiked(Boolean liked) {
+        this.liked = liked;
     }
 
     public Boolean getDeslike() {

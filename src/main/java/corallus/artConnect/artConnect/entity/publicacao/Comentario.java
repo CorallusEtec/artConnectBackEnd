@@ -10,6 +10,9 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 
 
 @Entity
@@ -19,10 +22,19 @@ public class Comentario {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @OneToOne
     private Status statusComentario;
+
     private LocalDateTime dataComentario;
     private String mensagem;
+
+    @ManyToOne
     private Usuario usuario;
+
+    @ManyToOne
+    private Publicacao publicacao;
+    
+    @OneToMany(mappedBy = "comentario")
     private Set<Reacao> reacoes;
     
     // CONSTRUTOR
@@ -30,13 +42,14 @@ public class Comentario {
     public Comentario() {}
 
     public Comentario(Long id, Status statusComentario, LocalDateTime dataComentario, String mensagem, Usuario usuario,
-            Set<Reacao> reacoes) {
+            Set<Reacao> reacoes, Publicacao publicacao) {
         this.id = id;
         this.statusComentario = statusComentario;
         this.dataComentario = dataComentario;
         this.mensagem = mensagem;
         this.usuario = usuario;
         this.reacoes = reacoes;
+        this.publicacao = publicacao;
     }
 
     // GET E SET
@@ -87,6 +100,14 @@ public class Comentario {
 
     public void setReacoes(Set<Reacao> reacoes) {
         this.reacoes = reacoes;
+    }
+
+    public Publicacao getPublicacao() {
+        return publicacao;
+    }
+
+    public void setPublicacao(Publicacao publicacao) {
+        this.publicacao = publicacao;
     }
 
   

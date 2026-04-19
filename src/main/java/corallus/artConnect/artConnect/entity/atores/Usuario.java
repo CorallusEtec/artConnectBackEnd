@@ -8,12 +8,15 @@ import corallus.artConnect.artConnect.entity.Seguida;
 import corallus.artConnect.artConnect.entity.Status;
 import corallus.artConnect.artConnect.entity.contato.Contato;
 import corallus.artConnect.artConnect.entity.publicacao.Publicacao;
+import corallus.artConnect.artConnect.entity.publicacao.Reacao;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 
 
 @Entity
@@ -29,6 +32,7 @@ public abstract class Usuario {
     private String email;
     private String senha;
     private String tipoConta;
+    @OneToOne
     private Status status;
     private LocalDateTime dataCriacao = LocalDateTime.now();
     
@@ -44,18 +48,24 @@ public abstract class Usuario {
 
     // Outros atributos
     private String textoBio;
-    private Set<Seguida> seguidores;
-    private Set<Seguida> seguido;
-    private List<Contato> contatos;
-    private List<Publicacao> publicacoes; 
 
+    @OneToMany(mappedBy = "seguidor")
+    private Set<Seguida> seguidores;
+    @OneToMany(mappedBy = "seguido")
+    private Set<Seguida> seguido;
+    @OneToMany(mappedBy = "usuario")
+    private List<Contato> contatos;
+    @OneToMany(mappedBy = "autor")
+    private List<Publicacao> publicacoes;
+    @OneToMany(mappedBy = "usuario")
+    private Set<Reacao> reacoes;
     // CONSTRUTORES
     public Usuario() {}
 
     public Usuario(Long id, String nome, String email, String senha, String tipoConta, Status status,
             LocalDateTime dataCriacao, String nomeLog, Short numLog, String cep, String bairro, String complemento,
             String cidade, String uf, String textoBio, Set<Seguida> seguidores, Set<Seguida> seguido,
-            List<Contato> contatos, List<Publicacao> publicacoes) {
+            List<Contato> contatos, List<Publicacao> publicacoes, Set<Reacao> reacoes) {
         this.id = id;
         this.nome = nome;
         this.email = email;
@@ -75,6 +85,7 @@ public abstract class Usuario {
         this.seguido = seguido;
         this.contatos = contatos;
         this.publicacoes = publicacoes;
+        this.reacoes = reacoes;
     }
 
 
@@ -83,6 +94,7 @@ public abstract class Usuario {
     // GET E SET    
 
    
+    
     public Long getId() {
         return id;
     }
@@ -233,5 +245,13 @@ public abstract class Usuario {
 
     public void setPublicacoes(List<Publicacao> publicacoes) {
         this.publicacoes = publicacoes;
+    }
+
+    public Set<Reacao> getReacoes() {
+        return reacoes;
+    }
+
+    public void setReacoes(Set<Reacao> reacoes) {
+        this.reacoes = reacoes;
     }
 }

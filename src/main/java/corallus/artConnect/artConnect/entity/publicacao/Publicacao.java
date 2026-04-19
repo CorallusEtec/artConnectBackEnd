@@ -11,6 +11,9 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 
 
 @Entity
@@ -20,12 +23,18 @@ public class Publicacao {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     
+    @OneToOne
     private Status statusPublicacao;
+    @ManyToOne
     private Usuario autor;
+    
     private LocalDateTime dataPublicacao = LocalDateTime.now();
 
+    @OneToMany(mappedBy = "publicacao")
     private Set<Reacao> reacoes;
+    @OneToMany(mappedBy = "publicacao")
     private List<Comentario> comentarios;
+    
     private String legenda;
     private String urlMidia;
     

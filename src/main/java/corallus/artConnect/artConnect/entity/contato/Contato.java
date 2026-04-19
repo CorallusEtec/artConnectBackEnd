@@ -1,30 +1,30 @@
 package corallus.artConnect.artConnect.entity.contato;
 
 import corallus.artConnect.artConnect.entity.atores.Usuario;
+import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.MappedSuperclass;
+import jakarta.persistence.ManyToOne;
 
-@MappedSuperclass
-public abstract class Contato {
+@Entity
+public class Contato {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     
+    @ManyToOne
     private Usuario usuario;
 
     private String valorContato;
-    
 
+    @ManyToOne
     private TipoContato tipoContato;
 
     // CONSTRUTOR
 
-    public Contato() {
-
-    }
+    public Contato() {}
 
     public Contato(Long id, Usuario usuario, String valorContato, TipoContato tipoContato) {
         this.id = id;
