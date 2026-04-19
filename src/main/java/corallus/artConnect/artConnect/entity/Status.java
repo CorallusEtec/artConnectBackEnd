@@ -10,7 +10,8 @@ import jakarta.persistence.ManyToOne;
 
 @Entity
 public class Status {
-    
+
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -19,6 +20,7 @@ public class Status {
     private TipoStatus tipoStatus;
     private String descricao;
     private LocalDateTime dataModificacao;
+
 
     // CONSTRUTOR
 
