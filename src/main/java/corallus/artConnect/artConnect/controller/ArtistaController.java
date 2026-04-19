@@ -6,7 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -30,5 +32,20 @@ public class ArtistaController {
     public ResponseEntity<String> save(@RequestBody Artista artista) {
         String msg = this.artistaService.save(artista);
         return new ResponseEntity<>(msg, HttpStatus.CREATED);
+    }
+    
+ // --- Nnovos metodos abaixo ai ---
+
+    @PutMapping("/edit")
+    public ResponseEntity<String> edit(@RequestBody Artista artista) {
+      
+        String msg = this.artistaService.save(artista); 
+        return new ResponseEntity<>(msg, HttpStatus.OK);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Artista> find(@PathVariable Long id) {
+        Artista artista = this.artistaService.findById(id);
+        return new ResponseEntity<>(artista, HttpStatus.OK);
     }
 }

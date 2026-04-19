@@ -23,4 +23,9 @@ public class ContratanteService {
         this.contratanteRepository.save(contratante);
         return "Contratante cadastrado com sucesso!";
     }
+
+	public Contratante findById(Long id) {
+		// TODO Auto-generated method stub
+		return this.contratanteRepository.findById(id).orElse(null);
+	}
 }
