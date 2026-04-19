@@ -2,6 +2,7 @@ package corallus.artConnect.artConnect.entity;
 
 import java.util.List;
 
+import corallus.artConnect.artConnect.entity.atores.Artista;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -30,7 +31,7 @@ public class Arte {
     }
 
     // GET E SET
-
+    
     public Long getId() {
         return id;
     }
@@ -55,5 +56,10 @@ public class Arte {
         this.artistas = artistas;
     }
 
+
+
+    
+
+   
     
 }

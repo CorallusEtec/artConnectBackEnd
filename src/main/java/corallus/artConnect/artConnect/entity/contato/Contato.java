@@ -1,29 +1,34 @@
 package corallus.artConnect.artConnect.entity.contato;
 
+import corallus.artConnect.artConnect.entity.atores.Usuario;
+import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.MappedSuperclass;
 
-@MappedSuperclass
-public abstract class Contato {
+@Entity
+public class Contato {
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String valorContato;
     
+    @ManyToOne
+    private Usuario usuario;
+
+    private String valorContato;
+
     @ManyToOne
     private TipoContato tipoContato;
 
     // CONSTRUTOR
 
-    public Contato() {
+    public Contato() {}
 
-    }
-
-    public Contato(Long id, String valorContato, TipoContato tipoContato) {
+    public Contato(Long id, Usuario usuario, String valorContato, TipoContato tipoContato) {
         this.id = id;
+        this.usuario = usuario;
         this.valorContato = valorContato;
         this.tipoContato = tipoContato;
     }
@@ -36,6 +41,14 @@ public abstract class Contato {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
     }
 
     public String getValorContato() {
@@ -53,5 +66,8 @@ public abstract class Contato {
     public void setTipoContato(TipoContato tipoContato) {
         this.tipoContato = tipoContato;
     }
-   
+
+ 
+    
+
 }
