@@ -8,7 +8,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import corallus.artConnect.artConnect.dto.ArtistaCadastroDTO;
-import corallus.artConnect.artConnect.entity.atores.Artista;
+import corallus.artConnect.artConnect.dto.ArtistaDTO;
+import corallus.artConnect.artConnect.dto.ArtistaEditDTO;
 import corallus.artConnect.artConnect.service.ArtistaService;
 
 @RestController
@@ -19,8 +20,8 @@ public class ArtistaController {
     private ArtistaService artistaService;
     
     @GetMapping("/findAll")
-    public ResponseEntity<List<Artista>> findAll() {
-        List<Artista> lista = this.artistaService.findAll();
+    public ResponseEntity<List<ArtistaDTO>> findAll() {
+        List<ArtistaDTO> lista = this.artistaService.findAll();
        
         return new ResponseEntity<>(lista, HttpStatus.OK);
     }
@@ -32,25 +33,17 @@ public class ArtistaController {
     }
     
 
-    @PutMapping("/edit")
-    public ResponseEntity<String> edit(@RequestBody Artista artista) {
+    @PutMapping("/{id}")
+    public ResponseEntity<String> edit(@PathVariable Long id, @RequestBody ArtistaEditDTO artistaDTO) {
 
-        String msg = this.artistaService.edit(artista); 
-        
-        if (msg.contains("Erro")) {
-            return new ResponseEntity<>(msg, HttpStatus.NOT_FOUND);
-        }
-        
+        String msg = this.artistaService.edit(id, artistaDTO); 
         return new ResponseEntity<>(msg, HttpStatus.OK);
     }
 
    
     @GetMapping("/{id}")
-    public ResponseEntity<Artista> find(@PathVariable Long id) {
-        Artista artista = this.artistaService.findById(id);
-        if (artista == null) {
-        	return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+    public ResponseEntity<ArtistaDTO> find(@PathVariable Long id) {
+        ArtistaDTO artista = this.artistaService.findById(id);
         return new ResponseEntity<>(artista, HttpStatus.OK);
     }
 }

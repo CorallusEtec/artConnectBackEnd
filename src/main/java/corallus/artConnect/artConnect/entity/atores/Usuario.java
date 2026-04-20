@@ -34,7 +34,7 @@ public abstract class Usuario {
     private String tipoConta;
     @OneToOne
     private Status status;
-    private LocalDateTime dataCriacao = LocalDateTime.now();
+    private LocalDateTime dataCriacao;
     
     // LOGRADOURO / ENDEREÇO
     private String nomeLog;
