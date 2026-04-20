@@ -8,8 +8,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import corallus.artConnect.artConnect.dto.ArtistaCadastroDTO;
+
 import corallus.artConnect.artConnect.dto.ArtistaDTO;
 import corallus.artConnect.artConnect.dto.ArtistaEditDTO;
+
 import corallus.artConnect.artConnect.service.ArtistaService;
 
 @RestController

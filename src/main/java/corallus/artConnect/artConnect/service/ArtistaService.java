@@ -1,5 +1,6 @@
 package corallus.artConnect.artConnect.service;
 
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -10,9 +11,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import corallus.artConnect.artConnect.dto.ArtistaCadastroDTO;
+
 import corallus.artConnect.artConnect.dto.ArtistaDTO;
 import corallus.artConnect.artConnect.dto.ArtistaEditDTO;
 import corallus.artConnect.artConnect.entity.Seguida;
+
+
 import corallus.artConnect.artConnect.entity.Status;
 import corallus.artConnect.artConnect.entity.atores.Artista;
 import corallus.artConnect.artConnect.entity.contato.Contato;
@@ -54,13 +58,13 @@ public class ArtistaService implements IValidacoes {
     public String save(ArtistaCadastroDTO artistaDTO) { 
         
         validarString(null, new String[] {artistaDTO.nome(), artistaDTO.email(), artistaDTO.senha()});
-
         Artista artista = new Artista();
         artista.setNome(artistaDTO.nome());
         artista.setEmail(artistaDTO.email());
         artista.setSenha(artistaDTO.senha());
 
         // Listas vazias por padrão no cadastro
+
         artista.setReacoes(new HashSet<Reacao>());
         artista.setSeguidores(new HashSet<Seguida>());
         artista.setSeguido(new HashSet<Seguida>());
@@ -68,16 +72,21 @@ public class ArtistaService implements IValidacoes {
         artista.setPublicacoes(new ArrayList<Publicacao>());
 
 
+
         // STATUS PADRÃO DE CRIAÇÂO: ATIVO
         Status statusInicial = new Status(null, 
             this.tipoStatusRepository.findByNomeTipoStatus("ATIVO").get(),
             "",
+
         LocalDateTime.now());
 
         artista.setDataCriacao(LocalDateTime.now());
         artista.setStatus(statusInicial);
         artista.setTipoConta("ARTISTA");
 
+
+        artista.setStatus(statusInicial);
+        
         this.artistaRepository.save(artista);
         return "Artista cadastrado com sucesso!";
     }
