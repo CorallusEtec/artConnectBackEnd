@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import corallus.artConnect.artConnect.dto.ArtistaCadastroDTO;
 import corallus.artConnect.artConnect.entity.atores.Artista;
 import corallus.artConnect.artConnect.service.ArtistaService;
 
@@ -27,8 +28,8 @@ public class ArtistaController {
     }
 
     @PostMapping("/save")
-    public ResponseEntity<String> save(@RequestBody Artista artista) {
-        String msg = this.artistaService.save(artista);
+    public ResponseEntity<String> save(@RequestBody ArtistaCadastroDTO artistaDTO) {
+        String msg = this.artistaService.save(artistaDTO);
         return new ResponseEntity<>(msg, HttpStatus.CREATED);
     }
 }
