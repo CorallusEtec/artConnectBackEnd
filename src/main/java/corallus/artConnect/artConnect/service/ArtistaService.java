@@ -8,6 +8,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import corallus.artConnect.artConnect.dto.ArtistaCadastroDTO;
 import corallus.artConnect.artConnect.entity.Status;
 import corallus.artConnect.artConnect.entity.atores.Artista;
 import corallus.artConnect.artConnect.entity.contato.Contato;
@@ -36,15 +37,22 @@ public class ArtistaService {
     public Artista findById(Long id) {
         return this.artistaRepository.findById(id).orElse(null);
     }
-
-    public String save(Artista artista) { 
        
+    
+    public String save(ArtistaCadastroDTO artistaDTO) { 
+        
+        Artista artista = new Artista();
+        artista.setNome(artistaDTO.nome());
+        artista.setEmail(artistaDTO.email());
+        artista.setSenha(artistaDTO.senha());
+
+        // Listas vazias por padrão no cadastro
         artista.setContatos(new ArrayList<Contato>());
         artista.setPublicacoes(new ArrayList<Publicacao>());
         artista.setReacoes(new HashSet<Reacao>());
 
 
-
+        // STATUS PADRÃO DE CRIAÇÂO: ATIVO
         Status statusInicial = new Status(null, 
             this.tipoStatusRepository.findByNomeTipoStatus("ATIVO").get(),
             "",
