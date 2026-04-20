@@ -53,4 +53,6 @@ public record ArtistaDTO(
         m.getTextoBio(), m.getSeguidores(), m.getSeguido(), m.getContatos());
         return dto;
     }
+
+    
 }

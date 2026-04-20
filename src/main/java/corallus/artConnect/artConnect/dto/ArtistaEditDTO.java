@@ -27,4 +27,6 @@ public record ArtistaEditDTO(
     String cidade,
     String uf
 
+
+    
 ) {}
