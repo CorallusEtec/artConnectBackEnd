@@ -1,0 +1,14 @@
+package corallus.artConnect.artConnect.error;
+
+import java.time.LocalDateTime;
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+
+public record ApiError(
+    @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
+    LocalDateTime timestamp,
+    String message,
+    Integer status,
+    List<String> errors
+) {}

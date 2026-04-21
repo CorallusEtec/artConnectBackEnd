@@ -31,13 +31,8 @@ public class ContratanteController {
     }
     
     @PutMapping("/{id}")
-    public ResponseEntity<String> edit(@PathVariable Long id, @RequestBody ContratanteEditDTO contratanteDTO) {
-    
+    public ResponseEntity<String> edit(@PathVariable Long id, @RequestBody ContratanteEditDTO contratanteDTO) { 
         String msg = this.contratanteService.edit(id, contratanteDTO); 
-        
-        if (msg.contains("Erro")) {
-            return new ResponseEntity<>(msg, HttpStatus.NOT_FOUND);
-        }
         
         return new ResponseEntity<>(msg, HttpStatus.OK);
     }

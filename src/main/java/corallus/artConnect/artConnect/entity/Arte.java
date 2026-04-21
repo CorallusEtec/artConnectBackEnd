@@ -2,6 +2,8 @@ package corallus.artConnect.artConnect.entity;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import corallus.artConnect.artConnect.entity.atores.Artista;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -16,6 +18,7 @@ public class Arte {
     private Long id;
     private String nomeArte;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "arte")
     private List<Artista> artistas;
 

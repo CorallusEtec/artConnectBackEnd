@@ -22,10 +22,10 @@ public class ArtistaController {
     @GetMapping("/findAll")
     public ResponseEntity<List<ArtistaDTO>> findAll() {
         List<ArtistaDTO> lista = this.artistaService.findAll();
-       
         return new ResponseEntity<>(lista, HttpStatus.OK);
     }
 
+    
     @PostMapping("/save")
     public ResponseEntity<String> save(@RequestBody ArtistaCadastroDTO artistaDTO) {
         String msg = this.artistaService.save(artistaDTO);
@@ -35,14 +35,13 @@ public class ArtistaController {
 
     @PutMapping("/{id}")
     public ResponseEntity<String> edit(@PathVariable Long id, @RequestBody ArtistaEditDTO artistaDTO) {
-
         String msg = this.artistaService.edit(id, artistaDTO); 
         return new ResponseEntity<>(msg, HttpStatus.OK);
     }
 
    
     @GetMapping("/{id}")
-    public ResponseEntity<ArtistaDTO> find(@PathVariable Long id) {
+    public ResponseEntity<ArtistaDTO> findById(@PathVariable Long id) {
         ArtistaDTO artista = this.artistaService.findById(id);
         return new ResponseEntity<>(artista, HttpStatus.OK);
     }
