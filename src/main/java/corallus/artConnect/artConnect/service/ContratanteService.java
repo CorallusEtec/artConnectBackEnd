@@ -14,9 +14,11 @@ import corallus.artConnect.artConnect.entity.ListaTipoStatus;
 import corallus.artConnect.artConnect.entity.Status;
 import corallus.artConnect.artConnect.entity.TipoConta;
 import corallus.artConnect.artConnect.entity.atores.Contratante;
+import corallus.artConnect.artConnect.error.errors.UserAlreadyExistsException;
 import corallus.artConnect.artConnect.error.errors.UserNotFoundException;
 import corallus.artConnect.artConnect.repository.TipoStatusRepository;
 import corallus.artConnect.artConnect.repository.atores.ContratanteRepository;
+import corallus.artConnect.artConnect.repository.atores.UsuarioRepository;
 
 @Service
 public class ContratanteService implements IValidacoes {
@@ -25,6 +27,9 @@ public class ContratanteService implements IValidacoes {
 
     @Autowired
     private TipoStatusRepository tipoStatusRepository;
+
+    @Autowired
+    private UsuarioRepository usuarioRepository;
 
     public List<ContratanteDTO> findAll() {
         return this.contratanteRepository.findAll().stream().map(ContratanteDTO::toDTO).toList();
@@ -37,6 +42,12 @@ public class ContratanteService implements IValidacoes {
 
   
     public String save(String tipo, ContratanteCadastroDTO contratanteDTO) {
+        // VALIDA CNPJ E EMAIL UNICOS
+        if(this.usuarioRepository.existsByEmail(contratanteDTO.email())) {
+            throw new UserAlreadyExistsException();
+        } else if(this.contratanteRepository.existsByCnpj(contratanteDTO.cnpj())) {
+            throw new UserAlreadyExistsException("Não foi possível cadastrar: CNPJ já existente.");
+        }
 
         validarString(null, new String[] {contratanteDTO.nome(), contratanteDTO.email(), contratanteDTO.senha()});
         

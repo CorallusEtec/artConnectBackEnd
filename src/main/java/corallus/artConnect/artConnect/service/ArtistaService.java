@@ -22,9 +22,11 @@ import corallus.artConnect.artConnect.entity.atores.Artista;
 import corallus.artConnect.artConnect.entity.contato.Contato;
 import corallus.artConnect.artConnect.entity.publicacao.Publicacao;
 import corallus.artConnect.artConnect.entity.publicacao.Reacao;
+import corallus.artConnect.artConnect.error.errors.UserAlreadyExistsException;
 import corallus.artConnect.artConnect.error.errors.UserNotFoundException;
 import corallus.artConnect.artConnect.repository.TipoStatusRepository;
 import corallus.artConnect.artConnect.repository.atores.ArtistaRepository;
+import corallus.artConnect.artConnect.repository.atores.UsuarioRepository;
 
 @Service
 public class ArtistaService implements IValidacoes {
@@ -34,6 +36,9 @@ public class ArtistaService implements IValidacoes {
 
     @Autowired
     private TipoStatusRepository tipoStatusRepository;
+
+    @Autowired
+    private UsuarioRepository usuarioRepository;
 
     public List<ArtistaDTO> findAll() {
         return this.artistaRepository.findAll().stream().map(ArtistaDTO::toDTO).toList();        
@@ -50,6 +55,11 @@ public class ArtistaService implements IValidacoes {
     
     public String save(ArtistaCadastroDTO artistaDTO) { 
         
+        if(this.usuarioRepository.existsByEmail(artistaDTO.email())) {
+            throw new UserAlreadyExistsException();
+        }
+
+
         validarString(null, new String[] {artistaDTO.nome(), artistaDTO.email(), artistaDTO.senha()});
         Artista artista = new Artista();
         artista.setNome(artistaDTO.nome());
