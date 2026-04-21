@@ -2,6 +2,8 @@ package corallus.artConnect.artConnect.entity;
 
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import corallus.artConnect.artConnect.entity.atores.Usuario;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -15,8 +17,10 @@ public class Seguida {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
  
+    @JsonIgnoreProperties({"seguidores", "seguido", "reacoes", "publicacoes", "contatos"})
     @ManyToOne
     private Usuario seguidor;
+    @JsonIgnoreProperties({"seguidores", "seguido", "reacoes", "publicacoes", "contatos"})
     @ManyToOne
     private Usuario seguido;
     

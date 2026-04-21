@@ -3,6 +3,8 @@ package corallus.artConnect.artConnect.entity.publicacao;
 
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import corallus.artConnect.artConnect.entity.atores.Usuario;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -21,6 +23,7 @@ public class Reacao {
     private Boolean liked;
     private Boolean deslike;
     @ManyToOne
+    @JsonIgnoreProperties({"seguidores", "seguido", "reacoes", "publicacoes", "contatos"})
     private Usuario usuario;
     @ManyToOne
     private Comentario comentario;

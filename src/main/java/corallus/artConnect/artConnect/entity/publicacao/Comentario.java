@@ -3,6 +3,8 @@ package corallus.artConnect.artConnect.entity.publicacao;
 import java.time.LocalDateTime;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import corallus.artConnect.artConnect.entity.Status;
 
 import corallus.artConnect.artConnect.entity.atores.Usuario;
@@ -29,6 +31,7 @@ public class Comentario {
     private String mensagem;
 
     @ManyToOne
+    @JsonIgnoreProperties({"seguidores", "seguido", "reacoes", "publicacoes", "contatos"})
     private Usuario usuario;
 
     @ManyToOne

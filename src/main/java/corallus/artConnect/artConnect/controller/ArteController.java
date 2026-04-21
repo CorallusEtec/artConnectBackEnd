@@ -16,13 +16,19 @@ import org.springframework.web.bind.annotation.RestController;
 
 import corallus.artConnect.artConnect.entity.Arte;
 import corallus.artConnect.artConnect.service.ArteService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 @RequestMapping("/arte")
+@Tag(name = "Arte", description = "Teste")
 @RestController
 public class ArteController {
     @Autowired
     private ArteService arteService;
 
+    @Operation(summary = "Find All", description = "Busca todas as artes cadastradas no sistema")
+    @ApiResponse(responseCode = "200", description = "Lista de artes encontradas")
     @GetMapping("/findAll")
     public ResponseEntity<List<Arte>> findAll() {
         List<Arte> lista = this.arteService.findAll();

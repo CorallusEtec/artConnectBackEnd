@@ -5,6 +5,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import corallus.artConnect.artConnect.entity.Status;
 import corallus.artConnect.artConnect.entity.atores.Usuario;
 import jakarta.persistence.Entity;
@@ -26,6 +28,7 @@ public class Publicacao {
     @OneToOne
     private Status statusPublicacao;
     @ManyToOne
+    @JsonIgnoreProperties({"seguidores", "seguido", "reacoes", "publicacoes", "contatos"})
     private Usuario autor;
     
     private LocalDateTime dataPublicacao = LocalDateTime.now();
