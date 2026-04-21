@@ -37,11 +37,11 @@ public class TipoStatus {
         this.id = id;
     }
 
-    public String getNomeTipoString() {
+    public String getNomeTipoStatus() {
         return nomeTipoStatus;
     }
 
-    public void setNomeTipoString(String nomeTipoStatus) {
+    public void setNomeTipoStatus(String nomeTipoStatus) {
         this.nomeTipoStatus = nomeTipoStatus;
     }
 

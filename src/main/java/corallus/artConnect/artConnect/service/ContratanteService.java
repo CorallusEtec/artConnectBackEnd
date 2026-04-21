@@ -16,6 +16,7 @@ import corallus.artConnect.artConnect.entity.TipoConta;
 import corallus.artConnect.artConnect.entity.atores.Contratante;
 import corallus.artConnect.artConnect.error.errors.UserAlreadyExistsException;
 import corallus.artConnect.artConnect.error.errors.UserNotFoundException;
+import corallus.artConnect.artConnect.repository.StatusRepository;
 import corallus.artConnect.artConnect.repository.TipoStatusRepository;
 import corallus.artConnect.artConnect.repository.atores.ContratanteRepository;
 import corallus.artConnect.artConnect.repository.atores.UsuarioRepository;
@@ -30,6 +31,9 @@ public class ContratanteService implements IValidacoes {
 
     @Autowired
     private UsuarioRepository usuarioRepository;
+
+    @Autowired
+    private StatusRepository statusRepository;
 
     public List<ContratanteDTO> findAll() {
         return this.contratanteRepository.findAll().stream().map(ContratanteDTO::toDTO).toList();
@@ -86,8 +90,10 @@ public class ContratanteService implements IValidacoes {
         contratante.setPublicacoes(new ArrayList<>());
         contratante.setReacoes(new HashSet<>());
 
-        // DATA DO STATUS
+        // DATA DO STATUS E PERSISTENCIA
         statusInicial.setDataModificacao(LocalDateTime.now());
+
+        this.statusRepository.save(statusInicial);
 
         // DATA DE CRIAÇÃO E SET DO STATUS
         contratante.setDataCriacao(LocalDateTime.now());

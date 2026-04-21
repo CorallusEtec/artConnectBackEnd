@@ -25,7 +25,7 @@ public class ContratanteController {
     }
 
     @PostMapping("/save")
-    public ResponseEntity<String> save(@RequestParam String tipo, @RequestBody ContratanteCadastroDTO cadastro) {
+    public ResponseEntity<String> save(@RequestParam(name = "tipo", defaultValue = "cpf") String tipo, @RequestBody ContratanteCadastroDTO cadastro) {
         String msg = this.contratanteService.save(tipo, cadastro);
         return new ResponseEntity<>(msg, HttpStatus.CREATED);
     }

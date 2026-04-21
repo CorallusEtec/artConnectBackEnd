@@ -24,6 +24,8 @@ import corallus.artConnect.artConnect.entity.publicacao.Publicacao;
 import corallus.artConnect.artConnect.entity.publicacao.Reacao;
 import corallus.artConnect.artConnect.error.errors.UserAlreadyExistsException;
 import corallus.artConnect.artConnect.error.errors.UserNotFoundException;
+import corallus.artConnect.artConnect.repository.ArteRepository;
+import corallus.artConnect.artConnect.repository.StatusRepository;
 import corallus.artConnect.artConnect.repository.TipoStatusRepository;
 import corallus.artConnect.artConnect.repository.atores.ArtistaRepository;
 import corallus.artConnect.artConnect.repository.atores.UsuarioRepository;
@@ -39,6 +41,12 @@ public class ArtistaService implements IValidacoes {
 
     @Autowired
     private UsuarioRepository usuarioRepository;
+
+    @Autowired
+    private ArteRepository arteRepository;
+
+    @Autowired
+    private StatusRepository statusRepository;
 
     public List<ArtistaDTO> findAll() {
         return this.artistaRepository.findAll().stream().map(ArtistaDTO::toDTO).toList();        
@@ -80,6 +88,8 @@ public class ArtistaService implements IValidacoes {
         Status statusInicial = new Status();
         statusInicial.setTipoStatus(this.tipoStatusRepository.findByNomeTipoStatus(ListaTipoStatus.ATIVO.name()).get());
         statusInicial.setDataModificacao(LocalDateTime.now());
+
+        this.statusRepository.save(statusInicial);
         
 
         // DATA, STATUS E TIPO DE CONTA
@@ -112,7 +122,11 @@ public class ArtistaService implements IValidacoes {
         artista.setNome(artistaDTO.nome());
         artista.setNomeArtistico(artistaDTO.nomeArtistico());
         artista.setDataNasc(artistaDTO.dataNasc());
-        artista.setArte(artistaDTO.arte());
+        
+        if(this.arteRepository.existsById(artistaDTO.arte().getId())) {
+            artista.setArte(this.arteRepository.findById(artistaDTO.arte().getId()).get());
+        } else {artista.setArte(null);}
+
 
         // Logradouro
         artista.setNomeLog(artistaDTO.nomeLog());
@@ -137,7 +151,7 @@ public class ArtistaService implements IValidacoes {
     @Override
     public void validarString(String msgErro, String[] campos) {
         for (String texto : campos) {
-            if(texto.equals(null) || texto.trim().isEmpty()) {
+            if(texto == (null) || texto.trim().isEmpty()) {
                 if(msgErro == null) {
                     throw new IllegalArgumentException("Há campos vazios na requisição.");
                 } else {
