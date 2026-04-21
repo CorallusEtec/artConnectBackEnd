@@ -1,4 +1,4 @@
-package corallus.artConnect.artConnect.dto;
+package corallus.artConnect.artConnect.dto.atores.artista;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -16,14 +16,14 @@ public record ArtistaDTO(
     Long id,
     String nome,
     String email,
-    LocalDate dataNasc,
     String tipoConta,
     Status status,
     LocalDateTime dataCriacao,
     
     // ARTISTA
-    Arte arte,
     String nomeArtistico,
+    Arte arte,
+    LocalDate dataNasc,
     
     // LOGRADOURO
     String nomeLog,
@@ -47,10 +47,10 @@ public record ArtistaDTO(
 ) {
     public static ArtistaDTO toDTO(Artista m) {
         ArtistaDTO dto = new ArtistaDTO(m.getId(), m.getNome(), m.getEmail(),
-        m.getDataNasc(), m.getTipoConta(), m.getStatus(), m.getDataCriacao(),
-        m.getArte(), m.getNomeArtistico(), m.getNomeLog(), m.getNumLog(),
-        m.getCep(), m.getBairro(), m.getComplemento(), m.getCidade(), m.getUf(),
-        m.getTextoBio(), m.getSeguidores(), m.getSeguido(), m.getContatos());
+        m.getTipoConta(), m.getStatus(), m.getDataCriacao(), m.getNomeArtistico(),
+        m.getArte(), m.getDataNasc(), m.getNomeLog(), m.getNumLog(), m.getCep(),
+        m.getBairro(), m.getComplemento(), m.getCidade(), m.getUf(), m.getTextoBio(),
+        m.getSeguidores(), m.getSeguido(), m.getContatos());
         return dto;
     }
 }

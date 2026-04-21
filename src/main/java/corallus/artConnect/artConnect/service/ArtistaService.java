@@ -5,19 +5,19 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import corallus.artConnect.artConnect.dto.ArtistaCadastroDTO;
-
-import corallus.artConnect.artConnect.dto.ArtistaDTO;
-import corallus.artConnect.artConnect.dto.ArtistaEditDTO;
+import corallus.artConnect.artConnect.dto.atores.artista.ArtistaCadastroDTO;
+import corallus.artConnect.artConnect.dto.atores.artista.ArtistaDTO;
+import corallus.artConnect.artConnect.dto.atores.artista.ArtistaEditDTO;
+import corallus.artConnect.artConnect.entity.ListaTipoStatus;
 import corallus.artConnect.artConnect.entity.Seguida;
 
 
 import corallus.artConnect.artConnect.entity.Status;
+import corallus.artConnect.artConnect.entity.TipoConta;
 import corallus.artConnect.artConnect.entity.atores.Artista;
 import corallus.artConnect.artConnect.entity.contato.Contato;
 import corallus.artConnect.artConnect.entity.publicacao.Publicacao;
@@ -36,14 +36,7 @@ public class ArtistaService implements IValidacoes {
     private TipoStatusRepository tipoStatusRepository;
 
     public List<ArtistaDTO> findAll() {
-        List<Artista> artistasModel =  this.artistaRepository.findAll();
-
-        List<ArtistaDTO> artistas = artistasModel.stream()
-        .map(m -> ArtistaDTO.toDTO(m))
-        .collect(Collectors.toList());
-
-        return artistas;
-        
+        return this.artistaRepository.findAll().stream().map(ArtistaDTO::toDTO).toList();        
     }
 
 
@@ -74,15 +67,15 @@ public class ArtistaService implements IValidacoes {
 
 
         // STATUS PADRÃO DE CRIAÇÂO: ATIVO
-        Status statusInicial = new Status(null, 
-            this.tipoStatusRepository.findByNomeTipoStatus("ATIVO").get(),
-            "",
+        Status statusInicial = new Status();
+        statusInicial.setTipoStatus(this.tipoStatusRepository.findByNomeTipoStatus(ListaTipoStatus.ATIVO.name()).get());
+        statusInicial.setDataModificacao(LocalDateTime.now());
+        
 
-        LocalDateTime.now());
-
+        // DATA, STATUS E TIPO DE CONTA
         artista.setDataCriacao(LocalDateTime.now());
         artista.setStatus(statusInicial);
-        artista.setTipoConta("ARTISTA");
+        artista.setTipoConta(TipoConta.ARTISTA.name());
 
 
         artista.setStatus(statusInicial);
