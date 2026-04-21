@@ -15,6 +15,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 
@@ -29,12 +30,14 @@ public abstract class Usuario {
     // Dados Importantes
     private Long id;
     private String nome;
+
+    @JoinColumn(unique = true)
     private String email;
     private String senha;
     private String tipoConta;
     @OneToOne
     private Status status;
-    private LocalDateTime dataCriacao = LocalDateTime.now();
+    private LocalDateTime dataCriacao;
     
     // LOGRADOURO / ENDEREÇO
     private String nomeLog;

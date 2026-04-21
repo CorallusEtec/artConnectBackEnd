@@ -14,7 +14,7 @@ public class TipoStatus {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String nomeTipoString;
+    private String nomeTipoStatus;
 
     @OneToMany(mappedBy = "tipoStatus")
     private List<Status> status;
@@ -22,9 +22,9 @@ public class TipoStatus {
 
     public TipoStatus() {}
 
-    public TipoStatus(Long id, String nomeTipoString) {
+    public TipoStatus(Long id, String nomeTipoStatus) {
         this.id = id;
-        this.nomeTipoString = nomeTipoString;
+        this.nomeTipoStatus = nomeTipoStatus;
     }
 
     // GET E SET
@@ -38,11 +38,11 @@ public class TipoStatus {
     }
 
     public String getNomeTipoString() {
-        return nomeTipoString;
+        return nomeTipoStatus;
     }
 
-    public void setNomeTipoString(String nomeTipoString) {
-        this.nomeTipoString = nomeTipoString;
+    public void setNomeTipoString(String nomeTipoStatus) {
+        this.nomeTipoStatus = nomeTipoStatus;
     }
 
     

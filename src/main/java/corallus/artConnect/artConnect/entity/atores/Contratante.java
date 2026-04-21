@@ -11,15 +11,17 @@ import corallus.artConnect.artConnect.entity.contato.Contato;
 import corallus.artConnect.artConnect.entity.publicacao.Publicacao;
 import corallus.artConnect.artConnect.entity.publicacao.Reacao;
 import jakarta.persistence.Entity;
+import jakarta.persistence.JoinColumn;
 
 @Entity
 public class Contratante extends Usuario {
     
-
+    @JoinColumn(unique = true)
     private String cpf;
     private Character sexo;
     private LocalDate dataNasc;
     private String razaoSocial;
+    @JoinColumn(unique = true)
     private String cnpj;
 
 
