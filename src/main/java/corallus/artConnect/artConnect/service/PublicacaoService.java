@@ -32,18 +32,18 @@ public class PublicacaoService {
         this.s3Client = s3Client;
     }
 
-    public PublicacaoDTO criarPublicacao(String legenda, MultipartFile image, Long autorId) {
+    public PublicacaoDTO criarPublicacao(String legenda, MultipartFile file, Long autorId) {
         try {
 
-            String fileName = UUID.randomUUID() + "-" + image.getOriginalFilename();
+            String fileName = UUID.randomUUID() + "-" + file.getOriginalFilename();
 
             s3Client.putObject(
                     PutObjectRequest.builder()
                             .bucket(bucketName)
                             .key(fileName)
-                            .contentType(image.getContentType())
+                            .contentType(file.getContentType())
                             .build(),
-                    RequestBody.fromBytes(image.getBytes())
+                    RequestBody.fromBytes(file.getBytes())
             );
 
             String url = "https://" + bucketName + ".s3.sa-east-1.amazonaws.com/" + fileName;
@@ -55,7 +55,6 @@ public class PublicacaoService {
             pub.setLegenda(legenda);
             pub.setUrlMidia(url);
             pub.setAutor(autor);
-
             return new PublicacaoDTO(publicacaoRepository.save(pub));
 
         } catch (Exception e) {

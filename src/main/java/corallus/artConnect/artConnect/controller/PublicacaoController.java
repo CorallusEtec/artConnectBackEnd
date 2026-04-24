@@ -26,7 +26,7 @@ public class PublicacaoController {
 
     @PostMapping
     public PublicacaoDTO criarPublicacao(
-            @RequestPart("legenda") String legenda,
+    		@RequestPart(value = "legenda", required = false) String legenda,
             @RequestPart("file") MultipartFile image,
             @RequestParam Long autorId
     ) {

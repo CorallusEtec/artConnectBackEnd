@@ -31,6 +31,9 @@ public class AwsConfig {
         
         AwsBasicCredentials awsCreds = AwsBasicCredentials.create(accessKeyId, secretAccessKey);
         
+        System.out.println("ACCESS KEY: " + accessKeyId);
+        System.out.println("SECRET: " + secretAccessKey);
+        
         return S3Client.builder()
             .region(Region.of(region))
             .credentialsProvider(StaticCredentialsProvider.create(awsCreds))
