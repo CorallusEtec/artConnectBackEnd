@@ -3,6 +3,7 @@ package corallus.artConnect.artConnect.service;
 import java.util.List;
 import java.util.UUID;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -18,11 +19,14 @@ import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 @Service
 public class PublicacaoService {
 
-    private final PublicacaoRepository publicacaoRepository;
-    private final UsuarioRepository usuarioRepository;
-    private final S3Client s3Client;
-
-    private final String bucketName = "corallus-art-connect-bucket";
+	@Autowired
+    private PublicacaoRepository publicacaoRepository;
+	@Autowired
+    private UsuarioRepository usuarioRepository;
+    @Autowired
+	private S3Client s3Client;
+    
+    private String bucketName = "corallus-art-connect-bucket";
 
     public PublicacaoService(PublicacaoRepository publicacaoRepository,
                              UsuarioRepository usuarioRepository,
@@ -37,10 +41,6 @@ public class PublicacaoService {
 
             boolean temLegenda = legenda != null && !legenda.isBlank();
             boolean temImagem = file != null && !file.isEmpty();
-
-            if (!temLegenda && !temImagem) {
-                throw new RuntimeException("Obrigatorio legenda ou imagem");
-            }
 
             String url = null;
 

@@ -2,6 +2,7 @@ package corallus.artConnect.artConnect.controller;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,7 +18,8 @@ import corallus.artConnect.artConnect.service.PublicacaoService;
 @RequestMapping("/publicacoes")
 public class PublicacaoController {
 
-    private final PublicacaoService publicacaoService;
+	@Autowired
+    private PublicacaoService publicacaoService;
 
     public PublicacaoController(PublicacaoService publicacaoService) {
         this.publicacaoService = publicacaoService;
