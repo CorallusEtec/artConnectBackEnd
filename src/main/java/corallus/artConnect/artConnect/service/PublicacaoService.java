@@ -35,26 +35,39 @@ public class PublicacaoService {
     public PublicacaoDTO criarPublicacao(String legenda, MultipartFile file, Long autorId) {
         try {
 
-            String fileName = UUID.randomUUID() + "-" + file.getOriginalFilename();
+            boolean temLegenda = legenda != null && !legenda.isBlank();
+            boolean temImagem = file != null && !file.isEmpty();
 
-            s3Client.putObject(
-                    PutObjectRequest.builder()
-                            .bucket(bucketName)
-                            .key(fileName)
-                            .contentType(file.getContentType())
-                            .build(),
-                    RequestBody.fromBytes(file.getBytes())
-            );
+            if (!temLegenda && !temImagem) {
+                throw new RuntimeException("Obrigatorio legenda ou imagem");
+            }
 
-            String url = "https://" + bucketName + ".s3.sa-east-1.amazonaws.com/" + fileName;
+            String url = null;
+
+            if (temImagem) {
+
+                String fileName = UUID.randomUUID() + "-" + file.getOriginalFilename();
+
+                s3Client.putObject(
+                        PutObjectRequest.builder()
+                                .bucket(bucketName)
+                                .key(fileName)
+                                .contentType(file.getContentType())
+                                .build(),
+                        RequestBody.fromBytes(file.getBytes())
+                );
+
+                url = "https://" + bucketName + ".s3.sa-east-1.amazonaws.com/" + fileName;
+            }
 
             Usuario autor = usuarioRepository.findById(autorId)
                     .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
 
             Publicacao pub = new Publicacao();
-            pub.setLegenda(legenda);
+            pub.setLegenda(temLegenda ? legenda : null);
             pub.setUrlMidia(url);
             pub.setAutor(autor);
+
             return new PublicacaoDTO(publicacaoRepository.save(pub));
 
         } catch (Exception e) {

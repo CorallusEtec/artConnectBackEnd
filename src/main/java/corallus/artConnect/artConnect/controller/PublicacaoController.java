@@ -12,7 +12,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import corallus.artConnect.artConnect.dto.publicacao.PublicacaoDTO;
 import corallus.artConnect.artConnect.service.PublicacaoService;
-import corallus.artConnect.artConnect.service.S3Service;
 
 @RestController
 @RequestMapping("/publicacoes")
@@ -24,16 +23,16 @@ public class PublicacaoController {
         this.publicacaoService = publicacaoService;
     }
 
-    @PostMapping
+    @PostMapping("/criar-publicacao")
     public PublicacaoDTO criarPublicacao(
     		@RequestPart(value = "legenda", required = false) String legenda,
-            @RequestPart("file") MultipartFile image,
+    		@RequestPart(value = "file", required = false) MultipartFile image,
             @RequestParam Long autorId
     ) {
         return publicacaoService.criarPublicacao(legenda, image, autorId);
     }
 
-    @GetMapping
+    @GetMapping("/todas")
     public List<PublicacaoDTO> listarPublicacoes() {
         return publicacaoService.listarPublicacoes();
     }
