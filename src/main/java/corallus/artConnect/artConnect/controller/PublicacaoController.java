@@ -21,10 +21,6 @@ public class PublicacaoController {
 	@Autowired
     private PublicacaoService publicacaoService;
 
-    public PublicacaoController(PublicacaoService publicacaoService) {
-        this.publicacaoService = publicacaoService;
-    }
-
     @PostMapping("/criar-publicacao")
     public PublicacaoDTO criarPublicacao(
     		@RequestPart(value = "legenda", required = false) String legenda,

@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -26,15 +27,8 @@ public class PublicacaoService {
     @Autowired
 	private S3Client s3Client;
     
-    private String bucketName = "corallus-art-connect-bucket";
-
-    public PublicacaoService(PublicacaoRepository publicacaoRepository,
-                             UsuarioRepository usuarioRepository,
-                             S3Client s3Client) {
-        this.publicacaoRepository = publicacaoRepository;
-        this.usuarioRepository = usuarioRepository;
-        this.s3Client = s3Client;
-    }
+    @Value("${aws.s3.bucket}")
+    private String bucketName;
 
     public PublicacaoDTO criarPublicacao(String legenda, MultipartFile file, Long autorId) {
         try {
@@ -68,10 +62,9 @@ public class PublicacaoService {
             pub.setUrlMidia(url);
             pub.setAutor(autor);
 
-            return new PublicacaoDTO(publicacaoRepository.save(pub));
+            return PublicacaoDTO.toDTO(publicacaoRepository.save(pub));
 
         } catch (Exception e) {
-            e.printStackTrace();
             throw new RuntimeException("Erro ao criar publicação", e);
         }
     }
@@ -79,7 +72,7 @@ public class PublicacaoService {
     public List<PublicacaoDTO> listarPublicacoes() {
         return publicacaoRepository.findAll()
                 .stream()
-                .map(PublicacaoDTO::new)
+                .map(PublicacaoDTO::toDTO)
                 .toList();
     }
 }
