@@ -3,6 +3,8 @@ package corallus.artConnect.artConnect.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,24 +17,26 @@ import corallus.artConnect.artConnect.dto.publicacao.PublicacaoDTO;
 import corallus.artConnect.artConnect.service.PublicacaoService;
 
 @RestController
-@RequestMapping("/publicacoes")
+@RequestMapping("/publicacao")
 public class PublicacaoController {
 
 	@Autowired
     private PublicacaoService publicacaoService;
 
-    @PostMapping("/criar-publicacao")
-    public PublicacaoDTO criarPublicacao(
-    		@RequestPart(value = "legenda", required = false) String legenda,
-    		@RequestPart(value = "file", required = false) MultipartFile image,
-            @RequestParam Long autorId
-    ) {
-        return publicacaoService.criarPublicacao(legenda, image, autorId);
-    }
+    @PostMapping("/save")
+public ResponseEntity<String> criarPublicacao(
+        @RequestPart(value = "legenda", required = false) String legenda,
+        @RequestPart(value = "file", required = false) MultipartFile image,
+        @RequestParam Long autorId
+) {
+    String msg = this.publicacaoService.criarPublicacao(legenda, image, autorId);
+    return new ResponseEntity<>(msg, HttpStatus.CREATED);
+}
 
-    @GetMapping("/todas")
-    public List<PublicacaoDTO> listarPublicacoes() {
-        return publicacaoService.listarPublicacoes();
+    @GetMapping("/findAll")
+    public ResponseEntity<List<PublicacaoDTO>> listarPublicacoes() {
+        List<PublicacaoDTO> lista = this.publicacaoService.listarPublicacoes();
+        return new ResponseEntity<>(lista, HttpStatus.OK);
     }
 }
 

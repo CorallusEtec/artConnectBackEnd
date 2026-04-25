@@ -13,8 +13,8 @@ public record PublicacaoDTO (
     LocalDateTime dataPublicacao,
 
     UsuarioDTO autor,
-    int totalReacoes,
-    int totalComentarios
+    Integer totalReacoes,
+    Integer totalComentarios
 ) {
 
     public static PublicacaoDTO toDTO (Publicacao pub) {
