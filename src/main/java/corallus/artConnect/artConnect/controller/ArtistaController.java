@@ -14,6 +14,7 @@ import corallus.artConnect.artConnect.service.ArtistaService;
 
 @RestController
 @RequestMapping("/artista")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class ArtistaController {
 
     @Autowired

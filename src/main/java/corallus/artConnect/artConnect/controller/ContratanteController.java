@@ -13,6 +13,7 @@ import corallus.artConnect.artConnect.service.ContratanteService;
 
 @RequestMapping("/contratante")
 @RestController
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class ContratanteController {
     @Autowired
     private ContratanteService contratanteService;
