@@ -94,14 +94,15 @@ public class PublicacaoService {
             return "Postagem criada com sucesso!";
 
         } catch (RuntimeException e) {
-            throw e; // mantém erro original
+            throw e;
         } catch (Exception e) {
             throw new RuntimeException("Erro ao criar publicação", e);
         }
     }
 
     public List<PublicacaoDTO> listarPublicacoes() {
-        return publicacaoRepository.findAll()
+        return publicacaoRepository
+        		.findByStatusPublicacao_TipoStatus_IdOrderByDataPublicacaoDesc(1L)
                 .stream()
                 .map(PublicacaoDTO::toDTO)
                 .toList();
