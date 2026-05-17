@@ -20,10 +20,12 @@ public class TipoStatusSeeder implements CommandLineRunner{
             TipoStatus ativo = new TipoStatus(null, ListaTipoStatus.ATIVO.name());
             TipoStatus pendente = new TipoStatus(null, ListaTipoStatus.PENDENTE.name());
             TipoStatus suspenso = new TipoStatus(null, ListaTipoStatus.SUSPENSO.name());
+            TipoStatus excluido = new TipoStatus(null, ListaTipoStatus.EXCLUIDO.name());
 
             tipoStatusRepository.save(ativo);
             tipoStatusRepository.save(pendente);
             tipoStatusRepository.save(suspenso);
+            tipoStatusRepository.save(excluido);
         }
         
     }
