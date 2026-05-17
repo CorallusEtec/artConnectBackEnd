@@ -3,8 +3,8 @@ package corallus.artConnect.artConnect.dto.comentario;
 import java.time.LocalDateTime;
 import java.util.Set;
 
+import corallus.artConnect.artConnect.dto.UsuarioDTO;
 import corallus.artConnect.artConnect.entity.Status;
-import corallus.artConnect.artConnect.entity.atores.Usuario;
 import corallus.artConnect.artConnect.entity.publicacao.Comentario;
 import corallus.artConnect.artConnect.entity.publicacao.Reacao;
 
@@ -18,7 +18,7 @@ public record ComentarioGetDTO(
     Status statusComentario,
     LocalDateTime dataComentario,
     String mensagem,
-    Usuario autor,
+    UsuarioDTO autor,
     Long idPublicacao,
     Set<Reacao> reacoes
 ) {
@@ -28,7 +28,7 @@ public record ComentarioGetDTO(
         entity.getStatusComentario(),
         entity.getDataComentario(),
         entity.getMensagem(),
-        entity.getUsuario(),
+        UsuarioDTO.toDTO(entity.getUsuario()),
         entity.getPublicacao().getId(),
         entity.getReacoes()
     );

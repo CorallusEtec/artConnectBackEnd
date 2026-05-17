@@ -16,6 +16,7 @@ import corallus.artConnect.artConnect.entity.publicacao.Comentario;
 import corallus.artConnect.artConnect.entity.publicacao.Publicacao;
 import corallus.artConnect.artConnect.error.errors.ResourceNotFoundException;
 import corallus.artConnect.artConnect.error.errors.UserNotFoundException;
+import corallus.artConnect.artConnect.repository.StatusRepository;
 import corallus.artConnect.artConnect.repository.TipoStatusRepository;
 import corallus.artConnect.artConnect.repository.atores.UsuarioRepository;
 import corallus.artConnect.artConnect.repository.publicacao.ComentarioRepository;
@@ -35,7 +36,8 @@ public class ComentarioService {
     @Autowired
     private ComentarioRepository comentarioRepository;
 
-    
+    @Autowired
+    private StatusRepository statusRepository;
     
     // Buscar Comentários de uma postagem
     public List<ComentarioGetDTO> findByPost(Long postId) {
@@ -99,13 +101,15 @@ public class ComentarioService {
         // Reações Começa zerado e status é o padrão.
         comentario.setReacoes(new HashSet<>());
         
-        // status é o padrão.
+        // criação dp status padrão.
         Status stComentario = new Status();
         stComentario.setDataModificacao(LocalDateTime.now());
         stComentario.setTipoStatus(this.tipoStatusRepository
             .findByNomeTipoStatus(ListaTipoStatus.ATIVO.name())
             .get());
+        stComentario = this.statusRepository.save(stComentario);
 
+        // status adicionado
         comentario.setStatusComentario(stComentario);
         return comentario;
     }
