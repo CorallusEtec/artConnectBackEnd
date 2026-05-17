@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import corallus.artConnect.artConnect.error.errors.ArteNotFoundException;
+import corallus.artConnect.artConnect.error.errors.ResourceNotFoundException;
 import corallus.artConnect.artConnect.error.errors.UserAlreadyExistsException;
 import corallus.artConnect.artConnect.error.errors.UserNotFoundException;
 
@@ -83,4 +84,19 @@ public class GlobalErrorHandling {
 		);
 		return new ResponseEntity<>(error, HttpStatus.UNPROCESSABLE_CONTENT);
     }
-}
+
+    /** 
+     * RECURSO NÃO ENCONTRADO
+     */
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ResponseEntity<ApiError> resourceNotFound(Exception e) {
+        ApiError error = new ApiError(
+				LocalDateTime.now(),
+				HttpStatus.NOT_FOUND.name(),
+				HttpStatus.NOT_FOUND.value(),
+				List.of(e.getMessage())
+		);
+		return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
+    }
+
+  }
