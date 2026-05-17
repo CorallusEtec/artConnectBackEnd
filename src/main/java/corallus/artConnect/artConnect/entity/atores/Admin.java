@@ -22,11 +22,13 @@ public class Admin extends Usuario {
     }
 
     public Admin(Long id, String nome, String email, String senha, String tipoConta, Status status,
-            LocalDateTime dataCriacao, String nomeLog, Short numLog, String cep, String bairro, String complemento,
-            String cidade, String uf, String textoBio, Set<Seguida> seguidores, Set<Seguida> seguido,
-            List<Contato> contatos, List<Publicacao> publicacoes, Set<Reacao> reacoes) {
-        super(id, nome, email, senha, tipoConta, status, dataCriacao, nomeLog, numLog, cep, bairro, complemento, cidade,
-                uf, textoBio, seguidores, seguido, contatos, publicacoes, reacoes);
-    }   
+            LocalDateTime dataCriacao, String bio, String nomeLog, Short numLog, String cep, String bairro,
+            String complemento, String cidade, String uf, String textoBio, Set<Seguida> seguidores,
+            Set<Seguida> seguido, List<Contato> contatos, List<Publicacao> publicacoes, Set<Reacao> reacoes) {
+        super(id, nome, email, senha, tipoConta, status, dataCriacao, bio, nomeLog, numLog, cep, bairro, complemento,
+                cidade, uf, textoBio, seguidores, seguido, contatos, publicacoes, reacoes);
+    }
+
+    
 
 }

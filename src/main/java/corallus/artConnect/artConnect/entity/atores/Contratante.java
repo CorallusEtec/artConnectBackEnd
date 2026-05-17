@@ -31,13 +31,17 @@ public class Contratante extends Usuario {
     }
 
 
+   
+
+    // GET E SET
+
     public Contratante(Long id, String nome, String email, String senha, String tipoConta, Status status,
-            LocalDateTime dataCriacao, String nomeLog, Short numLog, String cep, String bairro, String complemento,
-            String cidade, String uf, String textoBio, Set<Seguida> seguidores, Set<Seguida> seguido,
-            List<Contato> contatos, List<Publicacao> publicacoes, String cpf, Character sexo, LocalDate dataNasc,
-            String razaoSocial, String cnpj, Set<Reacao> reacoes) {
-        super(id, nome, email, senha, tipoConta, status, dataCriacao, nomeLog, numLog, cep, bairro, complemento, cidade,
-                uf, textoBio, seguidores, seguido, contatos, publicacoes, reacoes);
+            LocalDateTime dataCriacao, String bio, String nomeLog, Short numLog, String cep, String bairro,
+            String complemento, String cidade, String uf, String textoBio, Set<Seguida> seguidores,
+            Set<Seguida> seguido, List<Contato> contatos, List<Publicacao> publicacoes, Set<Reacao> reacoes, String cpf,
+            Character sexo, LocalDate dataNasc, String razaoSocial, String cnpj) {
+        super(id, nome, email, senha, tipoConta, status, dataCriacao, bio, nomeLog, numLog, cep, bairro, complemento,
+                cidade, uf, textoBio, seguidores, seguido, contatos, publicacoes, reacoes);
         this.cpf = cpf;
         this.sexo = sexo;
         this.dataNasc = dataNasc;
@@ -45,7 +49,8 @@ public class Contratante extends Usuario {
         this.cnpj = cnpj;
     }
 
-    // GET E SET
+
+
 
     public String getCpf() {
         return cpf;
