@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,10 +23,13 @@ import corallus.artConnect.artConnect.entity.atores.Artista;
 import corallus.artConnect.artConnect.entity.contato.Contato;
 import corallus.artConnect.artConnect.entity.publicacao.Publicacao;
 import corallus.artConnect.artConnect.entity.publicacao.Reacao;
+import corallus.artConnect.artConnect.error.errors.ArteNotFoundException;
+import corallus.artConnect.artConnect.error.errors.ResourceNotFoundException;
 import corallus.artConnect.artConnect.error.errors.UserAlreadyExistsException;
 import corallus.artConnect.artConnect.error.errors.UserNotFoundException;
 import corallus.artConnect.artConnect.repository.ArteRepository;
 import corallus.artConnect.artConnect.repository.StatusRepository;
+import corallus.artConnect.artConnect.repository.TagRepository;
 import corallus.artConnect.artConnect.repository.TipoStatusRepository;
 import corallus.artConnect.artConnect.repository.atores.ArtistaRepository;
 import corallus.artConnect.artConnect.repository.atores.UsuarioRepository;
@@ -47,6 +51,9 @@ public class ArtistaService implements IValidacoes {
 
     @Autowired
     private StatusRepository statusRepository;
+
+    @Autowired
+    private TagRepository tagRepository;
 
     public List<ArtistaDTO> findAll() {
         return this.artistaRepository.findAll().stream().map(ArtistaDTO::toDTO).toList();        
@@ -123,9 +130,12 @@ public class ArtistaService implements IValidacoes {
         artista.setNomeArtistico(artistaDTO.nomeArtistico());
         artista.setDataNasc(artistaDTO.dataNasc());
         
-        if(this.arteRepository.existsById(artistaDTO.arte().getId())) {
-            artista.setArte(this.arteRepository.findById(artistaDTO.arte().getId()).get());
-        } else {artista.setArte(null);}
+        if(artistaDTO.arte() != null) {
+            if(this.arteRepository.existsById(artistaDTO.arte().getId())) {
+                artista.setArte(this.arteRepository.findById(artistaDTO.arte().getId()).orElseThrow(()->new ArteNotFoundException()));
+            } else {artista.setArte(null);}
+        }
+        
 
 
         // Logradouro
@@ -136,6 +146,14 @@ public class ArtistaService implements IValidacoes {
         artista.setComplemento(artistaDTO.complemento());
         artista.setCidade(artistaDTO.cidade());
         artista.setUf(artistaDTO.uf());
+
+        
+        artista.setListaTags(
+            artistaDTO.listaTags().stream()
+            .map(t->this.tagRepository.findById(t.getId()).orElseThrow(()->new ResourceNotFoundException("Tag não existente")))
+            .collect(Collectors.toList())
+        );
+
 
         artista.setTextoBio(artistaDTO.textoBio());
         artista.setContatos(artistaDTO.contatos());

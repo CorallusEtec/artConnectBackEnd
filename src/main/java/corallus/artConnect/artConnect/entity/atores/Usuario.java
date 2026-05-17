@@ -38,7 +38,6 @@ public abstract class Usuario {
     @OneToOne
     private Status status;
     private LocalDateTime dataCriacao;
-    
     // LOGRADOURO / ENDEREÇO
     private String nomeLog;
     private Short numLog;
@@ -65,7 +64,7 @@ public abstract class Usuario {
     // CONSTRUTORES
     public Usuario() {}
 
-    public Usuario(Long id, String nome, String email, String senha, String tipoConta, Status status,
+   public Usuario(Long id, String nome, String email, String senha, String tipoConta, Status status,
             LocalDateTime dataCriacao, String nomeLog, Short numLog, String cep, String bairro, String complemento,
             String cidade, String uf, String textoBio, Set<Seguida> seguidores, Set<Seguida> seguido,
             List<Contato> contatos, List<Publicacao> publicacoes, Set<Reacao> reacoes) {
@@ -91,13 +90,15 @@ public abstract class Usuario {
         this.reacoes = reacoes;
     }
 
+    
+
+    // GET E SET   
+
 
     
 
-    // GET E SET    
 
-   
-    
+
     public Long getId() {
         return id;
     }

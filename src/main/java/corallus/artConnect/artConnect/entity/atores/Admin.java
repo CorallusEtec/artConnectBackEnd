@@ -27,6 +27,9 @@ public class Admin extends Usuario {
             List<Contato> contatos, List<Publicacao> publicacoes, Set<Reacao> reacoes) {
         super(id, nome, email, senha, tipoConta, status, dataCriacao, nomeLog, numLog, cep, bairro, complemento, cidade,
                 uf, textoBio, seguidores, seguido, contatos, publicacoes, reacoes);
-    }   
+    }
+
+   
+    
 
 }
