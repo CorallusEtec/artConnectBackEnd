@@ -13,8 +13,10 @@ import corallus.artConnect.artConnect.entity.contato.Contato;
 import corallus.artConnect.artConnect.entity.publicacao.Publicacao;
 import corallus.artConnect.artConnect.entity.publicacao.Reacao;
 import jakarta.persistence.Entity;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 
 
 @Entity
@@ -22,10 +24,16 @@ public class Artista extends Usuario {
     private String nomeArtistico;
     private LocalDate dataNasc;
     
-    @OneToMany(mappedBy = "artista")
+    @JoinTable(
+        name = "artista_tag",
+        joinColumns = @JoinColumn(name = "artista_id"),
+        inverseJoinColumns = @JoinColumn(name = "tag_id")
+    )
+    @ManyToMany
     private List<Tag> listaTags;
 
     @ManyToOne
+    
     private Arte arte;
 
     // CONSTRUTOR
@@ -34,13 +42,13 @@ public class Artista extends Usuario {
         super();
     }
 
-    public Artista(Long id, String nome, String email, String senha, String tipoConta, Status status,
-            LocalDateTime dataCriacao, String bio, String nomeLog, Short numLog, String cep, String bairro,
-            String complemento, String cidade, String uf, String textoBio, Set<Seguida> seguidores,
-            Set<Seguida> seguido, List<Contato> contatos, List<Publicacao> publicacoes, Set<Reacao> reacoes,
-            String nomeArtistico, LocalDate dataNasc, List<Tag> listaTags, Arte arte) {
-        super(id, nome, email, senha, tipoConta, status, dataCriacao, bio, nomeLog, numLog, cep, bairro, complemento,
-                cidade, uf, textoBio, seguidores, seguido, contatos, publicacoes, reacoes);
+   public Artista(Long id, String nome, String email, String senha, String tipoConta, Status status,
+            LocalDateTime dataCriacao, String nomeLog, Short numLog, String cep, String bairro, String complemento,
+            String cidade, String uf, String textoBio, Set<Seguida> seguidores, Set<Seguida> seguido,
+            List<Contato> contatos, List<Publicacao> publicacoes, Set<Reacao> reacoes, String nomeArtistico,
+            LocalDate dataNasc, List<Tag> listaTags, Arte arte) {
+        super(id, nome, email, senha, tipoConta, status, dataCriacao, nomeLog, numLog, cep, bairro, complemento, cidade,
+                uf, textoBio, seguidores, seguido, contatos, publicacoes, reacoes);
         this.nomeArtistico = nomeArtistico;
         this.dataNasc = dataNasc;
         this.listaTags = listaTags;
@@ -48,6 +56,9 @@ public class Artista extends Usuario {
     }
 
     // GET E SET
+
+    
+
 
     public String getNomeArtistico() {
         return nomeArtistico;
@@ -71,6 +82,14 @@ public class Artista extends Usuario {
 
     public void setArte(Arte arte) {
         this.arte = arte;
+    }
+
+    public List<Tag> getListaTags() {
+        return listaTags;
+    }
+
+    public void setListaTags(List<Tag> listaTags) {
+        this.listaTags = listaTags;
     }
     
 }

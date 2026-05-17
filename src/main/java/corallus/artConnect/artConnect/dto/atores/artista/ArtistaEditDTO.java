@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 import corallus.artConnect.artConnect.entity.Arte;
+import corallus.artConnect.artConnect.entity.Tag;
 import corallus.artConnect.artConnect.entity.contato.Contato;
 
 public record ArtistaEditDTO(
@@ -13,6 +14,7 @@ public record ArtistaEditDTO(
     List<Contato> contatos,
 
     // ARTISTA
+    List<Tag> listaTags,
     Arte arte,
     String nomeArtistico,
     LocalDate dataNasc,

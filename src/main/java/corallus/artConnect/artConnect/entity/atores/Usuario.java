@@ -38,7 +38,6 @@ public abstract class Usuario {
     @OneToOne
     private Status status;
     private LocalDateTime dataCriacao;
-    private String bio;
     // LOGRADOURO / ENDEREÇO
     private String nomeLog;
     private Short numLog;
@@ -65,10 +64,10 @@ public abstract class Usuario {
     // CONSTRUTORES
     public Usuario() {}
 
-    public Usuario(Long id, String nome, String email, String senha, String tipoConta, Status status,
-            LocalDateTime dataCriacao, String bio, String nomeLog, Short numLog, String cep, String bairro,
-            String complemento, String cidade, String uf, String textoBio, Set<Seguida> seguidores,
-            Set<Seguida> seguido, List<Contato> contatos, List<Publicacao> publicacoes, Set<Reacao> reacoes) {
+   public Usuario(Long id, String nome, String email, String senha, String tipoConta, Status status,
+            LocalDateTime dataCriacao, String nomeLog, Short numLog, String cep, String bairro, String complemento,
+            String cidade, String uf, String textoBio, Set<Seguida> seguidores, Set<Seguida> seguido,
+            List<Contato> contatos, List<Publicacao> publicacoes, Set<Reacao> reacoes) {
         this.id = id;
         this.nome = nome;
         this.email = email;
@@ -76,7 +75,6 @@ public abstract class Usuario {
         this.tipoConta = tipoConta;
         this.status = status;
         this.dataCriacao = dataCriacao;
-        this.bio = bio;
         this.nomeLog = nomeLog;
         this.numLog = numLog;
         this.cep = cep;
@@ -95,6 +93,10 @@ public abstract class Usuario {
     
 
     // GET E SET   
+
+
+    
+
 
 
     public Long getId() {
@@ -255,13 +257,5 @@ public abstract class Usuario {
 
     public void setReacoes(Set<Reacao> reacoes) {
         this.reacoes = reacoes;
-    }
-
-    public String getBio() {
-        return bio;
-    }
-
-    public void setBio(String bio) {
-        this.bio = bio;
     }
 }

@@ -1,11 +1,15 @@
 package corallus.artConnect.artConnect.entity;
 
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import corallus.artConnect.artConnect.entity.atores.Artista;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.ManyToMany;
 
 @Entity
 public class Tag {
@@ -14,8 +18,9 @@ public class Tag {
     private Long id;
     String nomeTag;
 
-    @ManyToOne
-    private Artista artista;
+    @ManyToMany(mappedBy = "listaTags")
+    @JsonIgnore
+    private List<Artista> listaArtista;
 
     // GET E SET
 
@@ -35,14 +40,14 @@ public class Tag {
         this.nomeTag = nomeTag;
     }
 
-    public Artista getArtista() {
-        return artista;
+    public List<Artista> getListaArtista() {
+        return listaArtista;
     }
 
-    public void setArtista(Artista artista) {
-        this.artista = artista;
+    public void setListaArtista(List<Artista> listaArtista) {
+        this.listaArtista = listaArtista;
     }
-
+    
     
 
     // CONSTRUTOR
@@ -51,9 +56,15 @@ public class Tag {
         
     }
 
-    public Tag(Long id, String nomeTag, Artista artista) {
+    public Tag(Long id, String nomeTag, List<Artista> listaArtista) {
         this.id = id;
         this.nomeTag = nomeTag;
-        this.artista = artista;
+        this.listaArtista = listaArtista;
     }
+
+   
+
+    
+ 
+
 }
