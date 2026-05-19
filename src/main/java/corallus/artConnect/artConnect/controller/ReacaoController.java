@@ -13,25 +13,33 @@ import org.springframework.web.bind.annotation.RestController;
 
 import corallus.artConnect.artConnect.dto.publicacao.ReacaoDTO;
 import corallus.artConnect.artConnect.dto.publicacao.ReacaoPostDTO;
-import corallus.artConnect.artConnect.service.PublicacaoReacaoService;
+import corallus.artConnect.artConnect.service.ReacaoService;
 
 @RestController
 @RequestMapping("/reacoes")
-public class PublicacaoReacaoController {
+public class ReacaoController {
     @Autowired
-    private PublicacaoReacaoService publicacaoReacaoService;
+    private ReacaoService reacaoService;
 
-    @PostMapping("/{postId}/reagir")
-    public ResponseEntity<ReacaoDTO> reagir(@PathVariable Long postId, @RequestBody ReacaoPostDTO reacaoPostDTO) {
-        ReacaoDTO reacao = this.publicacaoReacaoService.reagir(postId, reacaoPostDTO);
+    @PostMapping("/post/{postId}/reagir")
+    public ResponseEntity<ReacaoDTO> reagirPublicacao(@PathVariable Long postId, @RequestBody ReacaoPostDTO reacaoPostDTO) {
+        ReacaoDTO reacao = this.reacaoService.reagirPublicacao(postId, reacaoPostDTO);
 
         return new ResponseEntity<>(reacao, HttpStatus.OK);
     }
 
-    @GetMapping("/{postId}")
-    public ResponseEntity<ReacaoDTO> getReacao(@PathVariable Long postId, @RequestParam Long usuarioId) {
-        ReacaoDTO reacaoDTO = this.publicacaoReacaoService.getReacao(postId, usuarioId);
+    @GetMapping("/post/{postId}")
+    public ResponseEntity<ReacaoDTO> getReacaoPublicacao(@PathVariable Long postId, @RequestParam Long usuarioId) {
+        ReacaoDTO reacaoDTO = this.reacaoService.getReacaoPublicacao(postId, usuarioId);
 
         return new ResponseEntity<>(reacaoDTO, HttpStatus.OK);
     }
+
+    @PostMapping("/comment/{commentId}/reagir")
+    public ResponseEntity<ReacaoDTO> reagirComentario(@PathVariable Long commentId, @RequestBody ReacaoPostDTO reacaoPostDTO) {
+        ReacaoDTO reacao = this.reacaoService.reagirComentario(commentId, reacaoPostDTO);
+
+        return new ResponseEntity<>(reacao, HttpStatus.OK);
+    }
+    
 }

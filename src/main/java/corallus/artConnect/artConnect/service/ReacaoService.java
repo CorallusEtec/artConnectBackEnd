@@ -14,11 +14,12 @@ import corallus.artConnect.artConnect.error.errors.ResourceNotFoundException;
 import corallus.artConnect.artConnect.error.errors.UserNotFoundException;
 import corallus.artConnect.artConnect.repository.TipoReacaoRepository;
 import corallus.artConnect.artConnect.repository.atores.UsuarioRepository;
+import corallus.artConnect.artConnect.repository.publicacao.ComentarioRepository;
 import corallus.artConnect.artConnect.repository.publicacao.PublicacaoRepository;
 import corallus.artConnect.artConnect.repository.publicacao.ReacaoRepository;
 
 @Service
-public class PublicacaoReacaoService {
+public class ReacaoService {
     @Autowired
     private ReacaoRepository reacaoRepository;
 
@@ -31,7 +32,10 @@ public class PublicacaoReacaoService {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
-    public ReacaoDTO reagir(Long postId, ReacaoPostDTO reacaoPostDTO) {
+    @Autowired
+    private ComentarioRepository comentarioRepository;
+
+    public ReacaoDTO reagirPublicacao(Long postId, ReacaoPostDTO reacaoPostDTO) {
         
         // Se o usuario não exisitir
         if(!this.usuarioRepository.existsById(reacaoPostDTO.idAutor())) {
@@ -60,7 +64,7 @@ public class PublicacaoReacaoService {
 
             // Se for o mesmo tipo de reação
             if(reacaoEntity.getTipoReacao().getNomeTipo().equalsIgnoreCase(reacaoPostDTO.nomeTipoReacao())) {
-
+                // Exclui a reação
                 this.reacaoRepository.deleteById(reacaoEntity.getId());
                 return ReacaoDTO.emptyDto();
             } else {
@@ -102,7 +106,7 @@ public class PublicacaoReacaoService {
         return ReacaoDTO.toDTO(reacaoEntity);
     }
 
-    public ReacaoDTO getReacao(Long postId, Long usuarioId) {
+    public ReacaoDTO getReacaoPublicacao(Long postId, Long usuarioId) {
       
         // Se o usuario não exisitir
         if(!this.usuarioRepository.existsById(usuarioId)) {
@@ -125,6 +129,102 @@ public class PublicacaoReacaoService {
             return ReacaoDTO.emptyDto();
         }
     }
+
+    public ReacaoDTO reagirComentario(Long commentId, ReacaoPostDTO reacaoPostDTO) {
+        // Se o usuario não exisitir
+        if(!this.usuarioRepository.existsById(reacaoPostDTO.idAutor())) {
+            throw new UserNotFoundException("Usuario não encontrado");
+        }
+
+        // Se o comentário não existir
+        if(!this.comentarioRepository.existsById(commentId)) {
+            throw new ResourceNotFoundException("Comentário não encontrado");
+        }
+
+        // Validação do tipo de reação
+        if(!reacaoValida(reacaoPostDTO.nomeTipoReacao())) {
+            throw new IllegalArgumentException("Tipo de Reação inválida");
+        }
+
+        Optional<Reacao> reacaoAtual =  reacaoRepository.findByUsuario_IdAndComentario_Id(reacaoPostDTO.idAutor(), commentId);
+
+        Reacao reacaoEntity;
+
+
+        // Se já tem uma reação nesse comentário
+        if(reacaoAtual.isPresent()) {
+            reacaoEntity =  reacaoAtual.get();
+
+
+            // Se for o mesmo tipo de reação
+            if(reacaoEntity.getTipoReacao().getNomeTipo().equalsIgnoreCase(reacaoPostDTO.nomeTipoReacao())) {
+                // Exclui a reação
+                this.reacaoRepository.deleteById(reacaoEntity.getId());
+                return ReacaoDTO.emptyDto();
+            } else {
+                // Senão, apenas alternar o tipo
+
+
+                reacaoEntity.setDataReacao(LocalDateTime.now());
+                reacaoEntity.setTipoReacao(this.tipoReacaoRepository.findByNomeTipo(reacaoPostDTO.nomeTipoReacao().toUpperCase()).get());
+
+                // Salvando reação alterada
+                this.reacaoRepository.save(reacaoEntity);
+            }
+
+            return ReacaoDTO.toDTO(reacaoEntity);
+        
+            // Se não tem reação nesse comentário
+        } else {
+            // Criar a reação e persisti-la
+            reacaoEntity = new Reacao();
+
+            reacaoEntity.setDataReacao(LocalDateTime.now());
+
+            reacaoEntity.setTipoReacao(this.tipoReacaoRepository.findByNomeTipo(reacaoPostDTO.nomeTipoReacao().toUpperCase()).get());
+
+            
+            reacaoEntity.setComentario(
+                this.comentarioRepository.findById(commentId).orElseThrow(()->new ResourceNotFoundException("Comentário não encontrado"))
+            );
+            
+            
+            reacaoEntity.setUsuario(
+                this.usuarioRepository.findById(reacaoPostDTO.idAutor()).orElseThrow(()->new UserNotFoundException("Usuário não encontrado"))
+            );
+
+            // Salvar nova reação
+            this.reacaoRepository.save(reacaoEntity);
+        }
+
+        return ReacaoDTO.toDTO(reacaoEntity);
+    }
+
+    public ReacaoDTO getReacaoComentario(Long commentId, Long usuarioId) {
+      
+        // Se o usuario não exisitir
+        if(!this.usuarioRepository.existsById(usuarioId)) {
+            throw new UserNotFoundException("Usuario não encontrado");
+        }
+
+        // Se o comentário não existir
+        if(!this.comentarioRepository.existsById(commentId)) {
+            throw new ResourceNotFoundException("Comentário não encontrado");
+        }
+
+
+        Optional<Reacao> reacaoAtual =  reacaoRepository.findByUsuario_IdAndComentario_Id(usuarioId, commentId);
+
+        // Se existe uma reação
+        if(reacaoAtual.isPresent()) {
+            return ReacaoDTO.toDTO(reacaoAtual.get());
+        } else {
+        // Se não
+            return ReacaoDTO.emptyDto();
+        }
+    }
+
+
 
     private boolean reacaoValida(String reacao) {
         for(ListaTipoReacao s : ListaTipoReacao.values()) {
