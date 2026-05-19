@@ -148,11 +148,16 @@ public class ArtistaService implements IValidacoes {
         artista.setUf(artistaDTO.uf());
 
         
-        artista.setListaTags(
-            artistaDTO.listaTags().stream()
-            .map(t->this.tagRepository.findById(t.getId()).orElseThrow(()->new ResourceNotFoundException("Tag não existente")))
-            .collect(Collectors.toList())
-        );
+        if(artistaDTO.listaTags() != null) {
+            artista.setListaTags(
+                artistaDTO.listaTags().stream()
+                .map(t->this.tagRepository.findById(t.getId()).orElseThrow(()->new ResourceNotFoundException("Tag não existente")))
+                .collect(Collectors.toList())
+            );
+        } else {
+            artista.setListaTags(null);
+        }
+        
 
 
         artista.setTextoBio(artistaDTO.textoBio());
