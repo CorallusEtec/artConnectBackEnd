@@ -2,6 +2,8 @@ package corallus.artConnect.artConnect.entity.publicacao;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -17,6 +19,7 @@ public class TipoReacao {
     
     private String nomeTipo;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "tipoReacao")
     private List<Reacao> reacoes;
 

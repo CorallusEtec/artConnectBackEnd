@@ -43,5 +43,7 @@ public class PublicacaoController {
         List<PublicacaoDTO> lista = this.publicacaoService.listarPublicacoes(nomeArte, recentes, mostLikeFirst);
         return new ResponseEntity<>(lista, HttpStatus.OK);
     }
+
+
 }
 

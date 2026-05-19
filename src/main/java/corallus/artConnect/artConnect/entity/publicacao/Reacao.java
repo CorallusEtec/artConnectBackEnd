@@ -3,6 +3,9 @@ package corallus.artConnect.artConnect.entity.publicacao;
 
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import corallus.artConnect.artConnect.entity.atores.Usuario;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -23,9 +26,12 @@ public class Reacao {
 
     private Boolean ativo;
 
+    @JsonIgnoreProperties({"publicacoes", "reacoes"})
     @ManyToOne
     private Usuario usuario;
+    @JsonIgnoreProperties({"usuario", "reacoes"})
     @ManyToOne
+    @JsonIgnore
     private Comentario comentario;
 
     private LocalDateTime dataReacao = LocalDateTime.now();
