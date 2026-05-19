@@ -26,7 +26,7 @@ public class PublicacaoController {
     private PublicacaoService publicacaoService;
 
     @PostMapping("/save")
-public ResponseEntity<String> criarPublicacao(
+    public ResponseEntity<String> criarPublicacao(
         @RequestPart(value = "legenda", required = false) String legenda,
         @RequestPart(value = "file", required = false) MultipartFile image,
         @RequestParam Long autorId
@@ -36,8 +36,11 @@ public ResponseEntity<String> criarPublicacao(
 }
 
     @GetMapping("/findAll")
-    public ResponseEntity<List<PublicacaoDTO>> listarPublicacoes() {
-        List<PublicacaoDTO> lista = this.publicacaoService.listarPublicacoes();
+    public ResponseEntity<List<PublicacaoDTO>> listarPublicacoes(
+        @RequestParam(required = false) String nomeArte,
+        @RequestParam(required = false) Boolean recentes,
+        @RequestParam(required = false) Boolean mostLikeFirst) {
+        List<PublicacaoDTO> lista = this.publicacaoService.listarPublicacoes(nomeArte, recentes, mostLikeFirst);
         return new ResponseEntity<>(lista, HttpStatus.OK);
     }
 }

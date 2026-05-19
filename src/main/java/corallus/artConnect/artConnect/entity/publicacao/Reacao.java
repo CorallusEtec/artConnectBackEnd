@@ -18,8 +18,11 @@ public class Reacao {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Boolean liked;
-    private Boolean deslike;
+    @ManyToOne
+    private TipoReacao tipoReacao;
+
+    private Boolean ativo;
+
     @ManyToOne
     private Usuario usuario;
     @ManyToOne
@@ -33,19 +36,22 @@ public class Reacao {
 
     public Reacao() {}
 
-    public Reacao(Long id, Boolean liked, Boolean deslike, Usuario usuario, Comentario comentario,
+   public Reacao(Long id, TipoReacao tipoReacao, Boolean ativo, Usuario usuario, Comentario comentario,
             LocalDateTime dataReacao, Publicacao publicacao) {
         this.id = id;
-        this.liked = liked;
-        this.deslike = deslike;
+        this.tipoReacao = tipoReacao;
+        this.ativo = ativo;
         this.usuario = usuario;
         this.comentario = comentario;
         this.dataReacao = dataReacao;
         this.publicacao = publicacao;
     }
 
+   
+
     // GET E SET 
     
+
     public Long getId() {
         return id;
     }
@@ -54,20 +60,20 @@ public class Reacao {
         this.id = id;
     }
 
-    public Boolean getLiked() {
-        return liked;
+    public TipoReacao getTipoReacao() {
+        return tipoReacao;
     }
 
-    public void setLiked(Boolean liked) {
-        this.liked = liked;
+    public void setTipoReacao(TipoReacao tipoReacao) {
+        this.tipoReacao = tipoReacao;
     }
 
-    public Boolean getDeslike() {
-        return deslike;
+    public Boolean getAtivo() {
+        return ativo;
     }
 
-    public void setDeslike(Boolean deslike) {
-        this.deslike = deslike;
+    public void setAtivo(Boolean ativo) {
+        this.ativo = ativo;
     }
 
     public Usuario getUsuario() {
@@ -101,7 +107,6 @@ public class Reacao {
     public void setPublicacao(Publicacao publicacao) {
         this.publicacao = publicacao;
     }
-
     
 
 }

@@ -1,15 +1,20 @@
 package corallus.artConnect.artConnect.service;
 
 import java.time.LocalDateTime;
+
+import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
 
+import java.util.stream.Collectors;
+import org.springframework.data.domain.Sort;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import corallus.artConnect.artConnect.dto.publicacao.PublicacaoDTO;
+import corallus.artConnect.artConnect.entity.ListaTipoReacao;
 import corallus.artConnect.artConnect.entity.ListaTipoStatus;
 import corallus.artConnect.artConnect.entity.Status;
 import corallus.artConnect.artConnect.entity.atores.Usuario;
@@ -100,9 +105,43 @@ public class PublicacaoService {
         }
     }
 
-    public List<PublicacaoDTO> listarPublicacoes() {
-        return publicacaoRepository
-        		.findByStatusPublicacao_TipoStatus_IdOrderByDataPublicacaoDesc(1L)
+    public List<PublicacaoDTO> listarPublicacoes(
+        String nomeArte, 
+        Boolean recentes, 
+        Boolean mostLikeFirst
+    ) {
+        List<Publicacao> listaPubli;
+        
+        // recentes: true (padrão)
+        recentes = recentes==null?true:recentes;
+
+        // mostLikeFirst: false (padrão)
+        mostLikeFirst = mostLikeFirst==null?false:mostLikeFirst;
+
+        // tipoArte: Se não for informado ou vazio/null, lista puxa sem esse parâmetro
+        if(nomeArte == null || nomeArte.trim() == "") {
+            listaPubli = publicacaoRepository.findAllPublicacoesOrderByData(Sort.by(recentes?Sort.Direction.DESC:Sort.Direction.ASC, "data_publicacao"));
+        } else {
+            listaPubli = publicacaoRepository.findAllPublicacoesByNomeArteOrderByData(
+                nomeArte, Sort.by(recentes?Sort.Direction.DESC:Sort.Direction.ASC, "data_publicacao")
+            );
+        }
+
+        
+        // Se o parametro for true
+        if(mostLikeFirst) {
+            // Logica para os post com mais like virem primeiro
+
+            listaPubli.sort(Comparator.comparingInt(
+                    p->p.getReacoes().stream()
+                    .filter(r->r.getTipoReacao().getNomeTipo().equals(ListaTipoReacao.LIKE.name()))
+                    .collect(Collectors.toList()).size()
+                )
+            );
+        }
+
+
+        return listaPubli
                 .stream()
                 .map(PublicacaoDTO::toDTO)
                 .toList();
