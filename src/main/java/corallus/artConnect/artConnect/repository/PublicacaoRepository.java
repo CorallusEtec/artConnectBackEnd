@@ -1,4 +1,4 @@
-package corallus.artConnect.artConnect.repository.publicacao;
+package corallus.artConnect.artConnect.repository;
 
 import java.util.List;
 
@@ -6,7 +6,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
-import corallus.artConnect.artConnect.entity.publicacao.Publicacao;
+import corallus.artConnect.artConnect.entity.Publicacao;
 
 public interface PublicacaoRepository extends JpaRepository<Publicacao, Long>{
 	List<Publicacao> findByStatusPublicacao_TipoStatus_IdOrderByDataPublicacaoDesc(Long id);

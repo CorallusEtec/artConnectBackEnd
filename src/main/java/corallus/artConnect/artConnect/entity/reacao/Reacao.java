@@ -1,4 +1,4 @@
-package corallus.artConnect.artConnect.entity.publicacao;
+package corallus.artConnect.artConnect.entity.reacao;
 
 
 import java.time.LocalDateTime;
@@ -6,6 +6,8 @@ import java.time.LocalDateTime;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import corallus.artConnect.artConnect.entity.Comentario;
+import corallus.artConnect.artConnect.entity.Publicacao;
 import corallus.artConnect.artConnect.entity.atores.Usuario;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

@@ -10,17 +10,17 @@ import org.springframework.stereotype.Service;
 
 import corallus.artConnect.artConnect.dto.request.comentario.ComentarioRequest;
 import corallus.artConnect.artConnect.dto.response.comentario.ComentarioResponse;
-import corallus.artConnect.artConnect.entity.ListaTipoStatus;
-import corallus.artConnect.artConnect.entity.Status;
-import corallus.artConnect.artConnect.entity.publicacao.Comentario;
-import corallus.artConnect.artConnect.entity.publicacao.Publicacao;
+import corallus.artConnect.artConnect.entity.Comentario;
+import corallus.artConnect.artConnect.entity.Publicacao;
+import corallus.artConnect.artConnect.entity.status.Status;
+import corallus.artConnect.artConnect.enums.ListaTipoStatus;
 import corallus.artConnect.artConnect.error.errors.ResourceNotFoundException;
 import corallus.artConnect.artConnect.error.errors.UserNotFoundException;
-import corallus.artConnect.artConnect.repository.StatusRepository;
-import corallus.artConnect.artConnect.repository.TipoStatusRepository;
+import corallus.artConnect.artConnect.repository.ComentarioRepository;
+import corallus.artConnect.artConnect.repository.PublicacaoRepository;
 import corallus.artConnect.artConnect.repository.atores.UsuarioRepository;
-import corallus.artConnect.artConnect.repository.publicacao.ComentarioRepository;
-import corallus.artConnect.artConnect.repository.publicacao.PublicacaoRepository;
+import corallus.artConnect.artConnect.repository.status.StatusRepository;
+import corallus.artConnect.artConnect.repository.status.TipoStatusRepository;
 
 @Service
 public class ComentarioService {

@@ -8,15 +8,15 @@ import org.springframework.stereotype.Service;
 
 import corallus.artConnect.artConnect.dto.request.reacao.ReacaoRequest;
 import corallus.artConnect.artConnect.dto.response.reacao.ReacaoResponse;
-import corallus.artConnect.artConnect.entity.ListaTipoReacao;
-import corallus.artConnect.artConnect.entity.publicacao.Reacao;
+import corallus.artConnect.artConnect.entity.reacao.Reacao;
+import corallus.artConnect.artConnect.enums.ListaTipoReacao;
 import corallus.artConnect.artConnect.error.errors.ResourceNotFoundException;
 import corallus.artConnect.artConnect.error.errors.UserNotFoundException;
-import corallus.artConnect.artConnect.repository.TipoReacaoRepository;
+import corallus.artConnect.artConnect.repository.ComentarioRepository;
+import corallus.artConnect.artConnect.repository.PublicacaoRepository;
 import corallus.artConnect.artConnect.repository.atores.UsuarioRepository;
-import corallus.artConnect.artConnect.repository.publicacao.ComentarioRepository;
-import corallus.artConnect.artConnect.repository.publicacao.PublicacaoRepository;
-import corallus.artConnect.artConnect.repository.publicacao.ReacaoRepository;
+import corallus.artConnect.artConnect.repository.reacao.ReacaoRepository;
+import corallus.artConnect.artConnect.repository.reacao.TipoReacaoRepository;
 
 @Service
 public class ReacaoService {

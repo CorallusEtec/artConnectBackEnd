@@ -4,9 +4,9 @@ import java.time.LocalDateTime;
 import java.util.Set;
 
 import corallus.artConnect.artConnect.dto.response.usuario.UsuarioResponse;
-import corallus.artConnect.artConnect.entity.Status;
-import corallus.artConnect.artConnect.entity.publicacao.Comentario;
-import corallus.artConnect.artConnect.entity.publicacao.Reacao;
+import corallus.artConnect.artConnect.entity.Comentario;
+import corallus.artConnect.artConnect.entity.reacao.Reacao;
+import corallus.artConnect.artConnect.entity.status.Status;
 
 
 public record ComentarioResponse(

@@ -1,8 +1,8 @@
-package corallus.artConnect.artConnect.repository.publicacao;
+package corallus.artConnect.artConnect.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import corallus.artConnect.artConnect.entity.publicacao.Comentario;
+import corallus.artConnect.artConnect.entity.Comentario;
 
 public interface ComentarioRepository extends JpaRepository<Comentario, Long> {
     

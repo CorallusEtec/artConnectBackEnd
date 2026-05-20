@@ -1,8 +1,8 @@
-package corallus.artConnect.artConnect.repository;
+package corallus.artConnect.artConnect.repository.status;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import corallus.artConnect.artConnect.entity.Status;
+import corallus.artConnect.artConnect.entity.status.Status;
 
 public interface StatusRepository extends JpaRepository<Status, Long>{
     

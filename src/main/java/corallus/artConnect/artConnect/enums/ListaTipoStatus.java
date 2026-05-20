@@ -1,4 +1,4 @@
-package corallus.artConnect.artConnect.entity;
+package corallus.artConnect.artConnect.enums;
 
 public enum ListaTipoStatus {
     ATIVO,
