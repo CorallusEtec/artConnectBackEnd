@@ -7,10 +7,10 @@ import java.util.Set;
 
 import corallus.artConnect.artConnect.entity.Arte;
 import corallus.artConnect.artConnect.entity.Seguida;
-import corallus.artConnect.artConnect.entity.Status;
 import corallus.artConnect.artConnect.entity.Tag;
 import corallus.artConnect.artConnect.entity.atores.Artista;
 import corallus.artConnect.artConnect.entity.contato.Contato;
+import corallus.artConnect.artConnect.entity.status.Status;
 
 public record ArtistaResponse(
     // USUARIO

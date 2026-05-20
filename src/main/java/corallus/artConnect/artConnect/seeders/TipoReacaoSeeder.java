@@ -6,9 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
-import corallus.artConnect.artConnect.entity.ListaTipoReacao;
-import corallus.artConnect.artConnect.entity.publicacao.TipoReacao;
-import corallus.artConnect.artConnect.repository.TipoReacaoRepository;
+import corallus.artConnect.artConnect.entity.reacao.TipoReacao;
+import corallus.artConnect.artConnect.enums.ListaTipoReacao;
+import corallus.artConnect.artConnect.repository.reacao.TipoReacaoRepository;
 
 @Component
 public class TipoReacaoSeeder implements CommandLineRunner {

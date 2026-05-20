@@ -1,4 +1,4 @@
-package corallus.artConnect.artConnect.entity.publicacao;
+package corallus.artConnect.artConnect.entity.reacao;
 
 import java.util.List;
 

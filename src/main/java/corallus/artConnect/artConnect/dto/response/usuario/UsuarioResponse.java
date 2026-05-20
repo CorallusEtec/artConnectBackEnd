@@ -5,9 +5,9 @@ import java.util.List;
 import java.util.Set;
 
 import corallus.artConnect.artConnect.entity.Seguida;
-import corallus.artConnect.artConnect.entity.Status;
 import corallus.artConnect.artConnect.entity.atores.Usuario;
 import corallus.artConnect.artConnect.entity.contato.Contato;
+import corallus.artConnect.artConnect.entity.status.Status;
 
 public record UsuarioResponse(
     Long id,

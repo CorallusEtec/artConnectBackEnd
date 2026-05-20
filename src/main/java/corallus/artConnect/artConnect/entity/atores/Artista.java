@@ -6,12 +6,12 @@ import java.util.List;
 import java.util.Set;
 
 import corallus.artConnect.artConnect.entity.Arte;
+import corallus.artConnect.artConnect.entity.Publicacao;
 import corallus.artConnect.artConnect.entity.Seguida;
-import corallus.artConnect.artConnect.entity.Status;
 import corallus.artConnect.artConnect.entity.Tag;
 import corallus.artConnect.artConnect.entity.contato.Contato;
-import corallus.artConnect.artConnect.entity.publicacao.Publicacao;
-import corallus.artConnect.artConnect.entity.publicacao.Reacao;
+import corallus.artConnect.artConnect.entity.reacao.Reacao;
+import corallus.artConnect.artConnect.entity.status.Status;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;

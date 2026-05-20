@@ -1,13 +1,13 @@
-package corallus.artConnect.artConnect.entity.publicacao;
+package corallus.artConnect.artConnect.entity;
 
 import java.time.LocalDateTime;
 import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import corallus.artConnect.artConnect.entity.Status;
-
 import corallus.artConnect.artConnect.entity.atores.Usuario;
+import corallus.artConnect.artConnect.entity.reacao.Reacao;
+import corallus.artConnect.artConnect.entity.status.Status;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;

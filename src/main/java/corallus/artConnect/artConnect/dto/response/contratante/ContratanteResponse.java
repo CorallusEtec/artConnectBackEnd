@@ -6,9 +6,9 @@ import java.util.List;
 import java.util.Set;
 
 import corallus.artConnect.artConnect.entity.Seguida;
-import corallus.artConnect.artConnect.entity.Status;
 import corallus.artConnect.artConnect.entity.atores.Contratante;
 import corallus.artConnect.artConnect.entity.contato.Contato;
+import corallus.artConnect.artConnect.entity.status.Status;
 
 public record ContratanteResponse(
     // USUARIO

@@ -3,8 +3,8 @@ package corallus.artConnect.artConnect.dto.response.reacao;
 import java.time.LocalDateTime;
 
 import corallus.artConnect.artConnect.dto.response.usuario.UsuarioResponse;
-import corallus.artConnect.artConnect.entity.publicacao.Reacao;
-import corallus.artConnect.artConnect.entity.publicacao.TipoReacao;
+import corallus.artConnect.artConnect.entity.reacao.Reacao;
+import corallus.artConnect.artConnect.entity.reacao.TipoReacao;
 
 public record ReacaoResponse(
     Boolean empty,
