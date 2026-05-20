@@ -1,4 +1,4 @@
-package corallus.artConnect.artConnect.dto.atores.artista;
+package corallus.artConnect.artConnect.dto.response.artista;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -12,7 +12,7 @@ import corallus.artConnect.artConnect.entity.Tag;
 import corallus.artConnect.artConnect.entity.atores.Artista;
 import corallus.artConnect.artConnect.entity.contato.Contato;
 
-public record ArtistaDTO(
+public record ArtistaResponse(
     // USUARIO
     Long id,
     String nome,
@@ -47,8 +47,8 @@ public record ArtistaDTO(
      * 
      */
 ) {
-    public static ArtistaDTO toDTO(Artista m) {
-        ArtistaDTO dto = new ArtistaDTO(m.getId(), m.getNome(), m.getEmail(),
+    public static ArtistaResponse toDTO(Artista m) {
+        ArtistaResponse dto = new ArtistaResponse(m.getId(), m.getNome(), m.getEmail(),
         m.getTipoConta(), m.getStatus(), m.getDataCriacao(), m.getNomeArtistico(),
         m.getListaTags(),
         m.getArte(), m.getDataNasc(), m.getNomeLog(), m.getNumLog(), m.getCep(),

@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import corallus.artConnect.artConnect.dto.publicacao.ReacaoDTO;
-import corallus.artConnect.artConnect.dto.publicacao.ReacaoPostDTO;
+import corallus.artConnect.artConnect.dto.request.reacao.ReacaoRequest;
+import corallus.artConnect.artConnect.dto.response.reacao.ReacaoResponse;
 import corallus.artConnect.artConnect.service.ReacaoService;
 
 @RestController
@@ -22,22 +22,22 @@ public class ReacaoController {
     private ReacaoService reacaoService;
 
     @PostMapping("/post/{postId}/reagir")
-    public ResponseEntity<ReacaoDTO> reagirPublicacao(@PathVariable Long postId, @RequestBody ReacaoPostDTO reacaoPostDTO) {
-        ReacaoDTO reacao = this.reacaoService.reagirPublicacao(postId, reacaoPostDTO);
+    public ResponseEntity<ReacaoResponse> reagirPublicacao(@PathVariable Long postId, @RequestBody ReacaoRequest reacaoPostDTO) {
+        ReacaoResponse reacao = this.reacaoService.reagirPublicacao(postId, reacaoPostDTO);
 
         return new ResponseEntity<>(reacao, HttpStatus.OK);
     }
 
     @GetMapping("/post/{postId}")
-    public ResponseEntity<ReacaoDTO> getReacaoPublicacao(@PathVariable Long postId, @RequestParam Long usuarioId) {
-        ReacaoDTO reacaoDTO = this.reacaoService.getReacaoPublicacao(postId, usuarioId);
+    public ResponseEntity<ReacaoResponse> getReacaoPublicacao(@PathVariable Long postId, @RequestParam Long usuarioId) {
+        ReacaoResponse reacaoDTO = this.reacaoService.getReacaoPublicacao(postId, usuarioId);
 
         return new ResponseEntity<>(reacaoDTO, HttpStatus.OK);
     }
 
     @PostMapping("/comment/{commentId}/reagir")
-    public ResponseEntity<ReacaoDTO> reagirComentario(@PathVariable Long commentId, @RequestBody ReacaoPostDTO reacaoPostDTO) {
-        ReacaoDTO reacao = this.reacaoService.reagirComentario(commentId, reacaoPostDTO);
+    public ResponseEntity<ReacaoResponse> reagirComentario(@PathVariable Long commentId, @RequestBody ReacaoRequest reacaoPostDTO) {
+        ReacaoResponse reacao = this.reacaoService.reagirComentario(commentId, reacaoPostDTO);
 
         return new ResponseEntity<>(reacao, HttpStatus.OK);
     }

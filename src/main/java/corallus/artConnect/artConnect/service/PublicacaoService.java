@@ -13,7 +13,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import corallus.artConnect.artConnect.dto.publicacao.PublicacaoDTO;
+import corallus.artConnect.artConnect.dto.response.publicacao.PublicacaoResponse;
 import corallus.artConnect.artConnect.entity.ListaTipoReacao;
 import corallus.artConnect.artConnect.entity.ListaTipoStatus;
 import corallus.artConnect.artConnect.entity.Status;
@@ -105,7 +105,7 @@ public class PublicacaoService {
         }
     }
 
-    public List<PublicacaoDTO> listarPublicacoes(
+    public List<PublicacaoResponse> listarPublicacoes(
         String nomeArte, 
         Boolean recentes, 
         Boolean mostLikeFirst
@@ -143,7 +143,7 @@ public class PublicacaoService {
 
         return listaPubli
                 .stream()
-                .map(PublicacaoDTO::toDTO)
+                .map(PublicacaoResponse::toDTO)
                 .toList();
     }
 }

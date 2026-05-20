@@ -6,8 +6,8 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import corallus.artConnect.artConnect.dto.publicacao.ReacaoDTO;
-import corallus.artConnect.artConnect.dto.publicacao.ReacaoPostDTO;
+import corallus.artConnect.artConnect.dto.request.reacao.ReacaoRequest;
+import corallus.artConnect.artConnect.dto.response.reacao.ReacaoResponse;
 import corallus.artConnect.artConnect.entity.ListaTipoReacao;
 import corallus.artConnect.artConnect.entity.publicacao.Reacao;
 import corallus.artConnect.artConnect.error.errors.ResourceNotFoundException;
@@ -35,7 +35,7 @@ public class ReacaoService {
     @Autowired
     private ComentarioRepository comentarioRepository;
 
-    public ReacaoDTO reagirPublicacao(Long postId, ReacaoPostDTO reacaoPostDTO) {
+    public ReacaoResponse reagirPublicacao(Long postId, ReacaoRequest reacaoPostDTO) {
         
         // Se o usuario não exisitir
         if(!this.usuarioRepository.existsById(reacaoPostDTO.idAutor())) {
@@ -66,7 +66,7 @@ public class ReacaoService {
             if(reacaoEntity.getTipoReacao().getNomeTipo().equalsIgnoreCase(reacaoPostDTO.nomeTipoReacao())) {
                 // Exclui a reação
                 this.reacaoRepository.deleteById(reacaoEntity.getId());
-                return ReacaoDTO.emptyDto();
+                return ReacaoResponse.emptyDto();
             } else {
                 // Senão, apenas alternar o tipo
 
@@ -78,7 +78,7 @@ public class ReacaoService {
                 this.reacaoRepository.save(reacaoEntity);
             }
 
-            return ReacaoDTO.toDTO(reacaoEntity);
+            return ReacaoResponse.toDTO(reacaoEntity);
         
             // Se não tem reação nessa postagem
         } else {
@@ -103,10 +103,10 @@ public class ReacaoService {
             this.reacaoRepository.save(reacaoEntity);
         }
 
-        return ReacaoDTO.toDTO(reacaoEntity);
+        return ReacaoResponse.toDTO(reacaoEntity);
     }
 
-    public ReacaoDTO getReacaoPublicacao(Long postId, Long usuarioId) {
+    public ReacaoResponse getReacaoPublicacao(Long postId, Long usuarioId) {
       
         // Se o usuario não exisitir
         if(!this.usuarioRepository.existsById(usuarioId)) {
@@ -123,14 +123,14 @@ public class ReacaoService {
 
         // Se existe uma reação
         if(reacaoAtual.isPresent()) {
-            return ReacaoDTO.toDTO(reacaoAtual.get());
+            return ReacaoResponse.toDTO(reacaoAtual.get());
         } else {
         // Se não
-            return ReacaoDTO.emptyDto();
+            return ReacaoResponse.emptyDto();
         }
     }
 
-    public ReacaoDTO reagirComentario(Long commentId, ReacaoPostDTO reacaoPostDTO) {
+    public ReacaoResponse reagirComentario(Long commentId, ReacaoRequest reacaoPostDTO) {
         // Se o usuario não exisitir
         if(!this.usuarioRepository.existsById(reacaoPostDTO.idAutor())) {
             throw new UserNotFoundException("Usuario não encontrado");
@@ -160,7 +160,7 @@ public class ReacaoService {
             if(reacaoEntity.getTipoReacao().getNomeTipo().equalsIgnoreCase(reacaoPostDTO.nomeTipoReacao())) {
                 // Exclui a reação
                 this.reacaoRepository.deleteById(reacaoEntity.getId());
-                return ReacaoDTO.emptyDto();
+                return ReacaoResponse.emptyDto();
             } else {
                 // Senão, apenas alternar o tipo
 
@@ -172,7 +172,7 @@ public class ReacaoService {
                 this.reacaoRepository.save(reacaoEntity);
             }
 
-            return ReacaoDTO.toDTO(reacaoEntity);
+            return ReacaoResponse.toDTO(reacaoEntity);
         
             // Se não tem reação nesse comentário
         } else {
@@ -197,10 +197,10 @@ public class ReacaoService {
             this.reacaoRepository.save(reacaoEntity);
         }
 
-        return ReacaoDTO.toDTO(reacaoEntity);
+        return ReacaoResponse.toDTO(reacaoEntity);
     }
 
-    public ReacaoDTO getReacaoComentario(Long commentId, Long usuarioId) {
+    public ReacaoResponse getReacaoComentario(Long commentId, Long usuarioId) {
       
         // Se o usuario não exisitir
         if(!this.usuarioRepository.existsById(usuarioId)) {
@@ -217,10 +217,10 @@ public class ReacaoService {
 
         // Se existe uma reação
         if(reacaoAtual.isPresent()) {
-            return ReacaoDTO.toDTO(reacaoAtual.get());
+            return ReacaoResponse.toDTO(reacaoAtual.get());
         } else {
         // Se não
-            return ReacaoDTO.emptyDto();
+            return ReacaoResponse.emptyDto();
         }
     }
 

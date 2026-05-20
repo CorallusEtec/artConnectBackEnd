@@ -7,9 +7,9 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import corallus.artConnect.artConnect.dto.atores.contratante.ContratanteCadastroDTO;
-import corallus.artConnect.artConnect.dto.atores.contratante.ContratanteDTO;
-import corallus.artConnect.artConnect.dto.atores.contratante.ContratanteEditDTO;
+import corallus.artConnect.artConnect.dto.request.contratante.ContratanteCadastroRequest;
+import corallus.artConnect.artConnect.dto.request.contratante.ContratanteEditRequest;
+import corallus.artConnect.artConnect.dto.response.contratante.ContratanteResponse;
 import corallus.artConnect.artConnect.entity.ListaTipoStatus;
 import corallus.artConnect.artConnect.entity.Status;
 import corallus.artConnect.artConnect.entity.TipoConta;
@@ -35,17 +35,17 @@ public class ContratanteService implements IValidacoes {
     @Autowired
     private StatusRepository statusRepository;
 
-    public List<ContratanteDTO> findAll() {
-        return this.contratanteRepository.findAll().stream().map(ContratanteDTO::toDTO).toList();
+    public List<ContratanteResponse> findAll() {
+        return this.contratanteRepository.findAll().stream().map(ContratanteResponse::toDTO).toList();
     }
 
-    public ContratanteDTO findById(Long id) {
+    public ContratanteResponse findById(Long id) {
         Contratante contratante = this.contratanteRepository.findById(id).orElseThrow(()->new UserNotFoundException());
-        return ContratanteDTO.toDTO(contratante);
+        return ContratanteResponse.toDTO(contratante);
     }
 
   
-    public String save(String tipo, ContratanteCadastroDTO contratanteDTO) {
+    public String save(String tipo, ContratanteCadastroRequest contratanteDTO) {
         // VALIDA CNPJ E EMAIL UNICOS
         if(this.usuarioRepository.existsByEmail(contratanteDTO.email())) {
             throw new UserAlreadyExistsException();
@@ -105,7 +105,7 @@ public class ContratanteService implements IValidacoes {
     }
 
 
-    public String edit(Long id, ContratanteEditDTO contratanteDTO) {
+    public String edit(Long id, ContratanteEditRequest contratanteDTO) {
         
         // SE NÃO EXISTIR
         if (!this.contratanteRepository.existsById(id)) {
