@@ -1,34 +1,30 @@
-package corallus.artConnect.artConnect.dto.comentario;
+package corallus.artConnect.artConnect.dto.response.comentario;
 
 import java.time.LocalDateTime;
 import java.util.Set;
 
-import corallus.artConnect.artConnect.dto.UsuarioDTO;
+import corallus.artConnect.artConnect.dto.response.usuario.UsuarioResponse;
 import corallus.artConnect.artConnect.entity.Status;
 import corallus.artConnect.artConnect.entity.publicacao.Comentario;
 import corallus.artConnect.artConnect.entity.publicacao.Reacao;
 
-/**
- * DTO PARA RETORNAR OS DADOS DO COMENTÁRIO.
- * ESSA DTO É PARA O MÉTODO GET (BUSCAR COMENTÁRIO)
- * 
- */
-public record ComentarioGetDTO(
+
+public record ComentarioResponse(
     Long id,
     Status statusComentario,
     LocalDateTime dataComentario,
     String mensagem,
-    UsuarioDTO autor,
+    UsuarioResponse autor,
     Long idPublicacao,
     Set<Reacao> reacoes
 ) {
-   public static ComentarioGetDTO toDTO(Comentario entity) {
-    ComentarioGetDTO dto = new ComentarioGetDTO(
+   public static ComentarioResponse toDTO(Comentario entity) {
+    ComentarioResponse dto = new ComentarioResponse(
         entity.getId(),
         entity.getStatusComentario(),
         entity.getDataComentario(),
         entity.getMensagem(),
-        UsuarioDTO.toDTO(entity.getUsuario()),
+        UsuarioResponse.toDTO(entity.getUsuario()),
         entity.getPublicacao().getId(),
         entity.getReacoes()
     );

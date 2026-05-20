@@ -8,8 +8,8 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import corallus.artConnect.artConnect.dto.comentario.ComentarioGetDTO;
-import corallus.artConnect.artConnect.dto.comentario.ComentarioPostDTO;
+import corallus.artConnect.artConnect.dto.request.comentario.ComentarioRequest;
+import corallus.artConnect.artConnect.dto.response.comentario.ComentarioResponse;
 import corallus.artConnect.artConnect.entity.ListaTipoStatus;
 import corallus.artConnect.artConnect.entity.Status;
 import corallus.artConnect.artConnect.entity.publicacao.Comentario;
@@ -40,7 +40,7 @@ public class ComentarioService {
     private StatusRepository statusRepository;
     
     // Buscar Comentários de uma postagem
-    public List<ComentarioGetDTO> findByPost(Long postId) {
+    public List<ComentarioResponse> findByPost(Long postId) {
         Publicacao p = this.publicacaoRepository.findById(postId)
         .orElseThrow(()->new ResourceNotFoundException("Publicação não encontrada"));
 
@@ -59,21 +59,21 @@ public class ComentarioService {
 
 
         // Conversão para DTO
-        List<ComentarioGetDTO> comentarios = p.getComentarios()
+        List<ComentarioResponse> comentarios = p.getComentarios()
         .stream()
         .filter(
             c->c.getStatusComentario()
             .getTipoStatus()
             .getNomeTipoStatus()
             .equals(ListaTipoStatus.ATIVO.name()))
-        .map(ComentarioGetDTO::toDTO)
+        .map(ComentarioResponse::toDTO)
         .collect(Collectors.toList());
 
         return comentarios;
     }
 
     // Comentar em uma publicação
-    public String comentar(ComentarioPostDTO dto) {
+    public String comentar(ComentarioRequest dto) {
 
         Publicacao publicacao = this.publicacaoRepository.findById(dto.idPublicacao())
         .orElseThrow(()->new ResourceNotFoundException("Publicação não encontrada"));
@@ -89,7 +89,7 @@ public class ComentarioService {
     }
 
     // Encapsular Conversão do DTO de POST para Entity
-    private Comentario postToEntity(ComentarioPostDTO dto) {
+    private Comentario postToEntity(ComentarioRequest dto) {
         Comentario comentario = new Comentario();
         comentario.setMensagem(dto.mensagem());
 

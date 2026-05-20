@@ -1,32 +1,32 @@
-package corallus.artConnect.artConnect.dto.publicacao;
+package corallus.artConnect.artConnect.dto.response.reacao;
 
 import java.time.LocalDateTime;
 
-import corallus.artConnect.artConnect.dto.UsuarioDTO;
+import corallus.artConnect.artConnect.dto.response.usuario.UsuarioResponse;
 import corallus.artConnect.artConnect.entity.publicacao.Reacao;
 import corallus.artConnect.artConnect.entity.publicacao.TipoReacao;
 
-public record ReacaoDTO(
+public record ReacaoResponse(
     Boolean empty,
     Long idPublicacao,
     Long idComentario,
     LocalDateTime dataReacao,
     TipoReacao tipoReacao,
-    UsuarioDTO usuario
+    UsuarioResponse usuario
 ) {
-    public static ReacaoDTO toDTO(Reacao entity) {
-        ReacaoDTO dto = new ReacaoDTO(
+    public static ReacaoResponse toDTO(Reacao entity) {
+        ReacaoResponse dto = new ReacaoResponse(
         false,
         entity.getPublicacao()==null?null:entity.getPublicacao().getId(), 
         entity.getComentario()==null?null:entity.getComentario().getId(),
         entity.getDataReacao(),
         entity.getTipoReacao(),
-        UsuarioDTO.toDTO(entity.getUsuario()));
+        UsuarioResponse.toDTO(entity.getUsuario()));
           return dto;
     }
     
-    public static ReacaoDTO emptyDto() {
-        ReacaoDTO dto = new ReacaoDTO(true, null, null, null, null, null);
+    public static ReacaoResponse emptyDto() {
+        ReacaoResponse dto = new ReacaoResponse(true, null, null, null, null, null);
         return dto;
     }
 }

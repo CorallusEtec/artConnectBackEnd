@@ -1,4 +1,4 @@
-package corallus.artConnect.artConnect.dto;
+package corallus.artConnect.artConnect.dto.response.usuario;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -9,7 +9,7 @@ import corallus.artConnect.artConnect.entity.Status;
 import corallus.artConnect.artConnect.entity.atores.Usuario;
 import corallus.artConnect.artConnect.entity.contato.Contato;
 
-public record UsuarioDTO(
+public record UsuarioResponse(
     Long id,
     String nome,
     String email,
@@ -30,8 +30,8 @@ public record UsuarioDTO(
     Set<Seguida> seguido,
     List<Contato> contatos
 ) {
-    public static UsuarioDTO toDTO (Usuario usuario) {
-        return new UsuarioDTO(
+    public static UsuarioResponse toDTO (Usuario usuario) {
+        return new UsuarioResponse(
             usuario.getId(),
             usuario.getNome(),
             usuario.getEmail(),

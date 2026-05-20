@@ -10,9 +10,9 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import corallus.artConnect.artConnect.dto.atores.artista.ArtistaCadastroDTO;
-import corallus.artConnect.artConnect.dto.atores.artista.ArtistaDTO;
-import corallus.artConnect.artConnect.dto.atores.artista.ArtistaEditDTO;
+import corallus.artConnect.artConnect.dto.request.artista.ArtistaCadastroRequest;
+import corallus.artConnect.artConnect.dto.request.artista.ArtistaEditRequest;
+import corallus.artConnect.artConnect.dto.response.artista.ArtistaResponse;
 import corallus.artConnect.artConnect.entity.ListaTipoStatus;
 import corallus.artConnect.artConnect.entity.Seguida;
 
@@ -55,20 +55,20 @@ public class ArtistaService implements IValidacoes {
     @Autowired
     private TagRepository tagRepository;
 
-    public List<ArtistaDTO> findAll() {
-        return this.artistaRepository.findAll().stream().map(ArtistaDTO::toDTO).toList();        
+    public List<ArtistaResponse> findAll() {
+        return this.artistaRepository.findAll().stream().map(ArtistaResponse::toDTO).toList();        
     }
 
 
-    public ArtistaDTO findById(Long id) {
+    public ArtistaResponse findById(Long id) {
         Artista model = this.artistaRepository.findById(id)
         .orElseThrow(()->new UserNotFoundException());
 
-        return ArtistaDTO.toDTO(model);
+        return ArtistaResponse.toDTO(model);
     }
        
     
-    public String save(ArtistaCadastroDTO artistaDTO) { 
+    public String save(ArtistaCadastroRequest artistaDTO) { 
         
         if(this.usuarioRepository.existsByEmail(artistaDTO.email())) {
             throw new UserAlreadyExistsException();
@@ -112,7 +112,7 @@ public class ArtistaService implements IValidacoes {
     }
 
   
-    public String edit(Long id, ArtistaEditDTO artistaDTO) {
+    public String edit(Long id, ArtistaEditRequest artistaDTO) {
         
         if (!this.artistaRepository.existsById(id)) {
             throw new UserNotFoundException("Não foi possivel editar: Conta não existente.");

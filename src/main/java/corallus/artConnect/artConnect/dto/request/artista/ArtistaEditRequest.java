@@ -1,20 +1,23 @@
-package corallus.artConnect.artConnect.dto.atores.contratante;
+package corallus.artConnect.artConnect.dto.request.artista;
 
 import java.time.LocalDate;
 import java.util.List;
 
+import corallus.artConnect.artConnect.entity.Arte;
+import corallus.artConnect.artConnect.entity.Tag;
 import corallus.artConnect.artConnect.entity.contato.Contato;
 
-public record ContratanteEditDTO(
+public record ArtistaEditRequest(
     // USUARIO
     String nome,
     String textoBio,
     List<Contato> contatos,
 
-    // CONTRATANTE
+    // ARTISTA
+    List<Tag> listaTags,
+    Arte arte,
+    String nomeArtistico,
     LocalDate dataNasc,
-    String razaoSocial,
-    Character sexo,
 
     
     // LOGRADOURO
@@ -25,4 +28,5 @@ public record ContratanteEditDTO(
     String complemento,
     String cidade,
     String uf
+
 ) {}
