@@ -166,7 +166,7 @@ public class PublicacaoService {
             .urlMidia(e.getUrlMidia())
             .dataPublicacao(e.getDataPublicacao())
             .autor(UsuarioResponse.toDTO(e.getAutor()))
-            .totalComentarios(listaPubli.size())
+            .totalComentarios(e.getComentarios().size())
             // As reações são separadas por tipo e quantidade
             .reacoes(this.filterReacaoDetails(e.getReacoes()))
             .build())
