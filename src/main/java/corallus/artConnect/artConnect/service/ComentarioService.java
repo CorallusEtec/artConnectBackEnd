@@ -78,8 +78,10 @@ public class ComentarioService {
         Publicacao publicacao = this.publicacaoRepository.findById(dto.idPublicacao())
         .orElseThrow(()->new ResourceNotFoundException("Publicação não encontrada"));
 
-        Comentario comentario  = postToEntity(dto);
+        Comentario comentario  = requestToEntity(dto);
         comentario.setPublicacao(publicacao);
+        
+        comentario.setDataComentario(LocalDateTime.now());
         
 
 
@@ -88,8 +90,8 @@ public class ComentarioService {
         return "Comentario publicado com sucesso";
     }
 
-    // Encapsular Conversão do DTO de POST para Entity
-    private Comentario postToEntity(ComentarioRequest dto) {
+    // Encapsular Conversão da Request para Entity
+    private Comentario requestToEntity(ComentarioRequest dto) {
         Comentario comentario = new Comentario();
         comentario.setMensagem(dto.mensagem());
 
