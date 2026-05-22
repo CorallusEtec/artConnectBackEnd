@@ -10,29 +10,27 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import corallus.artConnect.artConnect.dto.atores.artista.ArtistaCadastroDTO;
-import corallus.artConnect.artConnect.dto.atores.artista.ArtistaDTO;
-import corallus.artConnect.artConnect.dto.atores.artista.ArtistaEditDTO;
-import corallus.artConnect.artConnect.entity.ListaTipoStatus;
+import corallus.artConnect.artConnect.dto.request.artista.ArtistaCadastroRequest;
+import corallus.artConnect.artConnect.dto.request.artista.ArtistaEditRequest;
+import corallus.artConnect.artConnect.dto.response.artista.ArtistaResponse;
+import corallus.artConnect.artConnect.entity.Publicacao;
 import corallus.artConnect.artConnect.entity.Seguida;
-
-
-import corallus.artConnect.artConnect.entity.Status;
-import corallus.artConnect.artConnect.entity.TipoConta;
 import corallus.artConnect.artConnect.entity.atores.Artista;
 import corallus.artConnect.artConnect.entity.contato.Contato;
-import corallus.artConnect.artConnect.entity.publicacao.Publicacao;
-import corallus.artConnect.artConnect.entity.publicacao.Reacao;
+import corallus.artConnect.artConnect.entity.reacao.Reacao;
+import corallus.artConnect.artConnect.entity.status.Status;
+import corallus.artConnect.artConnect.enums.ListaTipoConta;
+import corallus.artConnect.artConnect.enums.ListaTipoStatus;
 import corallus.artConnect.artConnect.error.errors.ArteNotFoundException;
 import corallus.artConnect.artConnect.error.errors.ResourceNotFoundException;
 import corallus.artConnect.artConnect.error.errors.UserAlreadyExistsException;
 import corallus.artConnect.artConnect.error.errors.UserNotFoundException;
 import corallus.artConnect.artConnect.repository.ArteRepository;
-import corallus.artConnect.artConnect.repository.StatusRepository;
 import corallus.artConnect.artConnect.repository.TagRepository;
-import corallus.artConnect.artConnect.repository.TipoStatusRepository;
 import corallus.artConnect.artConnect.repository.atores.ArtistaRepository;
 import corallus.artConnect.artConnect.repository.atores.UsuarioRepository;
+import corallus.artConnect.artConnect.repository.status.StatusRepository;
+import corallus.artConnect.artConnect.repository.status.TipoStatusRepository;
 
 @Service
 public class ArtistaService implements IValidacoes {
@@ -55,20 +53,20 @@ public class ArtistaService implements IValidacoes {
     @Autowired
     private TagRepository tagRepository;
 
-    public List<ArtistaDTO> findAll() {
-        return this.artistaRepository.findAll().stream().map(ArtistaDTO::toDTO).toList();        
+    public List<ArtistaResponse> findAll() {
+        return this.artistaRepository.findAll().stream().map(ArtistaResponse::toDTO).toList();        
     }
 
 
-    public ArtistaDTO findById(Long id) {
+    public ArtistaResponse findById(Long id) {
         Artista model = this.artistaRepository.findById(id)
         .orElseThrow(()->new UserNotFoundException());
 
-        return ArtistaDTO.toDTO(model);
+        return ArtistaResponse.toDTO(model);
     }
        
     
-    public String save(ArtistaCadastroDTO artistaDTO) { 
+    public String save(ArtistaCadastroRequest artistaDTO) { 
         
         if(this.usuarioRepository.existsByEmail(artistaDTO.email())) {
             throw new UserAlreadyExistsException();
@@ -102,7 +100,7 @@ public class ArtistaService implements IValidacoes {
         // DATA, STATUS E TIPO DE CONTA
         artista.setDataCriacao(LocalDateTime.now());
         artista.setStatus(statusInicial);
-        artista.setTipoConta(TipoConta.ARTISTA.name());
+        artista.setTipoConta(ListaTipoConta.ARTISTA.name());
 
 
         artista.setStatus(statusInicial);
@@ -112,7 +110,7 @@ public class ArtistaService implements IValidacoes {
     }
 
   
-    public String edit(Long id, ArtistaEditDTO artistaDTO) {
+    public String edit(Long id, ArtistaEditRequest artistaDTO) {
         
         if (!this.artistaRepository.existsById(id)) {
             throw new UserNotFoundException("Não foi possivel editar: Conta não existente.");

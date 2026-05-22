@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import corallus.artConnect.artConnect.dto.publicacao.PublicacaoDTO;
+import corallus.artConnect.artConnect.dto.response.publicacao.PublicacaoResponse;
 import corallus.artConnect.artConnect.service.PublicacaoService;
 
 @RestController
@@ -36,11 +36,11 @@ public class PublicacaoController {
 }
 
     @GetMapping("/findAll")
-    public ResponseEntity<List<PublicacaoDTO>> listarPublicacoes(
+    public ResponseEntity<List<PublicacaoResponse>> listarPublicacoes(
         @RequestParam(required = false) String nomeArte,
         @RequestParam(required = false) Boolean recentes,
         @RequestParam(required = false) Boolean mostLikeFirst) {
-        List<PublicacaoDTO> lista = this.publicacaoService.listarPublicacoes(nomeArte, recentes, mostLikeFirst);
+        List<PublicacaoResponse> lista = this.publicacaoService.listarPublicacoes(nomeArte, recentes, mostLikeFirst);
         return new ResponseEntity<>(lista, HttpStatus.OK);
     }
 

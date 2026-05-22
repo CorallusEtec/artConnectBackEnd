@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import corallus.artConnect.artConnect.dto.UsuarioDTO;
+import corallus.artConnect.artConnect.dto.response.usuario.UsuarioResponse;
 import corallus.artConnect.artConnect.service.UsuarioService;
 
 @RestController
@@ -22,8 +22,8 @@ public class UsuarioController {
     private UsuarioService usuarioService;
 
     @GetMapping("/findAll")
-    public ResponseEntity<List<UsuarioDTO>> findAll() {
-        List<UsuarioDTO> lista = usuarioService.findAll();
+    public ResponseEntity<List<UsuarioResponse>> findAll() {
+        List<UsuarioResponse> lista = usuarioService.findAll();
         return new ResponseEntity<>(lista, HttpStatus.OK);
     }
 

@@ -7,19 +7,19 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import corallus.artConnect.artConnect.dto.atores.contratante.ContratanteCadastroDTO;
-import corallus.artConnect.artConnect.dto.atores.contratante.ContratanteDTO;
-import corallus.artConnect.artConnect.dto.atores.contratante.ContratanteEditDTO;
-import corallus.artConnect.artConnect.entity.ListaTipoStatus;
-import corallus.artConnect.artConnect.entity.Status;
-import corallus.artConnect.artConnect.entity.TipoConta;
+import corallus.artConnect.artConnect.dto.request.contratante.ContratanteCadastroRequest;
+import corallus.artConnect.artConnect.dto.request.contratante.ContratanteEditRequest;
+import corallus.artConnect.artConnect.dto.response.contratante.ContratanteResponse;
 import corallus.artConnect.artConnect.entity.atores.Contratante;
+import corallus.artConnect.artConnect.entity.status.Status;
+import corallus.artConnect.artConnect.enums.ListaTipoConta;
+import corallus.artConnect.artConnect.enums.ListaTipoStatus;
 import corallus.artConnect.artConnect.error.errors.UserAlreadyExistsException;
 import corallus.artConnect.artConnect.error.errors.UserNotFoundException;
-import corallus.artConnect.artConnect.repository.StatusRepository;
-import corallus.artConnect.artConnect.repository.TipoStatusRepository;
 import corallus.artConnect.artConnect.repository.atores.ContratanteRepository;
 import corallus.artConnect.artConnect.repository.atores.UsuarioRepository;
+import corallus.artConnect.artConnect.repository.status.StatusRepository;
+import corallus.artConnect.artConnect.repository.status.TipoStatusRepository;
 
 @Service
 public class ContratanteService implements IValidacoes {
@@ -35,17 +35,17 @@ public class ContratanteService implements IValidacoes {
     @Autowired
     private StatusRepository statusRepository;
 
-    public List<ContratanteDTO> findAll() {
-        return this.contratanteRepository.findAll().stream().map(ContratanteDTO::toDTO).toList();
+    public List<ContratanteResponse> findAll() {
+        return this.contratanteRepository.findAll().stream().map(ContratanteResponse::toDTO).toList();
     }
 
-    public ContratanteDTO findById(Long id) {
+    public ContratanteResponse findById(Long id) {
         Contratante contratante = this.contratanteRepository.findById(id).orElseThrow(()->new UserNotFoundException());
-        return ContratanteDTO.toDTO(contratante);
+        return ContratanteResponse.toDTO(contratante);
     }
 
   
-    public String save(String tipo, ContratanteCadastroDTO contratanteDTO) {
+    public String save(String tipo, ContratanteCadastroRequest contratanteDTO) {
         // VALIDA CNPJ E EMAIL UNICOS
         if(this.usuarioRepository.existsByEmail(contratanteDTO.email())) {
             throw new UserAlreadyExistsException();
@@ -66,14 +66,14 @@ public class ContratanteService implements IValidacoes {
             // SALVA DADOS ESPECIFICOS DE EMPRESA
             contratante.setRazaoSocial(contratanteDTO.razaoSocial());
             contratante.setCnpj(contratanteDTO.cnpj());
-            contratante.setTipoConta(TipoConta.CONTRATANTE_CNPJ.name());
+            contratante.setTipoConta(ListaTipoConta.CONTRATANTE_CNPJ.name());
 
             // EMPRESAS DEVEM SER APROVADAS PELO ADMIN: STATUS PENDENTE
             statusInicial.setTipoStatus(this.tipoStatusRepository.findByNomeTipoStatus(ListaTipoStatus.PENDENTE.name()).get());
             statusInicial.setDescricao("Esperando aprovação do administrador");
            
         } else {
-            contratante.setTipoConta(TipoConta.CONTRATANTE_CPF.name());
+            contratante.setTipoConta(ListaTipoConta.CONTRATANTE_CPF.name());
             statusInicial.setTipoStatus(this.tipoStatusRepository.findByNomeTipoStatus(ListaTipoStatus.ATIVO.name()).get());
             statusInicial.setDescricao(null);
         }
@@ -105,7 +105,7 @@ public class ContratanteService implements IValidacoes {
     }
 
 
-    public String edit(Long id, ContratanteEditDTO contratanteDTO) {
+    public String edit(Long id, ContratanteEditRequest contratanteDTO) {
         
         // SE NÃO EXISTIR
         if (!this.contratanteRepository.existsById(id)) {

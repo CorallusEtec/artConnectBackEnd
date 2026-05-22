@@ -8,19 +8,19 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import corallus.artConnect.artConnect.dto.comentario.ComentarioGetDTO;
-import corallus.artConnect.artConnect.dto.comentario.ComentarioPostDTO;
-import corallus.artConnect.artConnect.entity.ListaTipoStatus;
-import corallus.artConnect.artConnect.entity.Status;
-import corallus.artConnect.artConnect.entity.publicacao.Comentario;
-import corallus.artConnect.artConnect.entity.publicacao.Publicacao;
+import corallus.artConnect.artConnect.dto.request.comentario.ComentarioRequest;
+import corallus.artConnect.artConnect.dto.response.comentario.ComentarioResponse;
+import corallus.artConnect.artConnect.entity.Comentario;
+import corallus.artConnect.artConnect.entity.Publicacao;
+import corallus.artConnect.artConnect.entity.status.Status;
+import corallus.artConnect.artConnect.enums.ListaTipoStatus;
 import corallus.artConnect.artConnect.error.errors.ResourceNotFoundException;
 import corallus.artConnect.artConnect.error.errors.UserNotFoundException;
-import corallus.artConnect.artConnect.repository.StatusRepository;
-import corallus.artConnect.artConnect.repository.TipoStatusRepository;
+import corallus.artConnect.artConnect.repository.ComentarioRepository;
+import corallus.artConnect.artConnect.repository.PublicacaoRepository;
 import corallus.artConnect.artConnect.repository.atores.UsuarioRepository;
-import corallus.artConnect.artConnect.repository.publicacao.ComentarioRepository;
-import corallus.artConnect.artConnect.repository.publicacao.PublicacaoRepository;
+import corallus.artConnect.artConnect.repository.status.StatusRepository;
+import corallus.artConnect.artConnect.repository.status.TipoStatusRepository;
 
 @Service
 public class ComentarioService {
@@ -40,7 +40,7 @@ public class ComentarioService {
     private StatusRepository statusRepository;
     
     // Buscar Comentários de uma postagem
-    public List<ComentarioGetDTO> findByPost(Long postId) {
+    public List<ComentarioResponse> findByPost(Long postId) {
         Publicacao p = this.publicacaoRepository.findById(postId)
         .orElseThrow(()->new ResourceNotFoundException("Publicação não encontrada"));
 
@@ -59,27 +59,29 @@ public class ComentarioService {
 
 
         // Conversão para DTO
-        List<ComentarioGetDTO> comentarios = p.getComentarios()
+        List<ComentarioResponse> comentarios = p.getComentarios()
         .stream()
         .filter(
             c->c.getStatusComentario()
             .getTipoStatus()
             .getNomeTipoStatus()
             .equals(ListaTipoStatus.ATIVO.name()))
-        .map(ComentarioGetDTO::toDTO)
+        .map(ComentarioResponse::toDTO)
         .collect(Collectors.toList());
 
         return comentarios;
     }
 
     // Comentar em uma publicação
-    public String comentar(ComentarioPostDTO dto) {
+    public String comentar(ComentarioRequest dto) {
 
         Publicacao publicacao = this.publicacaoRepository.findById(dto.idPublicacao())
         .orElseThrow(()->new ResourceNotFoundException("Publicação não encontrada"));
 
-        Comentario comentario  = postToEntity(dto);
+        Comentario comentario  = requestToEntity(dto);
         comentario.setPublicacao(publicacao);
+        
+        comentario.setDataComentario(LocalDateTime.now());
         
 
 
@@ -88,8 +90,8 @@ public class ComentarioService {
         return "Comentario publicado com sucesso";
     }
 
-    // Encapsular Conversão do DTO de POST para Entity
-    private Comentario postToEntity(ComentarioPostDTO dto) {
+    // Encapsular Conversão da Request para Entity
+    private Comentario requestToEntity(ComentarioRequest dto) {
         Comentario comentario = new Comentario();
         comentario.setMensagem(dto.mensagem());
 

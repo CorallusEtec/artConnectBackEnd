@@ -6,7 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import corallus.artConnect.artConnect.dto.UsuarioLoginDTO;
+import corallus.artConnect.artConnect.dto.request.usuario.UsuarioLoginRequest;
 import corallus.artConnect.artConnect.entity.atores.Usuario;
 import corallus.artConnect.artConnect.repository.atores.UsuarioRepository;
 
@@ -16,12 +16,12 @@ public class LoginService {
 	@Autowired
 	private UsuarioRepository usuarioRepository;
 	
-	public UsuarioLoginDTO login(String email, String senha) {
+	public UsuarioLoginRequest login(String email, String senha) {
 		List<Usuario> usuarios = buscaUsuarios();
 		for(Usuario usuario : usuarios) {
 			if(usuario.getEmail().equals(email)&&
 			usuario.getSenha().equals(senha)) {
-				return new UsuarioLoginDTO(
+				return new UsuarioLoginRequest(
 						usuario.getId(),
 						usuario.getNome(),
 						usuario.getStatus()
