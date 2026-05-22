@@ -18,4 +18,11 @@ public class UsuarioService {
     public List<UsuarioDTO> findAll() {
         return this.usuarioRepository.findAll().stream().map(UsuarioDTO::toDTO).toList();
     }
+
+    public UsuarioDTO findById(Long id) {
+        Usuario model = this.usuarioRepository.findById(id)
+        .orElseThrow(()->new UserNotFoundException());
+
+        return UsuarioDTO.toDTO(model);
+    }
 }
