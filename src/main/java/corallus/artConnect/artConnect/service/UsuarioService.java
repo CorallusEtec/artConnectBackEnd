@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import corallus.artConnect.artConnect.dto.UsuarioDTO;
+import corallus.artConnect.artConnect.entity.atores.Usuario;
+import corallus.artConnect.artConnect.error.errors.UserNotFoundException;
 import corallus.artConnect.artConnect.repository.atores.UsuarioRepository;
 
 @Service
