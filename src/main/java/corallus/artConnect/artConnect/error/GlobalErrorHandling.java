@@ -3,8 +3,13 @@ package corallus.artConnect.artConnect.error;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import javax.naming.AuthenticationException;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.InsufficientAuthenticationException;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import corallus.artConnect.artConnect.error.errors.ArteNotFoundException;
@@ -95,8 +100,51 @@ public class GlobalErrorHandling {
 				HttpStatus.NOT_FOUND.name(),
 				HttpStatus.NOT_FOUND.value(),
 				List.of(e.getMessage())
-		);
-		return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
+		  );
+		  return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<ApiError> methodArgumentNotValid(Exception e) {
+        ApiError error = new ApiError(
+				LocalDateTime.now(),
+				HttpStatus.BAD_REQUEST.name(),
+				HttpStatus.BAD_REQUEST.value(),
+				List.of("Há campos inválidos na requisição", e.getMessage())
+		  );
+		  return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(BadCredentialsException.class)
+    public ResponseEntity<ApiError> badCredentials(Exception e) {
+        ApiError error = new ApiError(
+				LocalDateTime.now(),
+				HttpStatus.UNAUTHORIZED.name(),
+				HttpStatus.UNAUTHORIZED.value(),
+				List.of("Credenciais inválidas. Usuário ou senha incorretos", e.getMessage())
+		  );
+		  return new ResponseEntity<>(error, HttpStatus.UNAUTHORIZED);
+    }
+
+    @ExceptionHandler(AuthenticationException.class)
+    public ResponseEntity<ApiError> authException(Exception e) {
+        ApiError error = new ApiError(
+				LocalDateTime.now(),
+				HttpStatus.UNAUTHORIZED.name(),
+				HttpStatus.UNAUTHORIZED.value(),
+				List.of("Erro na autenticação", e.getMessage())
+		  );
+		  return new ResponseEntity<>(error, HttpStatus.UNAUTHORIZED);
+    }
+
+    @ExceptionHandler(InsufficientAuthenticationException.class)
+    public ResponseEntity<ApiError> insufficientAuth(Exception e) {
+        ApiError error = new ApiError(
+				LocalDateTime.now(),
+				HttpStatus.UNAUTHORIZED.name(),
+				HttpStatus.UNAUTHORIZED.value(),
+				List.of("Acesso negado", e.getMessage())
+		  );
+		  return new ResponseEntity<>(error, HttpStatus.UNAUTHORIZED);
+    }
   }
