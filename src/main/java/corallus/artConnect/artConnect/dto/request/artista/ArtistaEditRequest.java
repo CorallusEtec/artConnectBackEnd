@@ -5,13 +5,11 @@ import java.util.List;
 
 import corallus.artConnect.artConnect.entity.Arte;
 import corallus.artConnect.artConnect.entity.Tag;
-import corallus.artConnect.artConnect.entity.contato.Contato;
 
 public record ArtistaEditRequest(
     // USUARIO
     String nome,
     String textoBio,
-    List<Contato> contatos,
 
     // ARTISTA
     List<Tag> listaTags,
