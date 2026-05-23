@@ -46,14 +46,22 @@ public class ContratanteService implements IValidacoes {
 
   
     public String save(String tipo, ContratanteCadastroRequest contratanteDTO) {
+        
+        // Valida campos que nunca podem ser vazios
+        validarString(null, new String[] {contratanteDTO.nome(), contratanteDTO.email(), contratanteDTO.senha()});
+
         // VALIDA CNPJ E EMAIL UNICOS
+        // Se já existir e-mail
         if(this.usuarioRepository.existsByEmail(contratanteDTO.email())) {
             throw new UserAlreadyExistsException();
-        } else if(this.contratanteRepository.existsByCnpj(contratanteDTO.cnpj())) {
-            throw new UserAlreadyExistsException("Não foi possível cadastrar: CNPJ já existente.");
         }
-
-        validarString(null, new String[] {contratanteDTO.nome(), contratanteDTO.email(), contratanteDTO.senha()});
+        // Se for empresa
+        if(!tipo.equalsIgnoreCase("cpf")) {
+            // Validação de CNPJ
+            if(this.contratanteRepository.existsByCnpj(contratanteDTO.cnpj())) {
+                throw new UserAlreadyExistsException("Não foi possível cadastrar: CNPJ já existente.");
+            }
+        }
         
         Contratante contratante = new Contratante();
         Status statusInicial = new Status();
@@ -106,16 +114,13 @@ public class ContratanteService implements IValidacoes {
 
 
     public String edit(Long id, ContratanteEditRequest contratanteDTO) {
-        
-        // SE NÃO EXISTIR
-        if (!this.contratanteRepository.existsById(id)) {
-            throw new UserNotFoundException();
-        }
 
+        // CAMPOS QUE NÃO PODEM ESTAR VAZIO
         validarString(null, new String[] { contratanteDTO.nome() });
         
-        Contratante contratante = new Contratante();
-        contratante.setId(id);
+        Contratante contratante = this.contratanteRepository.findById(id)
+        // SE NÃO EXISTIR
+        .orElseThrow(()->new UserNotFoundException());
         contratante.setNome(contratanteDTO.nome());
         contratante.setRazaoSocial(contratanteDTO.razaoSocial());
        

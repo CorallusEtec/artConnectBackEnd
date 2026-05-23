@@ -19,6 +19,9 @@ public class LoginService {
 	public UsuarioLoginRequest login(String email, String senha) {
 		List<Usuario> usuarios = buscaUsuarios();
 		for(Usuario usuario : usuarios) {
+			if(usuario.getEmail() == null || usuario.getSenha() == null) {
+				continue;
+			}
 			if(usuario.getEmail().equals(email)&&
 			usuario.getSenha().equals(senha)) {
 				return new UsuarioLoginRequest(

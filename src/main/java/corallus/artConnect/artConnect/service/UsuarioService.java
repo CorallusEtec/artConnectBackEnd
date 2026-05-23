@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import corallus.artConnect.artConnect.dto.UsuarioDTO;
+
 import corallus.artConnect.artConnect.entity.atores.Usuario;
 import corallus.artConnect.artConnect.error.errors.UserNotFoundException;
 
@@ -21,10 +21,10 @@ public class UsuarioService {
         return this.usuarioRepository.findAll().stream().map(UsuarioResponse::toDTO).toList();
     }
 
-    public UsuarioDTO findById(Long id) {
+    public UsuarioResponse findById(Long id) {
         Usuario model = this.usuarioRepository.findById(id)
         .orElseThrow(()->new UserNotFoundException());
 
-        return UsuarioDTO.toDTO(model);
+        return UsuarioResponse.toDTO(model);
     }
 }

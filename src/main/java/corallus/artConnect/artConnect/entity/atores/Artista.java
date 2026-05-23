@@ -36,28 +36,34 @@ public class Artista extends Usuario {
     
     private Arte arte;
 
+    private Character sexo;
     // CONSTRUTOR
 
     public Artista() {
         super();
     }
-
-   public Artista(Long id, String nome, String email, String senha, String tipoConta, Status status,
+    public Artista(Long id, String nome, String email, String senha, String tipoConta, Status status,
             LocalDateTime dataCriacao, String nomeLog, Short numLog, String cep, String bairro, String complemento,
             String cidade, String uf, String textoBio, Set<Seguida> seguidores, Set<Seguida> seguido,
             List<Contato> contatos, List<Publicacao> publicacoes, Set<Reacao> reacoes, String nomeArtistico,
-            LocalDate dataNasc, List<Tag> listaTags, Arte arte) {
+            LocalDate dataNasc, List<Tag> listaTags, Arte arte, Character sexo) {
         super(id, nome, email, senha, tipoConta, status, dataCriacao, nomeLog, numLog, cep, bairro, complemento, cidade,
                 uf, textoBio, seguidores, seguido, contatos, publicacoes, reacoes);
         this.nomeArtistico = nomeArtistico;
         this.dataNasc = dataNasc;
         this.listaTags = listaTags;
         this.arte = arte;
+        this.sexo = sexo;
     }
+   
 
     // GET E SET
 
     
+
+
+    
+
 
 
     public String getNomeArtistico() {
@@ -90,6 +96,18 @@ public class Artista extends Usuario {
 
     public void setListaTags(List<Tag> listaTags) {
         this.listaTags = listaTags;
+    }
+
+
+
+    public Character getSexo() {
+        return sexo;
+    }
+
+
+
+    public void setSexo(Character sexo) {
+        this.sexo = sexo;
     }
     
 }

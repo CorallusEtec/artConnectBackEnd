@@ -54,7 +54,11 @@ public class ArtistaService implements IValidacoes {
     private TagRepository tagRepository;
 
     public List<ArtistaResponse> findAll() {
-        return this.artistaRepository.findAll().stream().map(ArtistaResponse::toDTO).toList();        
+        List<ArtistaResponse> lista = this.artistaRepository.findAll().stream()
+        .map(ArtistaResponse::toDTO)
+        .collect(Collectors.toList());
+        
+        return lista;    
     }
 
 
@@ -111,10 +115,6 @@ public class ArtistaService implements IValidacoes {
 
   
     public String edit(Long id, ArtistaEditRequest artistaDTO) {
-        
-        if (!this.artistaRepository.existsById(id)) {
-            throw new UserNotFoundException("Não foi possivel editar: Conta não existente.");
-        }
 
         // CAMPOS QUE NÃO PODEM FICAR VAZIOS OU NULOS
         validarString("O nome não pode ser vazio.", new String[] {artistaDTO.nome()});
@@ -123,7 +123,6 @@ public class ArtistaService implements IValidacoes {
         Artista artista = this.artistaRepository.findById(id)
         .orElseThrow(()->new UserNotFoundException("Não foi possivel editar: Conta não existente."));
         
-        artista.setId(id);
         artista.setNome(artistaDTO.nome());
         artista.setNomeArtistico(artistaDTO.nomeArtistico());
         artista.setDataNasc(artistaDTO.dataNasc());
@@ -159,9 +158,6 @@ public class ArtistaService implements IValidacoes {
 
 
         artista.setTextoBio(artistaDTO.textoBio());
-        artista.setContatos(artistaDTO.contatos());
-
-
 
         this.artistaRepository.save(artista);
         return "Artista atualizado com sucesso!";

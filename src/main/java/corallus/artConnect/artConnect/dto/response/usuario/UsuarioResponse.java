@@ -3,10 +3,12 @@ package corallus.artConnect.artConnect.dto.response.usuario;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
+import corallus.artConnect.artConnect.dto.response.contato.ContatoResponse;
+import corallus.artConnect.artConnect.dto.response.tipoContato.TipoContatoResponse;
 import corallus.artConnect.artConnect.entity.Seguida;
 import corallus.artConnect.artConnect.entity.atores.Usuario;
-import corallus.artConnect.artConnect.entity.contato.Contato;
 import corallus.artConnect.artConnect.entity.status.Status;
 
 public record UsuarioResponse(
@@ -28,7 +30,7 @@ public record UsuarioResponse(
     String textoBio,
     Set<Seguida> seguidores,
     Set<Seguida> seguido,
-    List<Contato> contatos
+    List<ContatoResponse> contatos
 ) {
     public static UsuarioResponse toDTO (Usuario usuario) {
         return new UsuarioResponse(
@@ -50,7 +52,21 @@ public record UsuarioResponse(
             usuario.getTextoBio(),
             usuario.getSeguidores(),
             usuario.getSeguido(),
-            usuario.getContatos()
+            usuario.getContatos().stream()
+            .map(
+                c-> new ContatoResponse.builder()
+                .setIdContato(c.getId())
+                .setTipoContatoResponse(
+                    
+                    new TipoContatoResponse.builder()
+                    .setIdTipoContato(c.getTipoContato().getId())
+                    .setTipoContato(c.getTipoContato().getTipoContato())
+                    .build()
+                )
+                .setValorContato(c.getValorContato())
+                .build()
+            )
+            .collect(Collectors.toList())
         );
     }
 }
