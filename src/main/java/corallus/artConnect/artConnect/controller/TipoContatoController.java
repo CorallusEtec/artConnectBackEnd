@@ -10,24 +10,25 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import corallus.artConnect.artConnect.dto.response.usuario.UsuarioResponse;
-import corallus.artConnect.artConnect.service.UsuarioService;
+import corallus.artConnect.artConnect.dto.response.tipoContato.TipoContatoResponse;
+import corallus.artConnect.artConnect.service.TipoContatoService;
 
 @RestController
-@RequestMapping("/usuario")
-public class UsuarioController {
+@RequestMapping("/tipoContato")
+public class TipoContatoController {
     @Autowired
-    private UsuarioService usuarioService;
+    private TipoContatoService tipoContatoService;
+
 
     @GetMapping("/findAll")
-    public ResponseEntity<List<UsuarioResponse>> findAll() {
-        List<UsuarioResponse> lista = usuarioService.findAll();
+    public ResponseEntity<List<TipoContatoResponse>> findAll() {
+        var lista = this.tipoContatoService.findAll();
+
         return new ResponseEntity<>(lista, HttpStatus.OK);
     }
-
     @GetMapping("/{id}")
-    public ResponseEntity<UsuarioResponse> findById(@PathVariable Long id) {
-        UsuarioResponse usuario = this.usuarioService.findById(id);
-        return new ResponseEntity<>(usuario, HttpStatus.OK);
+    public ResponseEntity<TipoContatoResponse> find(@PathVariable Long id) {
+        var tipoContato = this.tipoContatoService.find(id);
+        return new ResponseEntity<>(tipoContato, HttpStatus.OK);
     }
 }
