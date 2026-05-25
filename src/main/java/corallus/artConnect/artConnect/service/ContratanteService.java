@@ -4,6 +4,9 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.stream.Collectors;
+
+import corallus.artConnect.artConnect.queryFilter.ContratanteFindAllQF;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -35,8 +38,11 @@ public class ContratanteService implements IValidacoes {
     @Autowired
     private StatusRepository statusRepository;
 
-    public List<ContratanteResponse> findAll() {
-        return this.contratanteRepository.findAll().stream().map(ContratanteResponse::toDTO).toList();
+    public List<ContratanteResponse> findAll(ContratanteFindAllQF find) {
+        return this.contratanteRepository.findAll(find.toSpecification())
+                .stream()
+                .map(ContratanteResponse::toDTO)
+                .collect(Collectors.toList());
     }
 
     public ContratanteResponse findById(Long id) {

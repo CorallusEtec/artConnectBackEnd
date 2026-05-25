@@ -2,6 +2,7 @@ package corallus.artConnect.artConnect.controller;
 
 import java.util.List;
 
+import corallus.artConnect.artConnect.queryFilter.UsuarioFindAllQF;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,8 +21,8 @@ public class UsuarioController {
     private UsuarioService usuarioService;
 
     @GetMapping("/findAll")
-    public ResponseEntity<List<UsuarioResponse>> findAll() {
-        List<UsuarioResponse> lista = usuarioService.findAll();
+    public ResponseEntity<List<UsuarioResponse>> findAll(UsuarioFindAllQF filter) {
+        List<UsuarioResponse> lista = usuarioService.findAll(filter);
         return new ResponseEntity<>(lista, HttpStatus.OK);
     }
 

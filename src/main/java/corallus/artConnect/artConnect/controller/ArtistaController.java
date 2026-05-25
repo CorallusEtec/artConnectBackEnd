@@ -21,8 +21,8 @@ public class ArtistaController {
     private ArtistaService artistaService;
     
     @GetMapping("/findAll")
-    public ResponseEntity<List<ArtistaResponse>> findAll(ArtistaFindAllQF queryFilter) {
-        List<ArtistaResponse> lista = this.artistaService.findAll(queryFilter);
+    public ResponseEntity<List<ArtistaResponse>> findAll(ArtistaFindAllQF filter) {
+        List<ArtistaResponse> lista = this.artistaService.findAll(filter);
         return new ResponseEntity<>(lista, HttpStatus.OK);
     }
 

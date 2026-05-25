@@ -11,7 +11,7 @@ public class ArtistaSpec {
           if(ObjectUtils.isEmpty(nome)) {
               return null;
           } else {
-              return build.like(root.get("nome"), "%"+nome+"%");
+              return build.like(root.get("nome"), nome+"%");
           }
         };
     }
@@ -27,4 +27,36 @@ public class ArtistaSpec {
         };
 
     }
+
+    public static Specification<Artista> nomeArtisitcoContains(String nomeArtistico) {
+        return (root, query, build) -> {
+            if(ObjectUtils.isEmpty(nomeArtistico)) {
+                return null;
+            } else {
+                return build.like(root.get("nomeArtistico"), nomeArtistico+"%");
+            }
+        };
+    }
+
+    public static Specification<Artista> cidadeContains(String cidade) {
+        return (root, query, build) -> {
+            if(ObjectUtils.isEmpty(cidade)) {
+                return null;
+            } else {
+                return build.like(root.get("cidade"), "%"+cidade+"%");
+            }
+        };
+    }
+
+    public static Specification<Artista> ufContains(String uf) {
+        return (root, query, build) -> {
+            if(ObjectUtils.isEmpty(uf)) {
+                return null;
+            } else {
+                return build.like(root.get("uf"), uf+"%");
+            }
+        };
+    }
+
 }
+

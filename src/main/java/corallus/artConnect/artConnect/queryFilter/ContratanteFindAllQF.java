@@ -1,34 +1,28 @@
 package corallus.artConnect.artConnect.queryFilter;
 
-import corallus.artConnect.artConnect.entity.atores.Artista;
+import corallus.artConnect.artConnect.entity.atores.Contratante;
 import org.springframework.data.jpa.domain.Specification;
 
-import static corallus.artConnect.artConnect.specification.ArtistaSpec.*;
+import static corallus.artConnect.artConnect.specification.ContratanteSpec.*;
 
-public class ArtistaFindAllQF {
+public class ContratanteFindAllQF {
+
     private String nome;
-    private String arte;
-    private String nomeArtistico;
+    private String tipoContratante;
     private String cidade;
     private String uf;
 
-    public Specification<Artista> toSpecification() {
+
+    public Specification<Contratante> toSpecification() {
         return nomeContains(nome)
-                .and(arteContains(arte))
-                .and(nomeArtisitcoContains(nomeArtistico))
+                .and(tipoContratanteContains(tipoContratante))
                 .and(cidadeContains(cidade))
                 .and(ufContains(uf));
     }
 
+
     // GET E SET
 
-    public String getArte() {
-        return arte;
-    }
-
-    public void setArte(String arte) {
-        this.arte = arte;
-    }
 
     public String getNome() {
         return nome;
@@ -38,12 +32,12 @@ public class ArtistaFindAllQF {
         this.nome = nome;
     }
 
-    public String getNomeArtistico() {
-        return nomeArtistico;
+    public String getTipoContratante() {
+        return tipoContratante;
     }
 
-    public void setNomeArtistico(String nomeArtistico) {
-        this.nomeArtistico = nomeArtistico;
+    public void setTipoContratante(String tipoContratante) {
+        this.tipoContratante = tipoContratante;
     }
 
     public String getCidade() {

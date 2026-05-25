@@ -1,7 +1,9 @@
 package corallus.artConnect.artConnect.service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
+import corallus.artConnect.artConnect.queryFilter.UsuarioFindAllQF;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,8 +19,11 @@ public class UsuarioService {
     @Autowired
     private UsuarioRepository usuarioRepository;
     
-    public List<UsuarioResponse> findAll() {
-        return this.usuarioRepository.findAll().stream().map(UsuarioResponse::toDTO).toList();
+    public List<UsuarioResponse> findAll(UsuarioFindAllQF filter) {
+        return this.usuarioRepository.findAll(filter.toSpecifications())
+                .stream()
+                .map(UsuarioResponse::toDTO)
+                .collect(Collectors.toList());
     }
 
     public UsuarioResponse findById(Long id) {

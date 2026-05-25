@@ -1,6 +1,8 @@
 package corallus.artConnect.artConnect.controller;
 
 import java.util.List;
+
+import corallus.artConnect.artConnect.queryFilter.ContratanteFindAllQF;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,8 +20,8 @@ public class ContratanteController {
     private ContratanteService contratanteService;
 
     @GetMapping("/findAll")
-    public ResponseEntity<List<ContratanteResponse>> findAll() {
-        List<ContratanteResponse> lista = this.contratanteService.findAll();
+    public ResponseEntity<List<ContratanteResponse>> findAll(ContratanteFindAllQF find) {
+        List<ContratanteResponse> lista = this.contratanteService.findAll(find);
     
         return new ResponseEntity<>(lista, HttpStatus.OK);
     }

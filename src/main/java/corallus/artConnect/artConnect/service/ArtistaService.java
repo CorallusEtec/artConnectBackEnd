@@ -54,8 +54,8 @@ public class ArtistaService implements IValidacoes {
     @Autowired
     private TagRepository tagRepository;
 
-    public List<ArtistaResponse> findAll(ArtistaFindAllQF queryFilter) {
-        List<ArtistaResponse> lista = this.artistaRepository.findAll(queryFilter.toSpecification())
+    public List<ArtistaResponse> findAll(ArtistaFindAllQF filter) {
+        List<ArtistaResponse> lista = this.artistaRepository.findAll(filter.toSpecification())
                 .stream()
         .map(ArtistaResponse::toDTO)
         .collect(Collectors.toList());
