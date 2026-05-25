@@ -2,6 +2,7 @@ package corallus.artConnect.artConnect.controller;
 
 import java.util.List;
 
+import corallus.artConnect.artConnect.queryFilter.PublicacaoFindAllQF;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,21 +25,18 @@ public class PublicacaoController {
     private PublicacaoService publicacaoService;
 
     @PostMapping("/save")
-    public ResponseEntity<String> criarPublicacao(
+    public ResponseEntity<String> save(
         @RequestPart(value = "legenda", required = false) String legenda,
         @RequestPart(value = "file", required = false) MultipartFile image,
         @RequestParam Long autorId
 ) {
-    String msg = this.publicacaoService.criarPublicacao(legenda, image, autorId);
+    String msg = this.publicacaoService.save(legenda, image, autorId);
     return new ResponseEntity<>(msg, HttpStatus.CREATED);
 }
 
     @GetMapping("/findAll")
-    public ResponseEntity<List<PublicacaoResponse>> listarPublicacoes(
-        @RequestParam(required = false) String nomeArte,
-        @RequestParam(required = false) Boolean recentes,
-        @RequestParam(required = false) Boolean mostLikeFirst) {
-        List<PublicacaoResponse> lista = this.publicacaoService.listarPublicacoes(nomeArte, recentes, mostLikeFirst);
+    public ResponseEntity<List<PublicacaoResponse>> findAll(PublicacaoFindAllQF find) {
+        List<PublicacaoResponse> lista = this.publicacaoService.findAll(find);
         return new ResponseEntity<>(lista, HttpStatus.OK);
     }
 
