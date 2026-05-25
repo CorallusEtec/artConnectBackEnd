@@ -7,6 +7,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import corallus.artConnect.artConnect.queryFilter.ArtistaFindAllQF;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -53,8 +54,9 @@ public class ArtistaService implements IValidacoes {
     @Autowired
     private TagRepository tagRepository;
 
-    public List<ArtistaResponse> findAll() {
-        List<ArtistaResponse> lista = this.artistaRepository.findAll().stream()
+    public List<ArtistaResponse> findAll(ArtistaFindAllQF queryFilter) {
+        List<ArtistaResponse> lista = this.artistaRepository.findAll(queryFilter.toSpecification())
+                .stream()
         .map(ArtistaResponse::toDTO)
         .collect(Collectors.toList());
         
