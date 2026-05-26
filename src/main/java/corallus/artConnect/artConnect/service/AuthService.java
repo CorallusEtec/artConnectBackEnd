@@ -2,6 +2,8 @@ package corallus.artConnect.artConnect.service;
 
 
 import corallus.artConnect.artConnect.dto.response.MessageResponse;
+import corallus.artConnect.artConnect.entity.atores.Admin;
+import corallus.artConnect.artConnect.repository.atores.AdminRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -25,6 +27,8 @@ import corallus.artConnect.artConnect.repository.atores.ArtistaRepository;
 import corallus.artConnect.artConnect.repository.atores.ContratanteRepository;
 import corallus.artConnect.artConnect.repository.atores.UsuarioRepository;
 
+import java.time.LocalDateTime;
+
 @Service
 public class AuthService implements UserDetailsService {
     @Lazy
@@ -41,6 +45,8 @@ public class AuthService implements UserDetailsService {
     private ContratanteRepository contratanteRepository;
     @Autowired
     private ArtistaRepository artistaRepository;
+    @Autowired
+    private AdminRepository adminRepository;
 
     public UsuarioLoginResponse login(UserLoginRequest loginRequest) {
         var usernamePassword = new UsernamePasswordAuthenticationToken(loginRequest.email(), loginRequest.senha());
@@ -53,7 +59,7 @@ public class AuthService implements UserDetailsService {
         return new UsuarioLoginResponse(idUsuario, token);
     }
 
-    public MessageResponse register(UserRegisterRequest registerRequest, String tipoConta) {
+    public MessageResponse register(UserRegisterRequest registerRequest) {
 
         // VERIFICA SE JÁ EXISTE PELO EMAIL
         if(this.usuarioRepository.existsByEmail(registerRequest.email())) {
@@ -63,7 +69,7 @@ public class AuthService implements UserDetailsService {
         String encriptedPassword = this.passwordEncoder.encode(registerRequest.senha());
         
         // Contratante CNPJ
-        if(tipoConta.equalsIgnoreCase(ListaTipoConta.CONTRATANTE_CNPJ.name())) {
+        if(registerRequest.tipoConta().equalsIgnoreCase(ListaTipoConta.CONTRATANTE_CNPJ.name())) {
 
             Contratante contratante = new Contratante();
             contratante.setNome(registerRequest.nome());
@@ -73,31 +79,31 @@ public class AuthService implements UserDetailsService {
             contratante.setCnpj(registerRequest.cnpj());
             contratante.setRazaoSocial(registerRequest.razaoSocial());
 
-            contratante.setTipoConta(tipoConta.toUpperCase());
+            contratante.setTipoConta(registerRequest.tipoConta().toUpperCase());
 
             this.contratanteRepository.save(contratante);
 
         // CONTRATANTE CPF
-        } else if(tipoConta.equalsIgnoreCase(ListaTipoConta.CONTRATANTE_CPF.name())) {
+        } else if(registerRequest.tipoConta().equalsIgnoreCase(ListaTipoConta.CONTRATANTE_CPF.name())) {
 
             Contratante contratante = new Contratante();
             contratante.setNome(registerRequest.nome());
             contratante.setEmail(registerRequest.email());
             contratante.setSenha(encriptedPassword);
 
-            contratante.setTipoConta(tipoConta.toUpperCase());
+            contratante.setTipoConta(registerRequest.tipoConta().toUpperCase());
 
             this.contratanteRepository.save(contratante);
 
         // ARTISTA
-        } else if(tipoConta.equalsIgnoreCase(ListaTipoConta.ARTISTA.name())) {
+        } else if(registerRequest.tipoConta().equalsIgnoreCase(ListaTipoConta.ARTISTA.name())) {
 
             Artista artista = new Artista();
             artista.setNome(registerRequest.nome());
             artista.setEmail(registerRequest.email());
             artista.setSenha(encriptedPassword);
 
-            artista.setTipoConta(tipoConta.toUpperCase());
+            artista.setTipoConta(registerRequest.tipoConta().toUpperCase());
 
             this.artistaRepository.save(artista);
 
@@ -107,7 +113,19 @@ public class AuthService implements UserDetailsService {
         }
 
 
-        return new MessageResponse(tipoConta+" cadastrado com sucesso");
+        return new MessageResponse(registerRequest.tipoConta()+" cadastrado com sucesso");
+    }
+
+    public void registerAdmin(UserRegisterRequest request) {
+
+        Admin admin = new Admin();
+        admin.setEmail(request.email());
+        admin.setSenha(this.passwordEncoder.encode(request.senha()));
+        admin.setNome(request.nome());
+        admin.setTipoConta("ADMIN");
+        admin.setDataCriacao(LocalDateTime.now());
+
+        this.adminRepository.save(admin);
     }
 
     @Override
