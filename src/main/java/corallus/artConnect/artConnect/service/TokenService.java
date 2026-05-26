@@ -24,6 +24,7 @@ public class TokenService {
         Algorithm algorithm = Algorithm.HMAC256(secret);
         return JWT.create()
         .withIssuer("art-connect")
+                .withClaim("roles", usuario.getTipoConta())
         .withSubject(usuario.getEmail())
         .withExpiresAt(Instant.now().plus(Duration.ofHours(3))) // Tokn expira em 3 horas
         .sign(algorithm);
