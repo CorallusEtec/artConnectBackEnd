@@ -1,5 +1,7 @@
 package corallus.artConnect.artConnect.controller;
 
+import corallus.artConnect.artConnect.dto.response.MessageResponse;
+import org.aspectj.bridge.Message;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,22 +25,22 @@ public class ContatoController {
 
 
     @PostMapping("/save")
-    public ResponseEntity<String> save(@RequestBody ContatoSaveRequest contato) {
-        String msg = this.contatoService.save(contato);
+    public ResponseEntity<MessageResponse> save(@RequestBody ContatoSaveRequest contato) {
+        MessageResponse msg = this.contatoService.save(contato);
         
         return new ResponseEntity<>(msg, HttpStatus.CREATED);
     }
     
     @DeleteMapping("/{idContato}")
-    public ResponseEntity<String> delete(@PathVariable Long idContato) {
-        String msg = this.contatoService.delete(idContato);
+    public ResponseEntity<MessageResponse> delete(@PathVariable Long idContato) {
+        MessageResponse msg = this.contatoService.delete(idContato);
 
         return new ResponseEntity<>(msg, HttpStatus.OK);
     }
 
     @PutMapping("/{idContato}")
-    public ResponseEntity<String> edit(@PathVariable Long idContato, @RequestBody ContatoEditRequest editRequest) {
-        String msg = this.contatoService.edit(idContato, editRequest);
+    public ResponseEntity<MessageResponse> edit(@PathVariable Long idContato, @RequestBody ContatoEditRequest editRequest) {
+        MessageResponse msg = this.contatoService.edit(idContato, editRequest);
 
         return new ResponseEntity<>(msg, HttpStatus.OK);
     }

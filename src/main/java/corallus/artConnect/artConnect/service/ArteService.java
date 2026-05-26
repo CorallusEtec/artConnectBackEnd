@@ -2,6 +2,7 @@ package corallus.artConnect.artConnect.service;
 
 import java.util.List;
 
+import corallus.artConnect.artConnect.dto.response.MessageResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,16 +31,16 @@ public class ArteService implements IValidacoes {
         return arte;
     }
 
-    public String save(Arte arte) {
+    public MessageResponse save(Arte arte) {
         arte.setId(null);
 
         validarString(null, new String[] { arte.getNomeArte() });
 
         this.arteRepository.save(arte);
-        return "Arte criada.";
+        return new MessageResponse("Arte criada.");
     }
 
-    public String edit(Long id, Arte arte) {
+    public MessageResponse edit(Long id, Arte arte) {
         if(!this.arteRepository.existsById(id)) {
             throw new ArteNotFoundException();
         }
@@ -50,17 +51,17 @@ public class ArteService implements IValidacoes {
 
         this.arteRepository.save(arte);
 
-        return "Arte alterada com sucesso.";
+        return new MessageResponse("Arte alterada com sucesso.");
     }
 
-    public String delete(Long id) {
+    public MessageResponse delete(Long id) {
         if(!this.arteRepository.existsById(id)) {
             throw new ArteNotFoundException();
         }
 
         this.arteRepository.deleteById(id);
 
-        return "Arte deletada com sucesso.";
+        return new MessageResponse("Arte deletada com sucesso.");
     }
 
     @Override

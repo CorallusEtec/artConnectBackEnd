@@ -1,5 +1,6 @@
 package corallus.artConnect.artConnect.service;
 
+import corallus.artConnect.artConnect.dto.response.MessageResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,7 +27,7 @@ public class ContatoService implements IValidacoes{
     @Autowired
     private ContatoRepository contatoRepository;
 
-    public String save(ContatoSaveRequest contatoDto) {
+    public MessageResponse save(ContatoSaveRequest contatoDto) {
         // Validando conteúdo do contato
         this.validarString("O valor do contato não pode ser vazio", new String[] {contatoDto.valorContato()});
 
@@ -47,10 +48,10 @@ public class ContatoService implements IValidacoes{
 
         this.contatoRepository.save(contato);
 
-        return "Contato adicionado";
+        return new MessageResponse("Contato adicionado");
     }
 
-    public String delete(Long idContato) {
+    public MessageResponse delete(Long idContato) {
 
         if(!this.contatoRepository.existsById(idContato)) {
             throw new IllegalArgumentException("Contato não encontrado ou inexistente");
@@ -58,10 +59,10 @@ public class ContatoService implements IValidacoes{
 
         this.contatoRepository.deleteById(idContato);
         
-        return "Contato deletado com sucesso";
+        return new MessageResponse("Contato deletado com sucesso");
     }
 
-    public String edit(Long idContato, ContatoEditRequest editRequest) {
+    public MessageResponse edit(Long idContato, ContatoEditRequest editRequest) {
         // Validando Request
         this.validarString(null, new String[] {editRequest.valorContato()});
 
@@ -73,7 +74,7 @@ public class ContatoService implements IValidacoes{
 
         this.contatoRepository.save(contato);
 
-        return "Contato alterado com sucesso";
+        return new MessageResponse("Contato alterado com sucesso");
     }
     
     @Override

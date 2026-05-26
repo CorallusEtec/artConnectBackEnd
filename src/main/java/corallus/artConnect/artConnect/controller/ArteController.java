@@ -2,6 +2,7 @@ package corallus.artConnect.artConnect.controller;
 
 import java.util.List;
 
+import corallus.artConnect.artConnect.dto.response.MessageResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -36,20 +37,20 @@ public class ArteController {
     }
 
     @PostMapping("/save")
-    public ResponseEntity<String> save(@RequestBody Arte arte) {
-        String msg = this.arteService.save(arte);
+    public ResponseEntity<MessageResponse> save(@RequestBody Arte arte) {
+        MessageResponse msg = this.arteService.save(arte);
         return new ResponseEntity<>(msg, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<String> edit(@PathVariable Long id, @RequestBody Arte arte) {
-        String msg = this.arteService.edit(id, arte);
+    public ResponseEntity<MessageResponse> edit(@PathVariable Long id, @RequestBody Arte arte) {
+        MessageResponse msg = this.arteService.edit(id, arte);
         return new ResponseEntity<>(msg, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> delete(@PathVariable Long id) {
-        String msg = this.arteService.delete(id);
+    public ResponseEntity<MessageResponse> delete(@PathVariable Long id) {
+        MessageResponse msg = this.arteService.delete(id);
         return new ResponseEntity<>(msg, HttpStatus.OK);
     }
 }

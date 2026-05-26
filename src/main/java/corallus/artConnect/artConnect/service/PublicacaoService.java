@@ -7,6 +7,7 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import corallus.artConnect.artConnect.dto.response.MessageResponse;
 import corallus.artConnect.artConnect.queryFilter.PublicacaoFindAllQF;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -54,7 +55,7 @@ public class PublicacaoService {
     @Value("${aws.s3.bucket}")
     private String bucketName;
 
-    public String save(String legenda, MultipartFile file, Long autorId) {
+    public MessageResponse save(String legenda, MultipartFile file, Long autorId) {
         try {
 
             boolean temLegenda = legenda != null && !legenda.isBlank();
@@ -106,7 +107,7 @@ public class PublicacaoService {
 
             publicacaoRepository.save(pub);
 
-            return "Postagem criada com sucesso!";
+            return new MessageResponse("Postagem criada com sucesso!");
 
         } catch (RuntimeException e) {
             throw e;

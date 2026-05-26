@@ -7,6 +7,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import corallus.artConnect.artConnect.dto.response.MessageResponse;
 import corallus.artConnect.artConnect.queryFilter.ArtistaFindAllQF;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -72,7 +73,7 @@ public class ArtistaService implements IValidacoes {
     }
        
     
-    public String save(ArtistaCadastroRequest artistaDTO) { 
+    public MessageResponse save(ArtistaCadastroRequest artistaDTO) {
         
         if(this.usuarioRepository.existsByEmail(artistaDTO.email())) {
             throw new UserAlreadyExistsException();
@@ -112,11 +113,11 @@ public class ArtistaService implements IValidacoes {
         artista.setStatus(statusInicial);
         
         this.artistaRepository.save(artista);
-        return "Artista cadastrado com sucesso!";
+        return new MessageResponse("Artista cadastrado com sucesso!");
     }
 
   
-    public String edit(Long id, ArtistaEditRequest artistaDTO) {
+    public MessageResponse edit(Long id, ArtistaEditRequest artistaDTO) {
 
         // CAMPOS QUE NÃO PODEM FICAR VAZIOS OU NULOS
         validarString("O nome não pode ser vazio.", new String[] {artistaDTO.nome()});
@@ -162,7 +163,7 @@ public class ArtistaService implements IValidacoes {
         artista.setTextoBio(artistaDTO.textoBio());
 
         this.artistaRepository.save(artista);
-        return "Artista atualizado com sucesso!";
+        return new MessageResponse("Artista atualizado com sucesso!");
     }
 
 

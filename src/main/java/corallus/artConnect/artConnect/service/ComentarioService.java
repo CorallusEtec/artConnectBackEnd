@@ -5,6 +5,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import corallus.artConnect.artConnect.dto.response.MessageResponse;
+import org.aspectj.bridge.Message;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -73,7 +75,7 @@ public class ComentarioService {
     }
 
     // Comentar em uma publicação
-    public String comentar(ComentarioRequest dto) {
+    public MessageResponse comentar(ComentarioRequest dto) {
 
         Publicacao publicacao = this.publicacaoRepository.findById(dto.idPublicacao())
         .orElseThrow(()->new ResourceNotFoundException("Publicação não encontrada"));
@@ -87,7 +89,7 @@ public class ComentarioService {
 
         
         this.comentarioRepository.save(comentario);
-        return "Comentario publicado com sucesso";
+        return new MessageResponse("Comentario publicado com sucesso");
     }
 
     // Encapsular Conversão da Request para Entity

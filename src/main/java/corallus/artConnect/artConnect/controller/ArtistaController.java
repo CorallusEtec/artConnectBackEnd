@@ -2,6 +2,7 @@ package corallus.artConnect.artConnect.controller;
 
 import java.util.List;
 
+import corallus.artConnect.artConnect.dto.response.MessageResponse;
 import corallus.artConnect.artConnect.queryFilter.ArtistaFindAllQF;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -12,6 +13,7 @@ import corallus.artConnect.artConnect.dto.request.artista.ArtistaCadastroRequest
 import corallus.artConnect.artConnect.dto.request.artista.ArtistaEditRequest;
 import corallus.artConnect.artConnect.dto.response.artista.ArtistaResponse;
 import corallus.artConnect.artConnect.service.ArtistaService;
+import software.amazon.eventstream.Message;
 
 @RestController
 @RequestMapping("/artista")
@@ -28,15 +30,15 @@ public class ArtistaController {
 
     
     @PostMapping("/save")
-    public ResponseEntity<String> save(@RequestBody ArtistaCadastroRequest artistaDTO) {
-        String msg = this.artistaService.save(artistaDTO);
+    public ResponseEntity<MessageResponse> save(@RequestBody ArtistaCadastroRequest artistaDTO) {
+        MessageResponse msg = this.artistaService.save(artistaDTO);
         return new ResponseEntity<>(msg, HttpStatus.CREATED);
     }
     
 
     @PutMapping("/{id}")
-    public ResponseEntity<String> edit(@PathVariable Long id, @RequestBody ArtistaEditRequest artistaDTO) {
-        String msg = this.artistaService.edit(id, artistaDTO); 
+    public ResponseEntity<MessageResponse> edit(@PathVariable Long id, @RequestBody ArtistaEditRequest artistaDTO) {
+        MessageResponse msg = this.artistaService.edit(id, artistaDTO);
         return new ResponseEntity<>(msg, HttpStatus.OK);
     }
 

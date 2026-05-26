@@ -2,6 +2,7 @@ package corallus.artConnect.artConnect.service;
 
 import java.util.List;
 
+import corallus.artConnect.artConnect.dto.response.MessageResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,7 +15,7 @@ public class TagService {
     @Autowired
     private TagRepository tagRepository;
 
-    public String save(Tag tag) {
+    public MessageResponse save(Tag tag) {
         if(tag.equals(null)) {
             throw new IllegalArgumentException("A tag não pode ser nula");
         }
@@ -22,20 +23,20 @@ public class TagService {
         tag.setId(null);
         
         this.tagRepository.save(tag);
-        return "Tag criada com sucesso";
+        return new MessageResponse("Tag criada com sucesso");
     } 
 
     public List<Tag> findAll() {
         return this.tagRepository.findAll();
     }
 
-    public String delete(Long id) {
+    public MessageResponse delete(Long id) {
         if(!this.tagRepository.existsById(id)) {
             throw new ResourceNotFoundException("Tag não encontrada.");
         }
 
         this.tagRepository.deleteById(id);
 
-        return "Tag deletada com sucesso";
+        return new MessageResponse("Tag deletada com sucesso");
     }
 }
