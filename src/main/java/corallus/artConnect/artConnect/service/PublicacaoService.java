@@ -2,12 +2,13 @@ package corallus.artConnect.artConnect.service;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
-import org.springframework.data.domain.Sort;
+
+import corallus.artConnect.artConnect.dto.response.MessageResponse;
+import corallus.artConnect.artConnect.queryFilter.PublicacaoFindAllQF;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -23,7 +24,6 @@ import corallus.artConnect.artConnect.entity.reacao.Reacao;
 import corallus.artConnect.artConnect.entity.reacao.TipoReacao;
 import corallus.artConnect.artConnect.entity.status.Status;
 
-import corallus.artConnect.artConnect.enums.ListaTipoReacao;
 import corallus.artConnect.artConnect.enums.ListaTipoStatus;
 import corallus.artConnect.artConnect.repository.PublicacaoRepository;
 import corallus.artConnect.artConnect.repository.atores.UsuarioRepository;
@@ -55,7 +55,7 @@ public class PublicacaoService {
     @Value("${aws.s3.bucket}")
     private String bucketName;
 
-    public String criarPublicacao(String legenda, MultipartFile file, Long autorId) {
+    public MessageResponse save(String legenda, MultipartFile file, Long autorId) {
         try {
 
             boolean temLegenda = legenda != null && !legenda.isBlank();
@@ -107,7 +107,7 @@ public class PublicacaoService {
 
             publicacaoRepository.save(pub);
 
-            return "Postagem criada com sucesso!";
+            return new MessageResponse("Postagem criada com sucesso!");
 
         } catch (RuntimeException e) {
             throw e;
@@ -116,46 +116,14 @@ public class PublicacaoService {
         }
     }
 
-    public List<PublicacaoResponse> listarPublicacoes(
-        String nomeArte, 
-        Boolean recentes, 
-        Boolean mostLikeFirst
-    ) {
-        List<Publicacao> listaPubli;
-        
-        // recentes: true (padrão)
-        recentes = recentes==null?true:recentes;
-
-        // mostLikeFirst: false (padrão)
-        mostLikeFirst = mostLikeFirst==null?false:mostLikeFirst;
-
-        // tipoArte: Se não for informado ou vazio/null, lista puxa sem esse parâmetro
-        if(nomeArte == null || nomeArte.trim() == "") {
-            listaPubli = publicacaoRepository.findAllPublicacoesOrderByData(Sort.by(recentes?Sort.Direction.DESC:Sort.Direction.ASC, "data_publicacao"));
-        } else {
-            listaPubli = publicacaoRepository.findAllPublicacoesByNomeArteOrderByData(
-                nomeArte, Sort.by(recentes?Sort.Direction.DESC:Sort.Direction.ASC, "data_publicacao")
-            );
-        }
+    public List<PublicacaoResponse> findAll(PublicacaoFindAllQF find) {
+        List<Publicacao> listaPubli = this.publicacaoRepository.findAll(find.toSpecifications());
 
         // Se não for Ativo, remove da lista
         listaPubli.removeIf(e -> !e.getStatusPublicacao()
         .getTipoStatus()
         .getNomeTipoStatus()
         .equalsIgnoreCase(ListaTipoStatus.ATIVO.name()));
-        
-        // Se o parametro for true
-        if(mostLikeFirst) {
-            // Logica para os post com mais like virem primeiro
-
-            listaPubli.sort(Comparator.comparingInt(
-                    p->p.getReacoes().stream()
-                    .filter(r->r.getTipoReacao().getNomeTipo().equals(ListaTipoReacao.LIKE.name()))
-                    .collect(Collectors.toList()).size()
-                )
-            );
-        }
-        
 
         // Transformação em DTO
         List<PublicacaoResponse> dto = listaPubli.stream()

@@ -2,6 +2,7 @@ package corallus.artConnect.artConnect.controller;
 
 import java.util.List;
 
+import corallus.artConnect.artConnect.dto.response.MessageResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,8 +24,8 @@ public class TagController {
     private TagService tagService;
 
     @PostMapping("/save")
-    public ResponseEntity<String> save(@RequestBody Tag tag) {
-        String msg = this.tagService.save(tag);
+    public ResponseEntity<MessageResponse> save(@RequestBody Tag tag) {
+        MessageResponse msg = this.tagService.save(tag);
         return new ResponseEntity<>(msg, HttpStatus.CREATED);
     }
 
@@ -35,8 +36,8 @@ public class TagController {
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<String> delete(@PathVariable Long id) {
-        String msg = this.tagService.delete(id);
+    public ResponseEntity<MessageResponse> delete(@PathVariable Long id) {
+        MessageResponse msg = this.tagService.delete(id);
         return new ResponseEntity<>(msg, HttpStatus.OK);
     }
     

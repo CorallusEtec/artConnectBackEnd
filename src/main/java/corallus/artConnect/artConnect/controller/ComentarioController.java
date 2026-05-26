@@ -2,6 +2,7 @@ package corallus.artConnect.artConnect.controller;
 
 import java.util.List;
 
+import corallus.artConnect.artConnect.dto.response.MessageResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,8 +25,8 @@ public class ComentarioController {
 
 
     @PostMapping("/comment")
-    public ResponseEntity<String> comment(@RequestBody ComentarioRequest comentario) {
-        String msg = this.comentarioService.comentar(comentario);
+    public ResponseEntity<MessageResponse> comment(@RequestBody ComentarioRequest comentario) {
+        MessageResponse msg = this.comentarioService.comentar(comentario);
         return new ResponseEntity<>(msg, HttpStatus.CREATED);
     }
 

@@ -1,6 +1,7 @@
 package corallus.artConnect.artConnect.service;
 
 
+import corallus.artConnect.artConnect.dto.response.MessageResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -52,7 +53,7 @@ public class AuthService implements UserDetailsService {
         return new UsuarioLoginResponse(idUsuario, token);
     }
 
-    public String register(UserRegisterRequest registerRequest, String tipoConta) {
+    public MessageResponse register(UserRegisterRequest registerRequest, String tipoConta) {
 
         // VERIFICA SE JÁ EXISTE PELO EMAIL
         if(this.usuarioRepository.existsByEmail(registerRequest.email())) {
@@ -106,7 +107,7 @@ public class AuthService implements UserDetailsService {
         }
 
 
-        return tipoConta+" cadastrado com sucesso";
+        return new MessageResponse(tipoConta+" cadastrado com sucesso");
     }
 
     @Override

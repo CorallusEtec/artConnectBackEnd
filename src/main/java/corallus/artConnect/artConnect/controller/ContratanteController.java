@@ -2,6 +2,7 @@ package corallus.artConnect.artConnect.controller;
 
 import java.util.List;
 
+import corallus.artConnect.artConnect.dto.response.MessageResponse;
 import corallus.artConnect.artConnect.queryFilter.ContratanteFindAllQF;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -27,14 +28,14 @@ public class ContratanteController {
     }
 
     @PostMapping("/save")
-    public ResponseEntity<String> save(@RequestParam(name = "tipo", defaultValue = "cpf") String tipo, @RequestBody ContratanteCadastroRequest cadastro) {
-        String msg = this.contratanteService.save(tipo, cadastro);
+    public ResponseEntity<MessageResponse> save(@RequestParam(name = "tipo", defaultValue = "cpf") String tipo, @RequestBody ContratanteCadastroRequest cadastro) {
+        MessageResponse msg = this.contratanteService.save(tipo, cadastro);
         return new ResponseEntity<>(msg, HttpStatus.CREATED);
     }
     
     @PutMapping("/{id}")
-    public ResponseEntity<String> edit(@PathVariable Long id, @RequestBody ContratanteEditRequest contratanteDTO) { 
-        String msg = this.contratanteService.edit(id, contratanteDTO); 
+    public ResponseEntity<MessageResponse> edit(@PathVariable Long id, @RequestBody ContratanteEditRequest contratanteDTO) {
+        MessageResponse msg = this.contratanteService.edit(id, contratanteDTO);
         
         return new ResponseEntity<>(msg, HttpStatus.OK);
     }

@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import corallus.artConnect.artConnect.dto.response.MessageResponse;
 import corallus.artConnect.artConnect.queryFilter.ContratanteFindAllQF;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -51,7 +52,7 @@ public class ContratanteService implements IValidacoes {
     }
 
   
-    public String save(String tipo, ContratanteCadastroRequest contratanteDTO) {
+    public MessageResponse save(String tipo, ContratanteCadastroRequest contratanteDTO) {
         
         // Valida campos que nunca podem ser vazios
         validarString(null, new String[] {contratanteDTO.nome(), contratanteDTO.email(), contratanteDTO.senha()});
@@ -115,11 +116,11 @@ public class ContratanteService implements IValidacoes {
         
 
         this.contratanteRepository.save(contratante);
-        return "Contratante cadastrado com sucesso!";
+        return new MessageResponse("Contratante cadastrado com sucesso!");
     }
 
 
-    public String edit(Long id, ContratanteEditRequest contratanteDTO) {
+    public MessageResponse edit(Long id, ContratanteEditRequest contratanteDTO) {
 
         // CAMPOS QUE NÃO PODEM ESTAR VAZIO
         validarString(null, new String[] { contratanteDTO.nome() });
@@ -148,7 +149,7 @@ public class ContratanteService implements IValidacoes {
 
 
         this.contratanteRepository.save(contratante);
-        return "Contratante atualizado com sucesso!";
+        return new MessageResponse("Contratante atualizado com sucesso!");
     }
 
     @Override

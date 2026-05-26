@@ -1,5 +1,6 @@
 package corallus.artConnect.artConnect.controller;
 
+import corallus.artConnect.artConnect.dto.response.MessageResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,7 +29,7 @@ public class AuthController {
     }
     
     @PostMapping("/register")
-	public ResponseEntity<String> registrar(
+	public ResponseEntity<MessageResponse> registrar(
         @RequestBody @Valid UserRegisterRequest registerRequest,
         @RequestParam(name = "tipo", defaultValue = "artista") String tipoConta
         /**
@@ -38,7 +39,7 @@ public class AuthController {
          */
 
     ) {
-        String msg = this.authService.register(registerRequest, tipoConta);
+        MessageResponse msg = this.authService.register(registerRequest, tipoConta);
         return new ResponseEntity<>(msg, HttpStatus.CREATED);
 	}
 }
