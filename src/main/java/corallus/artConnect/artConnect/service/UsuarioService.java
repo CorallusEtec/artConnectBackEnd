@@ -22,13 +22,17 @@ public class UsuarioService {
     public List<UsuarioResponse> findAll(UsuarioFindAllQF filter) {
         return this.usuarioRepository.findAll(filter.toSpecifications())
                 .stream()
+                .filter(u->!(u.getTipoConta().equalsIgnoreCase("ADMIN")))
                 .map(UsuarioResponse::toDTO)
                 .collect(Collectors.toList());
     }
 
     public UsuarioResponse findById(Long id) {
         Usuario model = this.usuarioRepository.findById(id)
-        .orElseThrow(()->new UserNotFoundException());
+        .orElseThrow(UserNotFoundException::new);
+        if(model.getTipoConta().equalsIgnoreCase("ADMIN")) {
+            throw new UserNotFoundException();
+        }
 
         return UsuarioResponse.toDTO(model);
     }

@@ -30,16 +30,9 @@ public class AuthController {
     
     @PostMapping("/register")
 	public ResponseEntity<MessageResponse> registrar(
-        @RequestBody @Valid UserRegisterRequest registerRequest,
-        @RequestParam(name = "tipo", defaultValue = "artista") String tipoConta
-        /**
-         * Valores aceitos:[
-         *  "artista", "contratante_cpf", "contratante_cnpj"
-         * ]
-         */
-
+        @RequestBody @Valid UserRegisterRequest registerRequest
     ) {
-        MessageResponse msg = this.authService.register(registerRequest, tipoConta);
+        MessageResponse msg = this.authService.register(registerRequest);
         return new ResponseEntity<>(msg, HttpStatus.CREATED);
 	}
 }
