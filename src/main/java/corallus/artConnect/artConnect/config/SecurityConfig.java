@@ -34,7 +34,8 @@ public class SecurityConfig {
         .csrf(csrf -> csrf.disable())
         .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
         .authorizeHttpRequests(authorize -> authorize
-            .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
+            // ROTAS PÚBLICAS
+                .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
             .requestMatchers(HttpMethod.POST, "/auth/register").permitAll()
             
             .requestMatchers(HttpMethod.GET, "/usuario/findAll").permitAll()
@@ -52,7 +53,10 @@ public class SecurityConfig {
             .requestMatchers(HttpMethod.GET, "/contato/**").permitAll()
             .requestMatchers(HttpMethod.GET, "/tipoContato/findAll").permitAll()
                 .requestMatchers(HttpMethod.GET, "/tipoContato/**").permitAll()
-            .anyRequest().authenticated()
+                // ROTAS PROTEGIDAS POR ROLES
+                .requestMatchers(HttpMethod.GET, "/admin/relatorio").hasAuthority("ADMIN")
+                // OUTRAS (AUTENTICAÇÃO)
+                .anyRequest().authenticated()
         )
 
         .exceptionHandling(handling -> handling

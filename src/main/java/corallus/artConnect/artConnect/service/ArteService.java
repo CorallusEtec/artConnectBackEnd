@@ -6,9 +6,9 @@ import corallus.artConnect.artConnect.dto.response.MessageResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import corallus.artConnect.artConnect.entity.Arte;
+import corallus.artConnect.artConnect.entity.arte.Arte;
 import corallus.artConnect.artConnect.error.errors.ArteNotFoundException;
-import corallus.artConnect.artConnect.repository.ArteRepository;
+import corallus.artConnect.artConnect.repository.arte.ArteRepository;
 
 @Service
 public class ArteService implements IValidacoes {
