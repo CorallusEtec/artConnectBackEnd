@@ -3,13 +3,18 @@ package corallus.artConnect.artConnect.service;
 import corallus.artConnect.artConnect.dto.response.admin.RelatorioResponse;
 import corallus.artConnect.artConnect.dto.response.publicacao.PublicacaoResponse;
 import corallus.artConnect.artConnect.dto.response.usuario.UsuarioResponse;
+import corallus.artConnect.artConnect.entity.arte.Arte;
 import corallus.artConnect.artConnect.queryFilter.PublicacaoFindAllQF;
 import corallus.artConnect.artConnect.queryFilter.UsuarioFindAllQF;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class AdminService {
@@ -18,6 +23,9 @@ public class AdminService {
 
     @Autowired
     private PublicacaoService publicacaoService;
+
+    @Autowired
+    private ArteService arteService;
 
     public RelatorioResponse getRelatorio() {
 
@@ -41,17 +49,29 @@ public class AdminService {
 
         List<PublicacaoResponse> publicacoesSem = this.publicacaoService.findAll(publiQf);
 
-        // Usuarios Cadastrados em 6 meses
+        // ARTES MAIS POPULARES NO SISTEMA
+
+        var artes =  this.arteService.findAll();
+
+        var artesPopulares = artes.stream()
+                .sorted(Comparator.comparingInt((Arte a) -> a.getArtistas().size()).reversed())
+                .map(arte ->{
+                    Map<String, Integer> mapaArte = new HashMap<>();
+                    mapaArte.put("id", arte.getId().intValue());
+                    mapaArte.put(arte.getNomeArte(), arte.getArtistas().size());
+
+                    return mapaArte;
+                })
+                .toList();
+
         usuarioQf.setTipoConta(null);
-        usuarioQf.setDataCriacaoStarts(LocalDateTime.now().minusMonths(6));
-        List<UsuarioResponse> usuariosSemestre = this.usuarioService.supFindAll(usuarioQf);
-        System.out.println("Fim");
         return new RelatorioResponse.builder()
                 .setArtistasCadastrados(artistasCad)
                 .setContratantesCadastrados(contratanteCad)
                 .setContratantesPendentes(contratantesPend)
-                .setUsuarios(usuariosSemestre)
                 .setPublicacoesSemanal(publicacoesSem)
+                .setListaArtes(artesPopulares)
+                .setUsuarios(this.usuarioService.findAll(usuarioQf))
                 .build();
     }
 

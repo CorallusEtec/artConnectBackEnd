@@ -49,12 +49,4 @@ public class UsuarioService {
                 .map(UsuarioResponse::toDTO)
                 .collect(Collectors.toList());
     }
-
-    public List<UsuarioResponse> supFindAll(UsuarioFindAllQF filter) {
-        return this.usuarioRepository.findAll(filter.toSpecifications())
-                .stream()
-                .filter(u->!(u.getTipoConta().equalsIgnoreCase("ADMIN")))
-                .map(UsuarioResponse::toDTO)
-                .collect(Collectors.toList());
-    }
 }

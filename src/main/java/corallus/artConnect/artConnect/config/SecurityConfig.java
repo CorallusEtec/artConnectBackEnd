@@ -1,5 +1,6 @@
 package corallus.artConnect.artConnect.config;
 
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -8,6 +9,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -31,7 +33,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
         .cors(Customizer.withDefaults())
-        .csrf(csrf -> csrf.disable())
+        .csrf(AbstractHttpConfigurer::disable)
         .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
         .authorizeHttpRequests(authorize -> authorize
             // ROTAS PÚBLICAS
@@ -55,15 +57,19 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.GET, "/tipoContato/**").permitAll()
                 // ROTAS PROTEGIDAS POR ROLES
                 .requestMatchers(HttpMethod.GET, "/admin/relatorio").hasAuthority("ADMIN")
+                .requestMatchers(HttpMethod.POST, "/arte/save").hasAuthority("ADMIN")
                 // OUTRAS (AUTENTICAÇÃO)
                 .anyRequest().authenticated()
         )
 
-        .exceptionHandling(handling -> handling
-                .authenticationEntryPoint((request, response, authException) -> {
-                    resolver.resolveException(request, response, http, authException);
-                })
-            )
+                .exceptionHandling(exception -> exception
+                        // Garante que requisições não autenticadas retornem 401 e não 200
+                        .authenticationEntryPoint((request, response, authException) -> {
+                            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                            response.setContentType("application/json");
+                            response.getWriter().write("{\"message\": \"Nao autorizado. Faca login para acessar.\"}");
+                        })
+                )
 
 
         .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)

@@ -2,7 +2,9 @@ package corallus.artConnect.artConnect.controller;
 
 import java.util.List;
 
+import corallus.artConnect.artConnect.dto.request.arte.ArteSaveRequest;
 import corallus.artConnect.artConnect.dto.response.MessageResponse;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -37,7 +39,7 @@ public class ArteController {
     }
 
     @PostMapping("/save")
-    public ResponseEntity<MessageResponse> save(@RequestBody Arte arte) {
+    public ResponseEntity<MessageResponse> save( @RequestBody @Valid ArteSaveRequest arte) {
         MessageResponse msg = this.arteService.save(arte);
         return new ResponseEntity<>(msg, HttpStatus.CREATED);
     }

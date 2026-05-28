@@ -119,9 +119,6 @@ public class ArtistaService implements IValidacoes {
 
   
     public MessageResponse edit(Long id, ArtistaEditRequest artistaDTO) {
-
-        // CAMPOS QUE NÃO PODEM FICAR VAZIOS OU NULOS
-        validarString("O nome não pode ser vazio.", new String[] {artistaDTO.nome()});
         
         // BUSCA ARTISTA NO BANCO
         Artista artista = this.artistaRepository.findById(id)

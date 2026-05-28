@@ -4,6 +4,7 @@ import java.util.List;
 
 import corallus.artConnect.artConnect.dto.response.MessageResponse;
 import corallus.artConnect.artConnect.queryFilter.ArtistaFindAllQF;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -37,7 +38,7 @@ public class ArtistaController {
     
 
     @PutMapping("/{id}")
-    public ResponseEntity<MessageResponse> edit(@PathVariable Long id, @RequestBody ArtistaEditRequest artistaDTO) {
+    public ResponseEntity<MessageResponse> edit(@PathVariable Long id, @RequestBody @Valid ArtistaEditRequest artistaDTO) {
         MessageResponse msg = this.artistaService.edit(id, artistaDTO);
         return new ResponseEntity<>(msg, HttpStatus.OK);
     }

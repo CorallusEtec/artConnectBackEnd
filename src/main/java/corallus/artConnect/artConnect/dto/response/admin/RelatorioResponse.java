@@ -4,6 +4,7 @@ import corallus.artConnect.artConnect.dto.response.publicacao.PublicacaoResponse
 import corallus.artConnect.artConnect.dto.response.usuario.UsuarioResponse;
 
 import java.util.List;
+import java.util.Map;
 
 public record RelatorioResponse(
        Integer artistasCadastrados,
@@ -11,6 +12,7 @@ public record RelatorioResponse(
        Integer contratantesPendentes,
 
        List<PublicacaoResponse> publicacoesSemanal,
+       List<Map<String, Integer>> listaArtes,
        List<UsuarioResponse> usuarios
 ) {
 
@@ -18,9 +20,21 @@ public record RelatorioResponse(
         private Integer artistasCadastrados;
         private Integer contratantesCadastrados;
         private Integer contratantesPendentes;
-
         private List<PublicacaoResponse> publicacoesSemanal;
-        private List<UsuarioResponse> usuarios;
+        private List<Map<String, Integer>> listaArtes;
+        private  List<UsuarioResponse> usuarios;
+
+        public builder setUsuarios(List<UsuarioResponse> usuarios) {
+            this.usuarios = usuarios;
+            return this;
+        }
+
+        public builder setListaArtes(List<Map<String, Integer>> listaArtes) {
+            this.listaArtes = listaArtes;
+            return this;
+        }
+
+
 
         public builder setArtistasCadastrados(Integer artistasCadastrados) {
             this.artistasCadastrados = artistasCadastrados;
@@ -42,14 +56,9 @@ public record RelatorioResponse(
             return this;
         }
 
-        public builder setUsuarios(List<UsuarioResponse> usuarios) {
-            this.usuarios = usuarios;
-            return this;
-        }
-
         public RelatorioResponse build() {
             return new RelatorioResponse(artistasCadastrados, contratantesCadastrados, contratantesPendentes,
-                    publicacoesSemanal, usuarios);
+                    publicacoesSemanal, listaArtes, usuarios);
         }
     }
 
