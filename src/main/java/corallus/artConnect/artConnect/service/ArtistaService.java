@@ -27,7 +27,7 @@ import corallus.artConnect.artConnect.error.errors.ArteNotFoundException;
 import corallus.artConnect.artConnect.error.errors.ResourceNotFoundException;
 import corallus.artConnect.artConnect.error.errors.UserAlreadyExistsException;
 import corallus.artConnect.artConnect.error.errors.UserNotFoundException;
-import corallus.artConnect.artConnect.repository.ArteRepository;
+import corallus.artConnect.artConnect.repository.arte.ArteRepository;
 import corallus.artConnect.artConnect.repository.TagRepository;
 import corallus.artConnect.artConnect.repository.atores.ArtistaRepository;
 import corallus.artConnect.artConnect.repository.atores.UsuarioRepository;
@@ -58,7 +58,8 @@ public class ArtistaService implements IValidacoes {
     public List<ArtistaResponse> findAll(ArtistaFindAllQF filter) {
         List<ArtistaResponse> lista = this.artistaRepository.findAll(filter.toSpecification())
                 .stream()
-        .map(ArtistaResponse::toDTO)
+                .filter(a->a.getStatus().getTipoStatus().getNomeTipoStatus().equalsIgnoreCase("ATIVO"))
+                .map(ArtistaResponse::toDTO)
         .collect(Collectors.toList());
         
         return lista;    
@@ -118,9 +119,6 @@ public class ArtistaService implements IValidacoes {
 
   
     public MessageResponse edit(Long id, ArtistaEditRequest artistaDTO) {
-
-        // CAMPOS QUE NÃO PODEM FICAR VAZIOS OU NULOS
-        validarString("O nome não pode ser vazio.", new String[] {artistaDTO.nome()});
         
         // BUSCA ARTISTA NO BANCO
         Artista artista = this.artistaRepository.findById(id)

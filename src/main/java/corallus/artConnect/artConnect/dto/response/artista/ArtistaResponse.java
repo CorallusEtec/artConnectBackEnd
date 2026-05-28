@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 
 import corallus.artConnect.artConnect.dto.response.contato.ContatoResponse;
 import corallus.artConnect.artConnect.dto.response.tipoContato.TipoContatoResponse;
-import corallus.artConnect.artConnect.entity.Arte;
+import corallus.artConnect.artConnect.entity.arte.Arte;
 import corallus.artConnect.artConnect.entity.Seguida;
 import corallus.artConnect.artConnect.entity.Tag;
 import corallus.artConnect.artConnect.entity.atores.Artista;

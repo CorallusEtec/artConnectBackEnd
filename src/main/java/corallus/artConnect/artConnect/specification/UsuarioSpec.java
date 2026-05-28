@@ -5,6 +5,8 @@ import corallus.artConnect.artConnect.entity.atores.Usuario;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.util.ObjectUtils;
 
+import java.time.LocalDateTime;
+
 public class UsuarioSpec {
 
     public static Specification<Usuario> nomeContains(String nome) {
@@ -47,4 +49,13 @@ public class UsuarioSpec {
         };
     }
 
+    public static Specification<Usuario> dataCriacaoStarts(LocalDateTime dataCriacao) {
+        return (root, query, builder) -> {
+            if(ObjectUtils.isEmpty(dataCriacao)) {
+                return null;
+            } else {
+                return builder.greaterThanOrEqualTo(root.get("dataCriacao"), dataCriacao);
+            }
+        };
+    }
 }

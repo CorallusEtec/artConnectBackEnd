@@ -23,6 +23,8 @@ public class UsuarioService {
         return this.usuarioRepository.findAll(filter.toSpecifications())
                 .stream()
                 .filter(u->!(u.getTipoConta().equalsIgnoreCase("ADMIN")))
+                .filter(u->u.getStatus()!=null)
+                .filter(u->u.getStatus().getTipoStatus().getNomeTipoStatus().equalsIgnoreCase("ATIVO"))
                 .map(UsuarioResponse::toDTO)
                 .collect(Collectors.toList());
     }
@@ -35,5 +37,16 @@ public class UsuarioService {
         }
 
         return UsuarioResponse.toDTO(model);
+    }
+
+    // BUSCA COM PARAMETRO DE TIPO STATUS
+    public List<UsuarioResponse> findAll(UsuarioFindAllQF filter, String tipoStatus) {
+        return this.usuarioRepository.findAll(filter.toSpecifications())
+                .stream()
+                .filter(u->!(u.getTipoConta().equalsIgnoreCase("ADMIN")))
+                .filter(u->u.getStatus()!=null)
+                .filter(u->u.getStatus().getTipoStatus().getNomeTipoStatus().equalsIgnoreCase(tipoStatus))
+                .map(UsuarioResponse::toDTO)
+                .collect(Collectors.toList());
     }
 }

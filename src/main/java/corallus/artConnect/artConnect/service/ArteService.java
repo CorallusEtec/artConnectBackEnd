@@ -2,13 +2,14 @@ package corallus.artConnect.artConnect.service;
 
 import java.util.List;
 
+import corallus.artConnect.artConnect.dto.request.arte.ArteSaveRequest;
 import corallus.artConnect.artConnect.dto.response.MessageResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import corallus.artConnect.artConnect.entity.Arte;
+import corallus.artConnect.artConnect.entity.arte.Arte;
 import corallus.artConnect.artConnect.error.errors.ArteNotFoundException;
-import corallus.artConnect.artConnect.repository.ArteRepository;
+import corallus.artConnect.artConnect.repository.arte.ArteRepository;
 
 @Service
 public class ArteService implements IValidacoes {
@@ -31,10 +32,10 @@ public class ArteService implements IValidacoes {
         return arte;
     }
 
-    public MessageResponse save(Arte arte) {
-        arte.setId(null);
+    public MessageResponse save(ArteSaveRequest arteRequest) {
 
-        validarString(null, new String[] { arte.getNomeArte() });
+        Arte arte = new Arte();
+        arte.setNomeArte(arteRequest.nomeArte());
 
         this.arteRepository.save(arte);
         return new MessageResponse("Arte criada.");

@@ -3,11 +3,14 @@ package corallus.artConnect.artConnect.dto.request.artista;
 import java.time.LocalDate;
 import java.util.List;
 
-import corallus.artConnect.artConnect.entity.Arte;
+import corallus.artConnect.artConnect.entity.arte.Arte;
 import corallus.artConnect.artConnect.entity.Tag;
+import jakarta.validation.constraints.NotBlank;
 
 public record ArtistaEditRequest(
     // USUARIO
+
+    @NotBlank
     String nome,
     String textoBio,
 
