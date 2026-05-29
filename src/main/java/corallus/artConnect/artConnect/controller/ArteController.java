@@ -2,10 +2,12 @@ package corallus.artConnect.artConnect.controller;
 
 import java.util.List;
 
+import corallus.artConnect.artConnect.dto.request.arte.ArteSaveRequest;
+import corallus.artConnect.artConnect.dto.response.MessageResponse;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,12 +17,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import corallus.artConnect.artConnect.entity.Arte;
+import corallus.artConnect.artConnect.entity.arte.Arte;
 import corallus.artConnect.artConnect.service.ArteService;
 
 @RequestMapping("/arte")
 @RestController
-@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class ArteController {
     @Autowired
     private ArteService arteService;
@@ -38,20 +39,20 @@ public class ArteController {
     }
 
     @PostMapping("/save")
-    public ResponseEntity<String> save(@RequestBody Arte arte) {
-        String msg = this.arteService.save(arte);
+    public ResponseEntity<MessageResponse> save( @RequestBody @Valid ArteSaveRequest arte) {
+        MessageResponse msg = this.arteService.save(arte);
         return new ResponseEntity<>(msg, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<String> edit(@PathVariable Long id, @RequestBody Arte arte) {
-        String msg = this.arteService.edit(id, arte);
+    public ResponseEntity<MessageResponse> edit(@PathVariable Long id, @RequestBody Arte arte) {
+        MessageResponse msg = this.arteService.edit(id, arte);
         return new ResponseEntity<>(msg, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> delete(@PathVariable Long id) {
-        String msg = this.arteService.delete(id);
+    public ResponseEntity<MessageResponse> delete(@PathVariable Long id) {
+        MessageResponse msg = this.arteService.delete(id);
         return new ResponseEntity<>(msg, HttpStatus.OK);
     }
 }

@@ -1,14 +1,20 @@
 package corallus.artConnect.artConnect.entity.atores;
 
 import java.time.LocalDateTime;
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
+import org.jspecify.annotations.Nullable;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import corallus.artConnect.artConnect.entity.Publicacao;
 import corallus.artConnect.artConnect.entity.Seguida;
-import corallus.artConnect.artConnect.entity.Status;
 import corallus.artConnect.artConnect.entity.contato.Contato;
-import corallus.artConnect.artConnect.entity.publicacao.Publicacao;
-import corallus.artConnect.artConnect.entity.publicacao.Reacao;
+import corallus.artConnect.artConnect.entity.reacao.Reacao;
+import corallus.artConnect.artConnect.entity.status.Status;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -23,7 +29,7 @@ import jakarta.persistence.OneToOne;
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 
-public abstract class Usuario {
+public abstract class Usuario implements UserDetails{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -61,6 +67,44 @@ public abstract class Usuario {
     private List<Publicacao> publicacoes;
     @OneToMany(mappedBy = "usuario")
     private Set<Reacao> reacoes;
+    
+    // Metodos UserDetails
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(new SimpleGrantedAuthority(this.tipoConta));
+    }
+
+    @Override
+    public @Nullable String getPassword() {
+        return this.getSenha();
+    }
+
+    @Override
+    public String getUsername() {
+
+        return this.getEmail();
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
+
     // CONSTRUTORES
     public Usuario() {}
 
@@ -93,11 +137,6 @@ public abstract class Usuario {
     
 
     // GET E SET   
-
-
-    
-
-
 
     public Long getId() {
         return id;

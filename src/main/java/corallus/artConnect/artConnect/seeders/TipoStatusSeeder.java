@@ -4,9 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
-import corallus.artConnect.artConnect.entity.ListaTipoStatus;
-import corallus.artConnect.artConnect.entity.TipoStatus;
-import corallus.artConnect.artConnect.repository.TipoStatusRepository;
+import corallus.artConnect.artConnect.entity.status.TipoStatus;
+import corallus.artConnect.artConnect.enums.ListaTipoStatus;
+import corallus.artConnect.artConnect.repository.status.TipoStatusRepository;
 
 @Component
 public class TipoStatusSeeder implements CommandLineRunner{
