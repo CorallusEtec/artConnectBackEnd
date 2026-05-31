@@ -10,7 +10,7 @@ import jakarta.validation.constraints.NotBlank;
 public record ArtistaEditRequest(
     // USUARIO
 
-    @NotBlank
+    @NotBlank(message = "O nome não pode ser vazio")
     String nome,
     String textoBio,
 

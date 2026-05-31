@@ -4,7 +4,6 @@ import java.util.List;
 
 import corallus.artConnect.artConnect.dto.response.MessageResponse;
 import corallus.artConnect.artConnect.queryFilter.PublicacaoFindAllQF;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,8 +21,13 @@ import corallus.artConnect.artConnect.service.PublicacaoService;
 @RequestMapping("/publicacao")
 public class PublicacaoController {
 
-	@Autowired
-    private PublicacaoService publicacaoService;
+
+    private final PublicacaoService publicacaoService;
+
+    // INJEÇÃO DE DEPENDÊNCIA
+    public PublicacaoController(PublicacaoService publicacaoService) {
+        this.publicacaoService = publicacaoService;
+    }
 
     @PostMapping("/save")
     public ResponseEntity<MessageResponse> save(

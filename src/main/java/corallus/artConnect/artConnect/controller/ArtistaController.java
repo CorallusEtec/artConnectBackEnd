@@ -5,7 +5,6 @@ import java.util.List;
 import corallus.artConnect.artConnect.dto.response.MessageResponse;
 import corallus.artConnect.artConnect.queryFilter.ArtistaFindAllQF;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,15 +13,19 @@ import corallus.artConnect.artConnect.dto.request.artista.ArtistaCadastroRequest
 import corallus.artConnect.artConnect.dto.request.artista.ArtistaEditRequest;
 import corallus.artConnect.artConnect.dto.response.artista.ArtistaResponse;
 import corallus.artConnect.artConnect.service.ArtistaService;
-import software.amazon.eventstream.Message;
 
 @RestController
 @RequestMapping("/artista")
 public class ArtistaController {
 
-    @Autowired
-    private ArtistaService artistaService;
-    
+
+    private final ArtistaService artistaService;
+
+    // INJEÇÃO DE DEPENCÊNCIA
+    public ArtistaController(ArtistaService artistaService) {
+        this.artistaService = artistaService;
+    }
+
     @GetMapping("/findAll")
     public ResponseEntity<List<ArtistaResponse>> findAll(ArtistaFindAllQF filter) {
         List<ArtistaResponse> lista = this.artistaService.findAll(filter);
@@ -31,7 +34,7 @@ public class ArtistaController {
 
     
     @PostMapping("/save")
-    public ResponseEntity<MessageResponse> save(@RequestBody ArtistaCadastroRequest artistaDTO) {
+    public ResponseEntity<MessageResponse> save(@RequestBody @Valid ArtistaCadastroRequest artistaDTO) {
         MessageResponse msg = this.artistaService.save(artistaDTO);
         return new ResponseEntity<>(msg, HttpStatus.CREATED);
     }
