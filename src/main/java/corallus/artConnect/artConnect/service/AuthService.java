@@ -3,7 +3,12 @@ package corallus.artConnect.artConnect.service;
 
 import corallus.artConnect.artConnect.dto.response.MessageResponse;
 import corallus.artConnect.artConnect.entity.atores.Admin;
+import corallus.artConnect.artConnect.entity.status.Status;
+import corallus.artConnect.artConnect.entity.status.TipoStatus;
+import corallus.artConnect.artConnect.enums.ListaTipoStatus;
 import corallus.artConnect.artConnect.repository.atores.AdminRepository;
+import corallus.artConnect.artConnect.repository.status.StatusRepository;
+import corallus.artConnect.artConnect.repository.status.TipoStatusRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -47,7 +52,10 @@ public class AuthService implements UserDetailsService {
     private ArtistaRepository artistaRepository;
     @Autowired
     private AdminRepository adminRepository;
-
+    @Autowired
+    private TipoStatusRepository tipoStatusRepository;
+    @Autowired
+    private  StatusRepository statusRepository;
     public UsuarioLoginResponse login(UserLoginRequest loginRequest) {
         var usernamePassword = new UsernamePasswordAuthenticationToken(loginRequest.email(), loginRequest.senha());
         var auth = this.authenticationManager.authenticate(usernamePassword);
@@ -67,7 +75,14 @@ public class AuthService implements UserDetailsService {
         }
 
         String encriptedPassword = this.passwordEncoder.encode(registerRequest.senha());
-        
+
+        Status status = new Status();
+        status.setDataModificacao(LocalDateTime.now());
+        status.setTipoStatus(this.tipoStatusRepository.findByNomeTipoStatus(ListaTipoStatus.ATIVO.name()).get());
+        this.statusRepository.save(status);
+        LocalDateTime criacao = LocalDateTime.now();
+
+
         // Contratante CNPJ
         if(registerRequest.tipoConta().equalsIgnoreCase(ListaTipoConta.CONTRATANTE_CNPJ.name())) {
 
@@ -80,7 +95,8 @@ public class AuthService implements UserDetailsService {
             contratante.setRazaoSocial(registerRequest.razaoSocial());
 
             contratante.setTipoConta(registerRequest.tipoConta().toUpperCase());
-
+            contratante.setDataCriacao(criacao);
+            contratante.setStatus(status);
             this.contratanteRepository.save(contratante);
 
         // CONTRATANTE CPF
@@ -91,6 +107,8 @@ public class AuthService implements UserDetailsService {
             contratante.setEmail(registerRequest.email());
             contratante.setSenha(encriptedPassword);
 
+            contratante.setDataCriacao(criacao);
+            contratante.setStatus(status);
             contratante.setTipoConta(registerRequest.tipoConta().toUpperCase());
 
             this.contratanteRepository.save(contratante);
@@ -104,7 +122,8 @@ public class AuthService implements UserDetailsService {
             artista.setSenha(encriptedPassword);
 
             artista.setTipoConta(registerRequest.tipoConta().toUpperCase());
-
+            artista.setDataCriacao(criacao);
+            artista.setStatus(status);
             this.artistaRepository.save(artista);
 
         // TIPO DE CONTA INVÁLIDO
