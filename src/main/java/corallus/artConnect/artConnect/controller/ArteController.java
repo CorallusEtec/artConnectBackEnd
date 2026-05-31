@@ -2,7 +2,7 @@ package corallus.artConnect.artConnect.controller;
 
 import java.util.List;
 
-import corallus.artConnect.artConnect.dto.response.MessageResponse;
+import corallus.artConnect.artConnect.dto.response.util.MessageResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

@@ -1,7 +1,7 @@
 package corallus.artConnect.artConnect.service;
 
 
-import corallus.artConnect.artConnect.dto.response.MessageResponse;
+import corallus.artConnect.artConnect.dto.response.util.MessageResponse;
 import corallus.artConnect.artConnect.entity.atores.Admin;
 import corallus.artConnect.artConnect.repository.atores.AdminRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +20,7 @@ import corallus.artConnect.artConnect.dto.response.usuario.UsuarioLoginResponse;
 import corallus.artConnect.artConnect.entity.atores.Artista;
 import corallus.artConnect.artConnect.entity.atores.Contratante;
 import corallus.artConnect.artConnect.entity.atores.Usuario;
-import corallus.artConnect.artConnect.enums.ListaTipoConta;
+import corallus.artConnect.artConnect.enumeration.ETipoConta;
 import corallus.artConnect.artConnect.error.errors.UserAlreadyExistsException;
 import corallus.artConnect.artConnect.error.errors.UserNotFoundException;
 import corallus.artConnect.artConnect.repository.atores.ArtistaRepository;
@@ -69,7 +69,7 @@ public class AuthService implements UserDetailsService {
         String encriptedPassword = this.passwordEncoder.encode(registerRequest.senha());
         
         // Contratante CNPJ
-        if(registerRequest.tipoConta().equalsIgnoreCase(ListaTipoConta.CONTRATANTE_CNPJ.name())) {
+        if(registerRequest.tipoConta().equalsIgnoreCase(ETipoConta.CONTRATANTE_CNPJ.name())) {
 
             Contratante contratante = new Contratante();
             contratante.setNome(registerRequest.nome());
@@ -84,7 +84,7 @@ public class AuthService implements UserDetailsService {
             this.contratanteRepository.save(contratante);
 
         // CONTRATANTE CPF
-        } else if(registerRequest.tipoConta().equalsIgnoreCase(ListaTipoConta.CONTRATANTE_CPF.name())) {
+        } else if(registerRequest.tipoConta().equalsIgnoreCase(ETipoConta.CONTRATANTE_CPF.name())) {
 
             Contratante contratante = new Contratante();
             contratante.setNome(registerRequest.nome());
@@ -96,7 +96,7 @@ public class AuthService implements UserDetailsService {
             this.contratanteRepository.save(contratante);
 
         // ARTISTA
-        } else if(registerRequest.tipoConta().equalsIgnoreCase(ListaTipoConta.ARTISTA.name())) {
+        } else if(registerRequest.tipoConta().equalsIgnoreCase(ETipoConta.ARTISTA.name())) {
 
             Artista artista = new Artista();
             artista.setNome(registerRequest.nome());
@@ -122,7 +122,7 @@ public class AuthService implements UserDetailsService {
         admin.setEmail(request.email());
         admin.setSenha(this.passwordEncoder.encode(request.senha()));
         admin.setNome(request.nome());
-        admin.setTipoConta("ADMIN");
+        admin.setTipoConta(request.tipoConta());
         admin.setDataCriacao(LocalDateTime.now());
 
         this.adminRepository.save(admin);

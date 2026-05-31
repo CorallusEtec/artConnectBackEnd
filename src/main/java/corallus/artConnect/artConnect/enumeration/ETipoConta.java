@@ -1,8 +1,8 @@
-package corallus.artConnect.artConnect.enums;
+package corallus.artConnect.artConnect.enumeration;
 /*
     ENUMERAÇÃO COM OS TIPOS DE USUÁRIO (CONTA) QUE USAM A APLICAÇÃO
 */
-public enum ListaTipoConta {
+public enum ETipoConta {
     ARTISTA,
     CONTRATANTE_CPF,
     CONTRATANTE_CNPJ,

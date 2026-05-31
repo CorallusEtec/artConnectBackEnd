@@ -5,8 +5,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import corallus.artConnect.artConnect.dto.response.MessageResponse;
-import org.aspectj.bridge.Message;
+import corallus.artConnect.artConnect.dto.response.util.MessageResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,7 +14,7 @@ import corallus.artConnect.artConnect.dto.response.comentario.ComentarioResponse
 import corallus.artConnect.artConnect.entity.Comentario;
 import corallus.artConnect.artConnect.entity.Publicacao;
 import corallus.artConnect.artConnect.entity.status.Status;
-import corallus.artConnect.artConnect.enums.ListaTipoStatus;
+import corallus.artConnect.artConnect.enumeration.ETipoStatus;
 import corallus.artConnect.artConnect.error.errors.ResourceNotFoundException;
 import corallus.artConnect.artConnect.error.errors.UserNotFoundException;
 import corallus.artConnect.artConnect.repository.ComentarioRepository;
@@ -54,7 +53,7 @@ public class ComentarioService {
         if(!p.getStatusPublicacao()
             .getTipoStatus()
             .getNomeTipoStatus()
-            .equals(ListaTipoStatus.ATIVO.name())
+            .equals(ETipoStatus.ATIVO.name())
         ) {
             throw new IllegalArgumentException("Publicação Indisponível");
         }
@@ -67,7 +66,7 @@ public class ComentarioService {
             c->c.getStatusComentario()
             .getTipoStatus()
             .getNomeTipoStatus()
-            .equals(ListaTipoStatus.ATIVO.name()))
+            .equals(ETipoStatus.ATIVO.name()))
         .map(ComentarioResponse::toDTO)
         .collect(Collectors.toList());
 
@@ -109,7 +108,7 @@ public class ComentarioService {
         Status stComentario = new Status();
         stComentario.setDataModificacao(LocalDateTime.now());
         stComentario.setTipoStatus(this.tipoStatusRepository
-            .findByNomeTipoStatus(ListaTipoStatus.ATIVO.name())
+            .findByNomeTipoStatus(ETipoStatus.ATIVO.name())
             .get());
         stComentario = this.statusRepository.save(stComentario);
 

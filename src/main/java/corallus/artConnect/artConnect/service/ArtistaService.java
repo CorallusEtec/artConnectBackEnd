@@ -7,7 +7,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import corallus.artConnect.artConnect.dto.response.MessageResponse;
+import corallus.artConnect.artConnect.dto.response.util.MessageResponse;
 import corallus.artConnect.artConnect.queryFilter.ArtistaFindAllQF;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,8 +21,8 @@ import corallus.artConnect.artConnect.entity.atores.Artista;
 import corallus.artConnect.artConnect.entity.contato.Contato;
 import corallus.artConnect.artConnect.entity.reacao.Reacao;
 import corallus.artConnect.artConnect.entity.status.Status;
-import corallus.artConnect.artConnect.enums.ListaTipoConta;
-import corallus.artConnect.artConnect.enums.ListaTipoStatus;
+import corallus.artConnect.artConnect.enumeration.ETipoConta;
+import corallus.artConnect.artConnect.enumeration.ETipoStatus;
 import corallus.artConnect.artConnect.error.errors.ArteNotFoundException;
 import corallus.artConnect.artConnect.error.errors.ResourceNotFoundException;
 import corallus.artConnect.artConnect.error.errors.UserAlreadyExistsException;
@@ -98,7 +98,7 @@ public class ArtistaService implements IValidacoes {
 
         // STATUS PADRÃO DE CRIAÇÂO: ATIVO
         Status statusInicial = new Status();
-        statusInicial.setTipoStatus(this.tipoStatusRepository.findByNomeTipoStatus(ListaTipoStatus.ATIVO.name()).get());
+        statusInicial.setTipoStatus(this.tipoStatusRepository.findByNomeTipoStatus(ETipoStatus.ATIVO.name()).get());
         statusInicial.setDataModificacao(LocalDateTime.now());
 
         this.statusRepository.save(statusInicial);
@@ -107,7 +107,7 @@ public class ArtistaService implements IValidacoes {
         // DATA, STATUS E TIPO DE CONTA
         artista.setDataCriacao(LocalDateTime.now());
         artista.setStatus(statusInicial);
-        artista.setTipoConta(ListaTipoConta.ARTISTA.name());
+        artista.setTipoConta(ETipoConta.ARTISTA.name());
 
 
         artista.setStatus(statusInicial);

@@ -6,7 +6,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import corallus.artConnect.artConnect.dto.response.MessageResponse;
+import corallus.artConnect.artConnect.dto.response.util.MessageResponse;
 import corallus.artConnect.artConnect.queryFilter.ContratanteFindAllQF;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,8 +16,8 @@ import corallus.artConnect.artConnect.dto.request.contratante.ContratanteEditReq
 import corallus.artConnect.artConnect.dto.response.contratante.ContratanteResponse;
 import corallus.artConnect.artConnect.entity.atores.Contratante;
 import corallus.artConnect.artConnect.entity.status.Status;
-import corallus.artConnect.artConnect.enums.ListaTipoConta;
-import corallus.artConnect.artConnect.enums.ListaTipoStatus;
+import corallus.artConnect.artConnect.enumeration.ETipoConta;
+import corallus.artConnect.artConnect.enumeration.ETipoStatus;
 import corallus.artConnect.artConnect.error.errors.UserAlreadyExistsException;
 import corallus.artConnect.artConnect.error.errors.UserNotFoundException;
 import corallus.artConnect.artConnect.repository.atores.ContratanteRepository;
@@ -81,15 +81,15 @@ public class ContratanteService implements IValidacoes {
             // SALVA DADOS ESPECIFICOS DE EMPRESA
             contratante.setRazaoSocial(contratanteDTO.razaoSocial());
             contratante.setCnpj(contratanteDTO.cnpj());
-            contratante.setTipoConta(ListaTipoConta.CONTRATANTE_CNPJ.name());
+            contratante.setTipoConta(ETipoConta.CONTRATANTE_CNPJ.name());
 
             // EMPRESAS DEVEM SER APROVADAS PELO ADMIN: STATUS PENDENTE
-            statusInicial.setTipoStatus(this.tipoStatusRepository.findByNomeTipoStatus(ListaTipoStatus.PENDENTE.name()).get());
+            statusInicial.setTipoStatus(this.tipoStatusRepository.findByNomeTipoStatus(ETipoStatus.PENDENTE.name()).get());
             statusInicial.setDescricao("Esperando aprovação do administrador");
            
         } else {
-            contratante.setTipoConta(ListaTipoConta.CONTRATANTE_CPF.name());
-            statusInicial.setTipoStatus(this.tipoStatusRepository.findByNomeTipoStatus(ListaTipoStatus.ATIVO.name()).get());
+            contratante.setTipoConta(ETipoConta.CONTRATANTE_CPF.name());
+            statusInicial.setTipoStatus(this.tipoStatusRepository.findByNomeTipoStatus(ETipoStatus.ATIVO.name()).get());
             statusInicial.setDescricao(null);
         }
 

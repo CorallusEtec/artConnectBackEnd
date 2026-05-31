@@ -7,7 +7,7 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-import corallus.artConnect.artConnect.dto.response.MessageResponse;
+import corallus.artConnect.artConnect.dto.response.util.MessageResponse;
 import corallus.artConnect.artConnect.queryFilter.PublicacaoFindAllQF;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -24,7 +24,7 @@ import corallus.artConnect.artConnect.entity.reacao.Reacao;
 import corallus.artConnect.artConnect.entity.reacao.TipoReacao;
 import corallus.artConnect.artConnect.entity.status.Status;
 
-import corallus.artConnect.artConnect.enums.ListaTipoStatus;
+import corallus.artConnect.artConnect.enumeration.ETipoStatus;
 import corallus.artConnect.artConnect.repository.PublicacaoRepository;
 import corallus.artConnect.artConnect.repository.atores.UsuarioRepository;
 import corallus.artConnect.artConnect.repository.reacao.TipoReacaoRepository;
@@ -87,7 +87,7 @@ public class PublicacaoService {
             Status statusInicial = new Status();
             statusInicial.setTipoStatus(
                 this.tipoStatusRepository
-                    .findByNomeTipoStatus(ListaTipoStatus.ATIVO.name())
+                    .findByNomeTipoStatus(ETipoStatus.ATIVO.name())
                     .get()
             );
             statusInicial.setDataModificacao(LocalDateTime.now());
@@ -123,7 +123,7 @@ public class PublicacaoService {
         listaPubli.removeIf(e -> !e.getStatusPublicacao()
         .getTipoStatus()
         .getNomeTipoStatus()
-        .equalsIgnoreCase(ListaTipoStatus.ATIVO.name()));
+        .equalsIgnoreCase(ETipoStatus.ATIVO.name()));
 
         // Transformação em DTO
         List<PublicacaoResponse> dto = listaPubli.stream()

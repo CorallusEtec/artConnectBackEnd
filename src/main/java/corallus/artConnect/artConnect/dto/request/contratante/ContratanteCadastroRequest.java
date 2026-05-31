@@ -8,6 +8,7 @@ public record ContratanteCadastroRequest(
 
         @NotBlank(message = "O nome não pode ser vazio")
         String nome,
+
         @Email(message = "O email deve ser válido")
         @NotBlank(message = "O email não pode estar vazio")
         String email,
@@ -16,6 +17,6 @@ public record ContratanteCadastroRequest(
         @NotBlank(message = "A senha não pode estar vazia")
         String senha,
 
-    String razaoSocial,
-    String cnpj
+        String razaoSocial,
+        String cnpj
 ) {}

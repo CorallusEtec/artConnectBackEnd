@@ -1,25 +1,26 @@
-package corallus.artConnect.artConnect.seeders;
+package corallus.artConnect.artConnect.seeder;
 
 import corallus.artConnect.artConnect.dto.request.usuario.UserRegisterRequest;
-import corallus.artConnect.artConnect.entity.atores.Admin;
-import corallus.artConnect.artConnect.entity.reacao.TipoReacao;
-import corallus.artConnect.artConnect.enums.ListaTipoReacao;
+import corallus.artConnect.artConnect.enumeration.ETipoConta;
 import corallus.artConnect.artConnect.repository.atores.AdminRepository;
 import corallus.artConnect.artConnect.service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-
 @Component
 public class AdminSeeder implements CommandLineRunner {
 
-    @Autowired
-    private AdminRepository adminRepository;
 
-    @Autowired
-    private AuthService authService;
+    private final AdminRepository adminRepository;
+
+    private final AuthService authService;
+
+    // INJEÇÃO DE DEPENDÊNCIA
+    public AdminSeeder(AdminRepository adminRepository, AuthService authService) {
+        this.adminRepository = adminRepository;
+        this.authService = authService;
+    }
 
     @Override
     public void run(String...args) throws Exception {
@@ -28,7 +29,7 @@ public class AdminSeeder implements CommandLineRunner {
             var admin = new UserRegisterRequest("André dos Santos",
                     "adminroot@outlook.com",
                     "Admin!2026",
-                    "ADMIN", null, null
+                    ETipoConta.ADMIN, null, null
             );
             authService.registerAdmin(admin);
         }

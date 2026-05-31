@@ -10,12 +10,13 @@ import corallus.artConnect.artConnect.dto.response.tipoContato.TipoContatoRespon
 import corallus.artConnect.artConnect.entity.Seguida;
 import corallus.artConnect.artConnect.entity.atores.Usuario;
 import corallus.artConnect.artConnect.entity.status.Status;
+import corallus.artConnect.artConnect.enumeration.ETipoConta;
 
 public record UsuarioResponse(
     Long id,
     String nome,
     String email,
-    String tipoConta,
+    ETipoConta tipoConta,
     Status status,
     LocalDateTime dataCriacao,
 

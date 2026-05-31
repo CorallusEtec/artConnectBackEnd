@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import corallus.artConnect.artConnect.dto.request.reacao.ReacaoRequest;
 import corallus.artConnect.artConnect.dto.response.reacao.ReacaoResponse;
 import corallus.artConnect.artConnect.entity.reacao.Reacao;
-import corallus.artConnect.artConnect.enums.ListaTipoReacao;
+import corallus.artConnect.artConnect.enumeration.ETipoReacao;
 import corallus.artConnect.artConnect.error.errors.ResourceNotFoundException;
 import corallus.artConnect.artConnect.error.errors.UserNotFoundException;
 import corallus.artConnect.artConnect.repository.ComentarioRepository;
@@ -227,7 +227,7 @@ public class ReacaoService {
 
 
     private boolean reacaoValida(String reacao) {
-        for(ListaTipoReacao s : ListaTipoReacao.values()) {
+        for(ETipoReacao s : ETipoReacao.values()) {
             if(s.name().equalsIgnoreCase(reacao.trim())) {
                 return true;
             }

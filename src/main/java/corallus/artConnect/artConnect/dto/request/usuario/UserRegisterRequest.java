@@ -1,5 +1,6 @@
 package corallus.artConnect.artConnect.dto.request.usuario;
 
+import corallus.artConnect.artConnect.enumeration.ETipoConta;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -16,7 +17,8 @@ public record UserRegisterRequest(
     @NotBlank
     String senha,
 
-    String tipoConta,
+    @NotBlank(message = "Erro ao cadastrar usuário")
+    ETipoConta tipoConta,
 
     // Usar para Contratantes CNPJ
     String razaoSocial,
