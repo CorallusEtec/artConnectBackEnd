@@ -4,7 +4,7 @@ import java.util.List;
 
 import corallus.artConnect.artConnect.dto.response.MessageResponse;
 import corallus.artConnect.artConnect.queryFilter.ContratanteFindAllQF;
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,8 +17,12 @@ import corallus.artConnect.artConnect.service.ContratanteService;
 @RequestMapping("/contratante")
 @RestController
 public class ContratanteController {
-    @Autowired
-    private ContratanteService contratanteService;
+    private final ContratanteService contratanteService;
+
+    // INJEÇÃO DE DEPENDÊNCIA
+    public ContratanteController(ContratanteService contratanteService) {
+        this.contratanteService = contratanteService;
+    }
 
     @GetMapping("/findAll")
     public ResponseEntity<List<ContratanteResponse>> findAll(ContratanteFindAllQF find) {
@@ -28,22 +32,20 @@ public class ContratanteController {
     }
 
     @PostMapping("/save")
-    public ResponseEntity<MessageResponse> save(@RequestParam(name = "tipo", defaultValue = "cpf") String tipo, @RequestBody ContratanteCadastroRequest cadastro) {
+    public ResponseEntity<MessageResponse> save(@RequestParam(name = "tipo", defaultValue = "cpf") String tipo, @RequestBody @Valid ContratanteCadastroRequest cadastro) {
         MessageResponse msg = this.contratanteService.save(tipo, cadastro);
         return new ResponseEntity<>(msg, HttpStatus.CREATED);
     }
     
     @PutMapping("/{id}")
-    public ResponseEntity<MessageResponse> edit(@PathVariable Long id, @RequestBody ContratanteEditRequest contratanteDTO) {
+    public ResponseEntity<MessageResponse> edit(@PathVariable Long id, @RequestBody @Valid ContratanteEditRequest contratanteDTO) {
         MessageResponse msg = this.contratanteService.edit(id, contratanteDTO);
-        
         return new ResponseEntity<>(msg, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<ContratanteResponse> find(@PathVariable Long id) {
         ContratanteResponse contratante = this.contratanteService.findById(id);
-        
         return new ResponseEntity<>(contratante, HttpStatus.OK);
     }
 }

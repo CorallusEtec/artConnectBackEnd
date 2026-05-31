@@ -144,7 +144,6 @@ public class ContratanteService implements IValidacoes {
         contratante.setTextoBio(contratanteDTO.textoBio());
         contratante.setDataNasc(contratanteDTO.dataNasc());
         contratante.setSexo(contratanteDTO.sexo());
-        contratante.setContatos(contratanteDTO.contatos());
 
 
 

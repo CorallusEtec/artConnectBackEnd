@@ -5,9 +5,12 @@ import java.util.List;
 
 import corallus.artConnect.artConnect.entity.Arte;
 import corallus.artConnect.artConnect.entity.Tag;
+import jakarta.validation.constraints.NotEmpty;
 
 public record ArtistaEditRequest(
     // USUARIO
+
+    @NotEmpty(message = "O nome não pode ser vazio")
     String nome,
     String textoBio,
 

@@ -3,7 +3,7 @@ package corallus.artConnect.artConnect.controller;
 import java.util.List;
 
 import corallus.artConnect.artConnect.dto.response.MessageResponse;
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,12 +20,16 @@ import corallus.artConnect.artConnect.service.ComentarioService;
 @RestController
 @RequestMapping("/comentario")
 public class ComentarioController {
-    @Autowired
-    private ComentarioService comentarioService;
 
+    private final ComentarioService comentarioService;
+
+    // INJEÇÃO DE DEPENDÊNCIA
+    public ComentarioController(ComentarioService comentarioService) {
+        this.comentarioService = comentarioService;
+    }
 
     @PostMapping("/comment")
-    public ResponseEntity<MessageResponse> comment(@RequestBody ComentarioRequest comentario) {
+    public ResponseEntity<MessageResponse> comment(@RequestBody @Valid ComentarioRequest comentario) {
         MessageResponse msg = this.comentarioService.comentar(comentario);
         return new ResponseEntity<>(msg, HttpStatus.CREATED);
     }
