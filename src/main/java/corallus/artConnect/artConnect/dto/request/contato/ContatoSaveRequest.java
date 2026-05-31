@@ -1,11 +1,11 @@
 package corallus.artConnect.artConnect.dto.request.contato;
 
-import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotBlank;
 
 public record ContatoSaveRequest(
-        @NotEmpty(message = "Não foi possível salvar o contato")
+        @NotBlank(message = "Não foi possível salvar o contato")
         Long idUsuario,
-        @NotEmpty(message = "Não foi possível salvar o contato")
+        @NotBlank(message = "Não foi possível salvar o contato")
         Long idTipoContato,
 
         String valorContato

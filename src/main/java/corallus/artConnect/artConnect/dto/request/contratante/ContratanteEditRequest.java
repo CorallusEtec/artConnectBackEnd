@@ -2,12 +2,12 @@ package corallus.artConnect.artConnect.dto.request.contratante;
 
 import java.time.LocalDate;
 
-import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotBlank;
 
 public record ContratanteEditRequest(
     // USUARIO
 
-    @NotEmpty(message = "O nome não pode ser vazio")
+    @NotBlank(message = "O nome não pode ser vazio")
     String nome,
     String textoBio,
 
