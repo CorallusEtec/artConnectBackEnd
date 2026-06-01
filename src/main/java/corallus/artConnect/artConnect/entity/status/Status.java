@@ -1,7 +1,6 @@
 package corallus.artConnect.artConnect.entity.status;
 
 import java.time.LocalDateTime;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -10,7 +9,6 @@ import jakarta.persistence.ManyToOne;
 
 @Entity
 public class Status {
-
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,14 +24,8 @@ public class Status {
 
     public Status() {}
 
-    public Status(Long id, TipoStatus tipoStatus, String descricao, LocalDateTime dataModificacao) {
-        this.id = id;
-        this.tipoStatus = tipoStatus;
-        this.descricao = descricao;
-        this.dataModificacao = dataModificacao;
-    }
-
     // GET E SET
+
 
     public Long getId() {
         return id;
@@ -66,8 +58,4 @@ public class Status {
     public void setDataModificacao(LocalDateTime dataModificacao) {
         this.dataModificacao = dataModificacao;
     }
-
-
-
-    
 }

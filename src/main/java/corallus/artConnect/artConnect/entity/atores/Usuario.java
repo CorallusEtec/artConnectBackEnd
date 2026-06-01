@@ -5,25 +5,17 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
+import corallus.artConnect.artConnect.enumeration.ETipoConta;
+import jakarta.persistence.*;
 import org.jspecify.annotations.Nullable;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-
 import corallus.artConnect.artConnect.entity.Publicacao;
 import corallus.artConnect.artConnect.entity.Seguida;
 import corallus.artConnect.artConnect.entity.contato.Contato;
 import corallus.artConnect.artConnect.entity.reacao.Reacao;
 import corallus.artConnect.artConnect.entity.status.Status;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Inheritance;
-import jakarta.persistence.InheritanceType;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
 
 
 @Entity
@@ -35,12 +27,15 @@ public abstract class Usuario implements UserDetails{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     // Dados Importantes
     private Long id;
+    @JoinColumn(nullable = false)
     private String nome;
 
-    @JoinColumn(unique = true)
+    @JoinColumn(unique = true, nullable = false)
     private String email;
+    @JoinColumn(nullable = false)
     private String senha;
-    private String tipoConta;
+    @Enumerated(EnumType.STRING)
+    private ETipoConta tipoConta;
     @OneToOne
     private Status status;
     private LocalDateTime dataCriacao;
@@ -71,7 +66,7 @@ public abstract class Usuario implements UserDetails{
     // Metodos UserDetails
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority(this.tipoConta));
+        return List.of(new SimpleGrantedAuthority(this.tipoConta.name()));
     }
 
     @Override
@@ -81,62 +76,14 @@ public abstract class Usuario implements UserDetails{
 
     @Override
     public String getUsername() {
-
         return this.getEmail();
-    }
-
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return true;
     }
 
     // CONSTRUTORES
     public Usuario() {}
 
-   public Usuario(Long id, String nome, String email, String senha, String tipoConta, Status status,
-            LocalDateTime dataCriacao, String nomeLog, Short numLog, String cep, String bairro, String complemento,
-            String cidade, String uf, String textoBio, Set<Seguida> seguidores, Set<Seguida> seguido,
-            List<Contato> contatos, List<Publicacao> publicacoes, Set<Reacao> reacoes) {
-        this.id = id;
-        this.nome = nome;
-        this.email = email;
-        this.senha = senha;
-        this.tipoConta = tipoConta;
-        this.status = status;
-        this.dataCriacao = dataCriacao;
-        this.nomeLog = nomeLog;
-        this.numLog = numLog;
-        this.cep = cep;
-        this.bairro = bairro;
-        this.complemento = complemento;
-        this.cidade = cidade;
-        this.uf = uf;
-        this.textoBio = textoBio;
-        this.seguidores = seguidores;
-        this.seguido = seguido;
-        this.contatos = contatos;
-        this.publicacoes = publicacoes;
-        this.reacoes = reacoes;
-    }
 
-    
-
-    // GET E SET   
+    // GET E SET
 
     public Long getId() {
         return id;
@@ -170,11 +117,11 @@ public abstract class Usuario implements UserDetails{
         this.senha = senha;
     }
 
-    public String getTipoConta() {
+    public ETipoConta getTipoConta() {
         return tipoConta;
     }
 
-    public void setTipoConta(String tipoConta) {
+    public void setTipoConta(ETipoConta tipoConta) {
         this.tipoConta = tipoConta;
     }
 

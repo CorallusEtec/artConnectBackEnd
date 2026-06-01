@@ -1,12 +1,7 @@
 package corallus.artConnect.artConnect.queryFilter;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import corallus.artConnect.artConnect.entity.atores.Usuario;
 import org.springframework.data.jpa.domain.Specification;
-import corallus.artConnect.artConnect.queryFilter.UsuarioFindAllQF;
-
-import java.time.LocalDateTime;
-
 import static corallus.artConnect.artConnect.specification.UsuarioSpec.*;
 
 public class UsuarioFindAllQF {
@@ -14,20 +9,15 @@ public class UsuarioFindAllQF {
     private String tipoConta;
     private String cidade;
     private String uf;
-    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
-    private LocalDateTime dataCriacaoStarts;
 
     public Specification<Usuario> toSpecifications() {
         return nomeContains(nome)
                 .and(tipoContaContains(tipoConta))
                 .and(cidadeContains(cidade))
-                .and(ufContains(uf))
-                .and(dataCriacaoStarts(dataCriacaoStarts));
+                .and(ufContains(uf));
     }
 
-
     // GET E SET
-
 
     public String getNome() {
         return nome;
@@ -59,13 +49,5 @@ public class UsuarioFindAllQF {
 
     public void setUf(String uf) {
         this.uf = uf;
-    }
-
-    public LocalDateTime getDataCriacaoStarts() {
-        return dataCriacaoStarts;
-    }
-
-    public void setDataCriacaoStarts(LocalDateTime dataCriacaoStarts) {
-        this.dataCriacaoStarts = dataCriacaoStarts;
     }
 }

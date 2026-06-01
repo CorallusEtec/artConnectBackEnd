@@ -1,14 +1,8 @@
 package corallus.artConnect.artConnect.service;
 
-
-import corallus.artConnect.artConnect.dto.response.MessageResponse;
+import corallus.artConnect.artConnect.dto.response.util.MessageResponse;
 import corallus.artConnect.artConnect.entity.atores.Admin;
-import corallus.artConnect.artConnect.entity.status.Status;
-import corallus.artConnect.artConnect.entity.status.TipoStatus;
-import corallus.artConnect.artConnect.enums.ListaTipoStatus;
 import corallus.artConnect.artConnect.repository.atores.AdminRepository;
-import corallus.artConnect.artConnect.repository.status.StatusRepository;
-import corallus.artConnect.artConnect.repository.status.TipoStatusRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -18,44 +12,57 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
 import corallus.artConnect.artConnect.dto.request.usuario.UserLoginRequest;
 import corallus.artConnect.artConnect.dto.request.usuario.UserRegisterRequest;
 import corallus.artConnect.artConnect.dto.response.usuario.UsuarioLoginResponse;
 import corallus.artConnect.artConnect.entity.atores.Artista;
 import corallus.artConnect.artConnect.entity.atores.Contratante;
 import corallus.artConnect.artConnect.entity.atores.Usuario;
-import corallus.artConnect.artConnect.enums.ListaTipoConta;
+import corallus.artConnect.artConnect.enumeration.ETipoConta;
 import corallus.artConnect.artConnect.error.errors.UserAlreadyExistsException;
 import corallus.artConnect.artConnect.error.errors.UserNotFoundException;
 import corallus.artConnect.artConnect.repository.atores.ArtistaRepository;
 import corallus.artConnect.artConnect.repository.atores.ContratanteRepository;
 import corallus.artConnect.artConnect.repository.atores.UsuarioRepository;
-
 import java.time.LocalDateTime;
 
 @Service
 public class AuthService implements UserDetailsService {
     @Lazy
-    @Autowired
-    private AuthenticationManager authenticationManager;
-    @Autowired
-    private TokenService tokenService;
-    @Autowired
-    private UsuarioRepository usuarioRepository;
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    private final AuthenticationManager authenticationManager;
 
-    @Autowired
-    private ContratanteRepository contratanteRepository;
-    @Autowired
-    private ArtistaRepository artistaRepository;
-    @Autowired
-    private AdminRepository adminRepository;
-    @Autowired
-    private TipoStatusRepository tipoStatusRepository;
-    @Autowired
-    private  StatusRepository statusRepository;
+    private final StatusService statusService;
+
+    private final TokenService tokenService;
+
+    private final UsuarioRepository usuarioRepository;
+
+    private final PasswordEncoder passwordEncoder;
+
+    private final ContratanteRepository contratanteRepository;
+
+    private final ArtistaRepository artistaRepository;
+
+    private final AdminRepository adminRepository;
+
+    public AuthService(AuthenticationManager authenticationManager,
+                       StatusService statusService,
+                       TokenService tokenService,
+                       UsuarioRepository usuarioRepository,
+                       PasswordEncoder passwordEncoder,
+                       ContratanteRepository contratanteRepository,
+                       ArtistaRepository artistaRepository,
+                       AdminRepository adminRepository) {
+        this.authenticationManager = authenticationManager;
+        this.statusService = statusService;
+        this.tokenService = tokenService;
+        this.usuarioRepository = usuarioRepository;
+        this.passwordEncoder = passwordEncoder;
+        this.contratanteRepository = contratanteRepository;
+        this.artistaRepository = artistaRepository;
+        this.adminRepository = adminRepository;
+    }
+
     public UsuarioLoginResponse login(UserLoginRequest loginRequest) {
         var usernamePassword = new UsernamePasswordAuthenticationToken(loginRequest.email(), loginRequest.senha());
         var auth = this.authenticationManager.authenticate(usernamePassword);
@@ -76,84 +83,60 @@ public class AuthService implements UserDetailsService {
 
         String encriptedPassword = this.passwordEncoder.encode(registerRequest.senha());
 
-        Status status = new Status();
-        status.setDataModificacao(LocalDateTime.now());
-        status.setTipoStatus(this.tipoStatusRepository.findByNomeTipoStatus(ListaTipoStatus.ATIVO.name()).get());
-        this.statusRepository.save(status);
-        LocalDateTime criacao = LocalDateTime.now();
-
-
         // Contratante CNPJ
-        if(registerRequest.tipoConta().equalsIgnoreCase(ListaTipoConta.CONTRATANTE_CNPJ.name())) {
-
+        if(registerRequest.tipoConta() == ETipoConta.CONTRATANTE_CNPJ) {
             Contratante contratante = new Contratante();
-            contratante.setNome(registerRequest.nome());
-            contratante.setEmail(registerRequest.email());
+            commonAtributtes(contratante, registerRequest);
             contratante.setSenha(encriptedPassword);
-
             contratante.setCnpj(registerRequest.cnpj());
             contratante.setRazaoSocial(registerRequest.razaoSocial());
 
-            contratante.setTipoConta(registerRequest.tipoConta().toUpperCase());
-            contratante.setDataCriacao(criacao);
-            contratante.setStatus(status);
             this.contratanteRepository.save(contratante);
 
         // CONTRATANTE CPF
-        } else if(registerRequest.tipoConta().equalsIgnoreCase(ListaTipoConta.CONTRATANTE_CPF.name())) {
+        } else if(registerRequest.tipoConta() == ETipoConta.CONTRATANTE_CPF) {
 
             Contratante contratante = new Contratante();
-            contratante.setNome(registerRequest.nome());
-            contratante.setEmail(registerRequest.email());
-            contratante.setSenha(encriptedPassword);
-
-            contratante.setDataCriacao(criacao);
-            contratante.setStatus(status);
-            contratante.setTipoConta(registerRequest.tipoConta().toUpperCase());
-
+            commonAtributtes(contratante, registerRequest);
             this.contratanteRepository.save(contratante);
 
         // ARTISTA
-        } else if(registerRequest.tipoConta().equalsIgnoreCase(ListaTipoConta.ARTISTA.name())) {
+        } else if(registerRequest.tipoConta() == ETipoConta.ARTISTA) {
 
             Artista artista = new Artista();
-            artista.setNome(registerRequest.nome());
-            artista.setEmail(registerRequest.email());
+            commonAtributtes(artista, registerRequest);
             artista.setSenha(encriptedPassword);
 
-            artista.setTipoConta(registerRequest.tipoConta().toUpperCase());
-            artista.setDataCriacao(criacao);
-            artista.setStatus(status);
             this.artistaRepository.save(artista);
-
         // TIPO DE CONTA INVÁLIDO
         } else {
             throw new IllegalArgumentException("Tipo de conta inválido");
         }
-
-
         return new MessageResponse(registerRequest.tipoConta()+" cadastrado com sucesso");
     }
 
     public void registerAdmin(UserRegisterRequest request) {
 
         Admin admin = new Admin();
-        admin.setEmail(request.email());
+        commonAtributtes(admin, request);
         admin.setSenha(this.passwordEncoder.encode(request.senha()));
-        admin.setNome(request.nome());
-        admin.setTipoConta("ADMIN");
-        admin.setDataCriacao(LocalDateTime.now());
-
         this.adminRepository.save(admin);
     }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
          UserDetails user = this.usuarioRepository.findByEmail(username)
-        .orElseThrow(()-> new UserNotFoundException());
+        .orElseThrow(UserNotFoundException::new);
         
         return user;
     }
 
+    public void commonAtributtes(Usuario u, UserRegisterRequest registerRequest) {
+        u.setNome(registerRequest.nome());
+        u.setEmail(registerRequest.email());
+        u.setTipoConta(registerRequest.tipoConta());
+        u.setDataCriacao(LocalDateTime.now());
+        u.setStatus(this.statusService.generateStatus());
+    }
     
 }

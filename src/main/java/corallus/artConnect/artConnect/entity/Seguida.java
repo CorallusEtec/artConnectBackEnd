@@ -1,7 +1,6 @@
 package corallus.artConnect.artConnect.entity;
 
 import java.time.LocalDateTime;
-
 import corallus.artConnect.artConnect.entity.atores.Usuario;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -17,6 +16,7 @@ public class Seguida {
  
     @ManyToOne
     private Usuario seguidor;
+
     @ManyToOne
     private Usuario seguido;
     
@@ -25,13 +25,6 @@ public class Seguida {
     // CONSTRUTOR
     public Seguida() {
 
-    }
-
-    public Seguida(Long id, Usuario seguidor, Usuario seguido, LocalDateTime dataSeguida) {
-        this.id = id;
-        this.seguidor = seguidor;
-        this.seguido = seguido;
-        this.dataSeguida = dataSeguida;
     }
     
     // GET E SET
@@ -67,6 +60,4 @@ public class Seguida {
     public void setDataSeguida(LocalDateTime dataSeguida) {
         this.dataSeguida = dataSeguida;
     }
-    
-
 }

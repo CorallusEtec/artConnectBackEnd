@@ -2,10 +2,10 @@ package corallus.artConnect.artConnect.controller;
 
 import java.util.List;
 
+import corallus.artConnect.artConnect.dto.request.arte.ArteEditRequest;
 import corallus.artConnect.artConnect.dto.request.arte.ArteSaveRequest;
-import corallus.artConnect.artConnect.dto.response.MessageResponse;
+import corallus.artConnect.artConnect.dto.response.util.MessageResponse;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -16,15 +16,19 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import corallus.artConnect.artConnect.entity.arte.Arte;
+import corallus.artConnect.artConnect.entity.Arte;
 import corallus.artConnect.artConnect.service.ArteService;
 
 @RequestMapping("/arte")
 @RestController
 public class ArteController {
-    @Autowired
-    private ArteService arteService;
+
+    private final ArteService arteService;
+
+    // INJEÇÃO DE DEPENDÊNCIA
+    public ArteController(ArteService arteService) {
+        this.arteService = arteService;
+    }
 
     @GetMapping("/findAll")
     public ResponseEntity<List<Arte>> findAll() {
@@ -39,14 +43,14 @@ public class ArteController {
     }
 
     @PostMapping("/save")
-    public ResponseEntity<MessageResponse> save( @RequestBody @Valid ArteSaveRequest arte) {
-        MessageResponse msg = this.arteService.save(arte);
+    public ResponseEntity<MessageResponse> save(@RequestBody @Valid ArteSaveRequest saveRequest) {
+        MessageResponse msg = this.arteService.save(saveRequest);
         return new ResponseEntity<>(msg, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<MessageResponse> edit(@PathVariable Long id, @RequestBody Arte arte) {
-        MessageResponse msg = this.arteService.edit(id, arte);
+    public ResponseEntity<MessageResponse> edit(@PathVariable Long id, @RequestBody @Valid ArteEditRequest editRequest) {
+        MessageResponse msg = this.arteService.edit(id, editRequest);
         return new ResponseEntity<>(msg, HttpStatus.OK);
     }
 

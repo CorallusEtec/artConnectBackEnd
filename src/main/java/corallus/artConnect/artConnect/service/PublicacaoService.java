@@ -1,35 +1,21 @@
 package corallus.artConnect.artConnect.service;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
-import java.util.stream.Collectors;
 
-import corallus.artConnect.artConnect.dto.response.MessageResponse;
+import java.util.List;
+import java.util.UUID;
+import corallus.artConnect.artConnect.dto.response.util.MessageResponse;
+import corallus.artConnect.artConnect.mapper.publicacao.PublicacaoMapper;
 import corallus.artConnect.artConnect.queryFilter.PublicacaoFindAllQF;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import corallus.artConnect.artConnect.dto.response.publicacao.PublicacaoResponse;
-import corallus.artConnect.artConnect.dto.response.reacao.ReacaoDetailsResponse;
-import corallus.artConnect.artConnect.dto.response.reacao.ReacaoResponse;
-import corallus.artConnect.artConnect.dto.response.usuario.UsuarioResponse;
 import corallus.artConnect.artConnect.entity.Publicacao;
 import corallus.artConnect.artConnect.entity.atores.Usuario;
-import corallus.artConnect.artConnect.entity.reacao.Reacao;
-import corallus.artConnect.artConnect.entity.reacao.TipoReacao;
-import corallus.artConnect.artConnect.entity.status.Status;
-
-import corallus.artConnect.artConnect.enums.ListaTipoStatus;
+import corallus.artConnect.artConnect.enumeration.ETipoStatus;
 import corallus.artConnect.artConnect.repository.PublicacaoRepository;
 import corallus.artConnect.artConnect.repository.atores.UsuarioRepository;
-import corallus.artConnect.artConnect.repository.reacao.TipoReacaoRepository;
-import corallus.artConnect.artConnect.repository.status.StatusRepository;
-import corallus.artConnect.artConnect.repository.status.TipoStatusRepository;
 import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
@@ -37,21 +23,31 @@ import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 @Service
 public class PublicacaoService {
 
-	@Autowired
-    private PublicacaoRepository publicacaoRepository;
-	@Autowired
-    private UsuarioRepository usuarioRepository;
-    @Autowired
-    private TipoStatusRepository tipoStatusRepository;
-    @Autowired
-    private StatusRepository statusRepository;
-    
-    @Autowired
-    private TipoReacaoRepository tipoReacaoRepository;
+    private final PublicacaoRepository publicacaoRepository;
 
-    @Autowired
-	private S3Client s3Client;
-    
+    private final UsuarioRepository usuarioRepository;
+
+    private final StatusService statusService;
+
+    private final PublicacaoMapper publicacaoMapper;
+
+    private final S3Client s3Client;
+
+    // INJEÇÃO DE DEPENDÊNCIA
+
+
+    public PublicacaoService(PublicacaoRepository publicacaoRepository,
+                             UsuarioRepository usuarioRepository,
+                             StatusService statusService,
+                             PublicacaoMapper publicacaoMapper,
+                             S3Client s3Client) {
+        this.publicacaoRepository = publicacaoRepository;
+        this.usuarioRepository = usuarioRepository;
+        this.statusService = statusService;
+        this.publicacaoMapper = publicacaoMapper;
+        this.s3Client = s3Client;
+    }
+
     @Value("${aws.s3.bucket}")
     private String bucketName;
 
@@ -83,17 +79,6 @@ public class PublicacaoService {
                 url = "https://" + bucketName + ".s3.sa-east-1.amazonaws.com/" + fileName;
             }
 
-            // STATUS PADRÃO DE CRIAÇÂO: ATIVO
-            Status statusInicial = new Status();
-            statusInicial.setTipoStatus(
-                this.tipoStatusRepository
-                    .findByNomeTipoStatus(ListaTipoStatus.ATIVO.name())
-                    .get()
-            );
-            statusInicial.setDataModificacao(LocalDateTime.now());
-
-            this.statusRepository.save(statusInicial);
-
             Usuario autor = usuarioRepository.findById(autorId)
                     .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
 
@@ -101,12 +86,11 @@ public class PublicacaoService {
             pub.setLegenda(temLegenda ? legenda : null);
             pub.setUrlMidia(url);
             pub.setAutor(autor);
-            pub.setStatusPublicacao(statusInicial);
-            
 
+            // STATUS PADRÃO DE CRIAÇÂO: ATIVO
+            pub.setStatusPublicacao(this.statusService.generateStatus());
 
             publicacaoRepository.save(pub);
-
             return new MessageResponse("Postagem criada com sucesso!");
 
         } catch (RuntimeException e) {
@@ -120,13 +104,12 @@ public class PublicacaoService {
         List<Publicacao> listaPubli = this.publicacaoRepository.findAll(find.toSpecifications());
 
         // Se não for Ativo, remove da lista
-        listaPubli.removeIf(e -> !e.getStatusPublicacao()
+        listaPubli.removeIf(e -> e.getStatusPublicacao()
         .getTipoStatus()
-        .getNomeTipoStatus()
-        .equalsIgnoreCase(ListaTipoStatus.ATIVO.name()));
+        .getNomeTipoStatus() != ETipoStatus.ATIVO);
 
         // Transformação em DTO
-        List<PublicacaoResponse> dto = listaPubli.stream()
+        /*List<PublicacaoResponse> dto = listaPubli.stream()
         .map(
             (e)->new PublicacaoResponse.builder()
             .id(e.getId())
@@ -138,13 +121,18 @@ public class PublicacaoService {
             // As reações são separadas por tipo e quantidade
             .reacoes(this.filterReacaoDetails(e.getReacoes()))
             .build())
-        .collect(Collectors.toList());
+        .collect(Collectors.toList());*/
 
-
-        return dto;
+        return this.publicacaoMapper.toDTOList(listaPubli);
     }
 
-    // Método que separa todas as reações por tipo e suas quantidades
+    /*
+     * Método que separa todas as reações por tipo e suas quantidades
+     *
+     * @param reacoes Coleção com as reações
+     * @return Retorna uma lista com as reações separadas por tipo
+     */
+    /*
     private List<ReacaoDetailsResponse> filterReacaoDetails(Set<Reacao> reacoes) {
         // Transforma as reações (Set) em DTOS (List)
         var lista = new ArrayList<ReacaoResponse>(
@@ -180,6 +168,5 @@ public class PublicacaoService {
         // Retorna a lista de reações e seus insights
         return listDetails;
     }
-
-
+    */
 }

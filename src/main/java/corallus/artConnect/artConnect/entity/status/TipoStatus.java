@@ -1,12 +1,8 @@
 package corallus.artConnect.artConnect.entity.status;
 
 import java.util.List;
-
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import corallus.artConnect.artConnect.enumeration.ETipoStatus;
+import jakarta.persistence.*;
 
 @Entity
 public class TipoStatus {
@@ -14,7 +10,9 @@ public class TipoStatus {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String nomeTipoStatus;
+
+    @Enumerated(EnumType.STRING)
+    private ETipoStatus nomeTipoStatus;
 
     @OneToMany(mappedBy = "tipoStatus")
     private List<Status> status;
@@ -22,7 +20,7 @@ public class TipoStatus {
 
     public TipoStatus() {}
 
-    public TipoStatus(Long id, String nomeTipoStatus) {
+    public TipoStatus(Long id, ETipoStatus nomeTipoStatus) {
         this.id = id;
         this.nomeTipoStatus = nomeTipoStatus;
     }
@@ -37,14 +35,19 @@ public class TipoStatus {
         this.id = id;
     }
 
-    public String getNomeTipoStatus() {
+    public ETipoStatus getNomeTipoStatus() {
         return nomeTipoStatus;
     }
 
-    public void setNomeTipoStatus(String nomeTipoStatus) {
+    public void setNomeTipoStatus(ETipoStatus nomeTipoStatus) {
         this.nomeTipoStatus = nomeTipoStatus;
     }
 
-    
-    
+    public List<Status> getStatus() {
+        return status;
+    }
+
+    public void setStatus(List<Status> status) {
+        this.status = status;
+    }
 }

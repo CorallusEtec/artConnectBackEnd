@@ -1,11 +1,8 @@
 package corallus.artConnect.artConnect.entity.reacao;
 
-
 import java.time.LocalDateTime;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
 import corallus.artConnect.artConnect.entity.Comentario;
 import corallus.artConnect.artConnect.entity.Publicacao;
 import corallus.artConnect.artConnect.entity.atores.Usuario;
@@ -14,7 +11,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
-
 
 @Entity(name = "reacao")
 public class Reacao {
@@ -44,21 +40,7 @@ public class Reacao {
 
     public Reacao() {}
 
-   public Reacao(Long id, TipoReacao tipoReacao, Boolean ativo, Usuario usuario, Comentario comentario,
-            LocalDateTime dataReacao, Publicacao publicacao) {
-        this.id = id;
-        this.tipoReacao = tipoReacao;
-        this.ativo = ativo;
-        this.usuario = usuario;
-        this.comentario = comentario;
-        this.dataReacao = dataReacao;
-        this.publicacao = publicacao;
-    }
-
-   
-
     // GET E SET 
-    
 
     public Long getId() {
         return id;
@@ -115,6 +97,4 @@ public class Reacao {
     public void setPublicacao(Publicacao publicacao) {
         this.publicacao = publicacao;
     }
-    
-
 }

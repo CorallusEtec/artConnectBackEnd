@@ -1,7 +1,6 @@
 package corallus.artConnect.artConnect.entity.contato;
 
 import java.util.List;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -20,17 +19,9 @@ public class TipoContato {
     @OneToMany(mappedBy = "tipoContato")
     private List<Contato> contatos;
 
-
     // CONSTRUTOR
 
     public TipoContato() {
-    }
-
-
-    public TipoContato(Long id, String tipoContato, List<Contato> contatos) {
-        this.id = id;
-        this.tipoContato = tipoContato;
-        this.contatos = contatos;
     }
 
     // GET E SET
@@ -39,36 +30,23 @@ public class TipoContato {
         return id;
     }
 
-
     public void setId(Long id) {
         this.id = id;
     }
-
 
     public String getTipoContato() {
         return tipoContato;
     }
 
-
     public void setTipoContato(String tipoContato) {
         this.tipoContato = tipoContato;
     }
-
 
     public List<Contato> getContatos() {
         return contatos;
     }
 
-
     public void setContatos(List<Contato> contatos) {
         this.contatos = contatos;
     }
-    
-  
-
-
-
- 
-
-    
 }

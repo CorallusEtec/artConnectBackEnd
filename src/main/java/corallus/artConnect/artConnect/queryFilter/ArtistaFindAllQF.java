@@ -2,7 +2,6 @@ package corallus.artConnect.artConnect.queryFilter;
 
 import corallus.artConnect.artConnect.entity.atores.Artista;
 import org.springframework.data.jpa.domain.Specification;
-
 import static corallus.artConnect.artConnect.specification.ArtistaSpec.*;
 
 public class ArtistaFindAllQF {

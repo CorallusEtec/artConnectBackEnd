@@ -1,11 +1,7 @@
 package corallus.artConnect.artConnect.entity.contato;
 
 import corallus.artConnect.artConnect.entity.atores.Usuario;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 
 @Entity
 public class Contato {
@@ -17,6 +13,7 @@ public class Contato {
     @ManyToOne
     private Usuario usuario;
 
+    @Column(nullable = false)
     private String valorContato;
 
     @ManyToOne
@@ -25,13 +22,6 @@ public class Contato {
     // CONSTRUTOR
 
     public Contato() {}
-
-    public Contato(Long id, Usuario usuario, String valorContato, TipoContato tipoContato) {
-        this.id = id;
-        this.usuario = usuario;
-        this.valorContato = valorContato;
-        this.tipoContato = tipoContato;
-    }
 
     // GET E SET
 
@@ -66,8 +56,4 @@ public class Contato {
     public void setTipoContato(TipoContato tipoContato) {
         this.tipoContato = tipoContato;
     }
-
- 
-    
-
 }
