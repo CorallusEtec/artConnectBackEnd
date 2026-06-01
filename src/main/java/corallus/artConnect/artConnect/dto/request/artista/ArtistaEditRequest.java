@@ -3,7 +3,7 @@ package corallus.artConnect.artConnect.dto.request.artista;
 import java.time.LocalDate;
 
 import corallus.artConnect.artConnect.dto.request.CommonEdit;
-import corallus.artConnect.artConnect.entity.Arte;
+import corallus.artConnect.artConnect.entity.arte.Arte;
 import jakarta.validation.constraints.NotBlank;
 public record ArtistaEditRequest(
     // USUARIO

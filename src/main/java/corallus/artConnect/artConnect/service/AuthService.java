@@ -29,7 +29,8 @@ import java.time.LocalDateTime;
 @Service
 public class AuthService implements UserDetailsService {
     @Lazy
-    private final AuthenticationManager authenticationManager;
+    @Autowired
+    private AuthenticationManager authenticationManager;
 
     private final StatusService statusService;
 
@@ -45,15 +46,16 @@ public class AuthService implements UserDetailsService {
 
     private final AdminRepository adminRepository;
 
-    public AuthService(AuthenticationManager authenticationManager,
-                       StatusService statusService,
+    // INJEÇÃO DE DEPENDÊNCIA
+
+
+    public AuthService(StatusService statusService,
                        TokenService tokenService,
                        UsuarioRepository usuarioRepository,
                        PasswordEncoder passwordEncoder,
                        ContratanteRepository contratanteRepository,
                        ArtistaRepository artistaRepository,
                        AdminRepository adminRepository) {
-        this.authenticationManager = authenticationManager;
         this.statusService = statusService;
         this.tokenService = tokenService;
         this.usuarioRepository = usuarioRepository;

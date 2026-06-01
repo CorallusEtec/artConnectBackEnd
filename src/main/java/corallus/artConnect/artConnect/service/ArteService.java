@@ -6,10 +6,10 @@ import corallus.artConnect.artConnect.dto.request.arte.ArteEditRequest;
 import corallus.artConnect.artConnect.dto.request.arte.ArteSaveRequest;
 import corallus.artConnect.artConnect.dto.response.util.MessageResponse;
 import corallus.artConnect.artConnect.error.errors.ArteAlreadyExistsException;
+import corallus.artConnect.artConnect.repository.arte.ArteRepository;
 import org.springframework.stereotype.Service;
-import corallus.artConnect.artConnect.entity.Arte;
+import corallus.artConnect.artConnect.entity.arte.Arte;
 import corallus.artConnect.artConnect.error.errors.ArteNotFoundException;
-import corallus.artConnect.artConnect.repository.ArteRepository;
 
 @Service
 public class ArteService {
