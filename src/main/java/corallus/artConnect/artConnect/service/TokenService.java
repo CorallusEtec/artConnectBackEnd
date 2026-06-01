@@ -2,14 +2,11 @@ package corallus.artConnect.artConnect.service;
 
 import java.time.Duration;
 import java.time.Instant;
-
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTVerificationException;
-
 import corallus.artConnect.artConnect.entity.atores.Usuario;
 
 
@@ -24,7 +21,7 @@ public class TokenService {
         Algorithm algorithm = Algorithm.HMAC256(secret);
         return JWT.create()
         .withIssuer("art-connect")
-                .withClaim("roles", usuario.getTipoConta())
+                .withClaim("roles", usuario.getTipoConta().name())
         .withSubject(usuario.getEmail())
         .withExpiresAt(Instant.now().plus(Duration.ofHours(3))) // Tokn expira em 3 horas
         .sign(algorithm);

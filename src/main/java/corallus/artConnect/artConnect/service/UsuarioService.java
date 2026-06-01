@@ -1,11 +1,10 @@
 package corallus.artConnect.artConnect.service;
 
 import java.util.List;
-import java.util.stream.Collectors;
-
 import corallus.artConnect.artConnect.dto.request.CommonEdit;
+import corallus.artConnect.artConnect.enumeration.ETipoConta;
+import corallus.artConnect.artConnect.mapper.usuario.UsuarioMapper;
 import corallus.artConnect.artConnect.queryFilter.UsuarioFindAllQF;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import corallus.artConnect.artConnect.entity.atores.Usuario;
 import corallus.artConnect.artConnect.error.errors.UserNotFoundException;
@@ -14,25 +13,34 @@ import corallus.artConnect.artConnect.repository.atores.UsuarioRepository;
 
 @Service
 public class UsuarioService {
-    @Autowired
-    private UsuarioRepository usuarioRepository;
-    
+
+    private final UsuarioRepository usuarioRepository;
+
+    private final UsuarioMapper usuarioMapper;
+
+    // INJEÇÃO DE DEPENDÊNCIA
+    public UsuarioService(UsuarioRepository usuarioRepository, UsuarioMapper usuarioMapper) {
+        this.usuarioRepository = usuarioRepository;
+        this.usuarioMapper = usuarioMapper;
+    }
+
     public List<UsuarioResponse> findAll(UsuarioFindAllQF filter) {
-        return this.usuarioRepository.findAll(filter.toSpecifications())
+        List<Usuario> lista = this.usuarioRepository.findAll(filter.toSpecifications())
                 .stream()
-                .filter(u->!(u.getTipoConta().equalsIgnoreCase("ADMIN")))
-                .map(UsuarioResponse::toDTO)
-                .collect(Collectors.toList());
+                .filter(u->u.getTipoConta() != ETipoConta.ADMIN)
+                .toList();
+        return this.usuarioMapper.toDTOList(lista);
     }
 
     public UsuarioResponse findById(Long id) {
-        Usuario model = this.usuarioRepository.findById(id)
+        Usuario entity = this.usuarioRepository.findById(id)
         .orElseThrow(UserNotFoundException::new);
-        if(model.getTipoConta().equalsIgnoreCase("ADMIN")) {
+
+        if(entity.getTipoConta() == ETipoConta.ADMIN) {
             throw new UserNotFoundException();
         }
 
-        return UsuarioResponse.toDTO(model);
+        return this.usuarioMapper.toDTO(entity);
     }
 
 

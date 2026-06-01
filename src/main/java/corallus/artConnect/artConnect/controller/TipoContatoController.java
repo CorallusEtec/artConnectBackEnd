@@ -29,8 +29,8 @@ public class TipoContatoController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<TipoContatoResponse> find(@PathVariable Long id) {
-        var tipoContato = this.tipoContatoService.find(id);
+    public ResponseEntity<TipoContatoResponse> findById(@PathVariable Long id) {
+        var tipoContato = this.tipoContatoService.findById(id);
         return new ResponseEntity<>(tipoContato, HttpStatus.OK);
     }
 }
