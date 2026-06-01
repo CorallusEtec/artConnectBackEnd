@@ -7,7 +7,6 @@ import java.util.Set;
 import corallus.artConnect.artConnect.dto.response.contato.ContatoResponse;
 import corallus.artConnect.artConnect.entity.Arte;
 import corallus.artConnect.artConnect.entity.Seguida;
-import corallus.artConnect.artConnect.entity.Tag;
 import corallus.artConnect.artConnect.entity.status.Status;
 import corallus.artConnect.artConnect.enumeration.ETipoConta;
 
@@ -22,7 +21,6 @@ public record ArtistaResponse(
     
     // ARTISTA
     String nomeArtistico,
-    List<Tag> listaTags,
     Arte arte,
     LocalDate dataNasc,
     

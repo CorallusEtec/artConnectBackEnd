@@ -1,12 +1,9 @@
 package corallus.artConnect.artConnect.entity;
 
-
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
 import corallus.artConnect.artConnect.entity.atores.Usuario;
 import corallus.artConnect.artConnect.entity.reacao.Reacao;
 import corallus.artConnect.artConnect.entity.status.Status;
@@ -28,6 +25,7 @@ public class Publicacao {
     
     @OneToOne
     private Status statusPublicacao;
+
     @ManyToOne
     @JsonIgnoreProperties({"publicacoes", "reacoes", "comentarios"})
     private Usuario autor;
@@ -36,6 +34,7 @@ public class Publicacao {
 
     @OneToMany(mappedBy = "publicacao")
     private Set<Reacao> reacoes;
+
     @OneToMany(mappedBy = "publicacao")
     private List<Comentario> comentarios;
     
@@ -46,21 +45,8 @@ public class Publicacao {
 
     public Publicacao() {}
 
-    public Publicacao(Long id, Status statusPublicacao, Usuario autor, LocalDateTime dataPublicacao,
-            Set<Reacao> reacoes, List<Comentario> comentarios, String legenda, String urlMidia) {
-        this.id = id;
-        this.statusPublicacao = statusPublicacao;
-        this.autor = autor;
-        this.dataPublicacao = dataPublicacao;
-        this.reacoes = reacoes;
-        this.comentarios = comentarios;
-        this.legenda = legenda;
-        this.urlMidia = urlMidia;
-    }
-
-
     // GET E SET
-    
+
     public Long getId() {
         return id;
     }
@@ -124,7 +110,4 @@ public class Publicacao {
     public void setUrlMidia(String urlMidia) {
         this.urlMidia = urlMidia;
     }
-   
-    
-
 }

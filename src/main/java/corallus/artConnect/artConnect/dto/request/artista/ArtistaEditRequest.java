@@ -1,12 +1,10 @@
 package corallus.artConnect.artConnect.dto.request.artista;
 
 import java.time.LocalDate;
-import java.util.List;
 
+import corallus.artConnect.artConnect.dto.request.CommonEdit;
 import corallus.artConnect.artConnect.entity.Arte;
-import corallus.artConnect.artConnect.entity.Tag;
 import jakarta.validation.constraints.NotBlank;
-
 public record ArtistaEditRequest(
     // USUARIO
 
@@ -15,7 +13,6 @@ public record ArtistaEditRequest(
     String textoBio,
 
     // ARTISTA
-    List<Tag> listaTags,
     Arte arte,
     String nomeArtistico,
     LocalDate dataNasc,
@@ -30,4 +27,4 @@ public record ArtistaEditRequest(
     String cidade,
     String uf
 
-) {}
+) implements CommonEdit {}

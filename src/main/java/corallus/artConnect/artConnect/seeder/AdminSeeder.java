@@ -4,13 +4,11 @@ import corallus.artConnect.artConnect.dto.request.usuario.UserRegisterRequest;
 import corallus.artConnect.artConnect.enumeration.ETipoConta;
 import corallus.artConnect.artConnect.repository.atores.AdminRepository;
 import corallus.artConnect.artConnect.service.AuthService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
 @Component
 public class AdminSeeder implements CommandLineRunner {
-
 
     private final AdminRepository adminRepository;
 

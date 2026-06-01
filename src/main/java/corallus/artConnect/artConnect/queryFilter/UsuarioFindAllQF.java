@@ -2,8 +2,6 @@ package corallus.artConnect.artConnect.queryFilter;
 
 import corallus.artConnect.artConnect.entity.atores.Usuario;
 import org.springframework.data.jpa.domain.Specification;
-import corallus.artConnect.artConnect.queryFilter.UsuarioFindAllQF;
-
 import static corallus.artConnect.artConnect.specification.UsuarioSpec.*;
 
 public class UsuarioFindAllQF {
@@ -12,7 +10,6 @@ public class UsuarioFindAllQF {
     private String cidade;
     private String uf;
 
-
     public Specification<Usuario> toSpecifications() {
         return nomeContains(nome)
                 .and(tipoContaContains(tipoConta))
@@ -20,9 +17,7 @@ public class UsuarioFindAllQF {
                 .and(ufContains(uf));
     }
 
-
     // GET E SET
-
 
     public String getNome() {
         return nome;

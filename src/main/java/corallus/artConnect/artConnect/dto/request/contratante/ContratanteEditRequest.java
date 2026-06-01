@@ -2,6 +2,7 @@ package corallus.artConnect.artConnect.dto.request.contratante;
 
 import java.time.LocalDate;
 
+import corallus.artConnect.artConnect.dto.request.CommonEdit;
 import jakarta.validation.constraints.NotBlank;
 
 public record ContratanteEditRequest(
@@ -25,4 +26,4 @@ public record ContratanteEditRequest(
     String complemento,
     String cidade,
     String uf
-) {}
+) implements CommonEdit {}

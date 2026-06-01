@@ -2,7 +2,6 @@ package corallus.artConnect.artConnect.queryFilter;
 
 import corallus.artConnect.artConnect.entity.atores.Contratante;
 import org.springframework.data.jpa.domain.Specification;
-
 import static corallus.artConnect.artConnect.specification.ContratanteSpec.*;
 
 public class ContratanteFindAllQF {
@@ -22,7 +21,6 @@ public class ContratanteFindAllQF {
 
 
     // GET E SET
-
 
     public String getNome() {
         return nome;

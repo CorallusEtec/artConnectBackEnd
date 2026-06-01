@@ -3,12 +3,8 @@ package corallus.artConnect.artConnect.entity.reacao;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import corallus.artConnect.artConnect.enumeration.ETipoReacao;
+import jakarta.persistence.*;
 
 @Entity
 public class TipoReacao {
@@ -16,8 +12,9 @@ public class TipoReacao {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    
-    private String nomeTipo;
+
+    @Enumerated(EnumType.STRING)
+    private ETipoReacao nomeTipo;
 
     @JsonIgnore
     @OneToMany(mappedBy = "tipoReacao")
@@ -26,16 +23,13 @@ public class TipoReacao {
 
     // CONSTRUTOR
 
-    public TipoReacao() {
+    public TipoReacao() {}
 
-    }
-
-    public TipoReacao(Long id, String nomeTipo, List<Reacao> reacoes) {
+    public TipoReacao(Long id, ETipoReacao nomeTipo, List<Reacao> reacoes) {
         this.id = id;
         this.nomeTipo = nomeTipo;
         this.reacoes = reacoes;
     }
-
 
     // GET E SET
 
@@ -47,11 +41,11 @@ public class TipoReacao {
         this.id = id;
     }
 
-    public String getNomeTipo() {
+    public ETipoReacao getNomeTipo() {
         return nomeTipo;
     }
 
-    public void setNomeTipo(String nomeTipo) {
+    public void setNomeTipo(ETipoReacao nomeTipo) {
         this.nomeTipo = nomeTipo;
     }
 

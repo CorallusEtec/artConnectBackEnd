@@ -11,7 +11,6 @@ import org.jspecify.annotations.Nullable;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-
 import corallus.artConnect.artConnect.entity.Publicacao;
 import corallus.artConnect.artConnect.entity.Seguida;
 import corallus.artConnect.artConnect.entity.contato.Contato;
@@ -28,7 +27,7 @@ public abstract class Usuario implements UserDetails{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     // Dados Importantes
     private Long id;
-    @JoinColumn(unique = true, nullable = false)
+    @JoinColumn(nullable = false)
     private String nome;
 
     @JoinColumn(unique = true, nullable = false)
@@ -77,26 +76,14 @@ public abstract class Usuario implements UserDetails{
 
     @Override
     public String getUsername() {
-
         return this.getEmail();
     }
-
-
 
     // CONSTRUTORES
     public Usuario() {}
 
 
-    // GET E SET   
-
-
-    public Status getStatus() {
-        return status;
-    }
-
-    public void setStatus(Status status) {
-        this.status = status;
-    }
+    // GET E SET
 
     public Long getId() {
         return id;
@@ -136,6 +123,14 @@ public abstract class Usuario implements UserDetails{
 
     public void setTipoConta(ETipoConta tipoConta) {
         this.tipoConta = tipoConta;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
     }
 
     public LocalDateTime getDataCriacao() {

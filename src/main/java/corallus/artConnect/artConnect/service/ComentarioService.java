@@ -25,17 +25,14 @@ import corallus.artConnect.artConnect.repository.status.TipoStatusRepository;
 
 @Service
 public class ComentarioService {
-    @Autowired
-    private UsuarioRepository usuarioRepository;
-    
-    @Autowired
-    private TipoStatusRepository tipoStatusRepository;
 
-    @Autowired
-    private PublicacaoRepository publicacaoRepository;
+    private final UsuarioRepository usuarioRepository;
 
-    @Autowired
-    private ComentarioRepository comentarioRepository;
+    private final TipoStatusRepository tipoStatusRepository;
+
+    private final PublicacaoRepository publicacaoRepository;
+
+    private final ComentarioRepository comentarioRepository;
 
     @Autowired
     private StatusRepository statusRepository;

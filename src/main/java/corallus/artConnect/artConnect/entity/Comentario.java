@@ -2,9 +2,7 @@ package corallus.artConnect.artConnect.entity;
 
 import java.time.LocalDateTime;
 import java.util.Set;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import corallus.artConnect.artConnect.entity.atores.Usuario;
 import corallus.artConnect.artConnect.entity.reacao.Reacao;
 import corallus.artConnect.artConnect.entity.status.Status;
@@ -43,17 +41,6 @@ public class Comentario {
     // CONSTRUTOR
 
     public Comentario() {}
-
-    public Comentario(Long id, Status statusComentario, LocalDateTime dataComentario, String mensagem, Usuario usuario,
-            Set<Reacao> reacoes, Publicacao publicacao) {
-        this.id = id;
-        this.statusComentario = statusComentario;
-        this.dataComentario = dataComentario;
-        this.mensagem = mensagem;
-        this.usuario = usuario;
-        this.reacoes = reacoes;
-        this.publicacao = publicacao;
-    }
 
     // GET E SET
 
@@ -97,14 +84,6 @@ public class Comentario {
         this.usuario = usuario;
     }
 
-    public Set<Reacao> getReacoes() {
-        return reacoes;
-    }
-
-    public void setReacoes(Set<Reacao> reacoes) {
-        this.reacoes = reacoes;
-    }
-
     public Publicacao getPublicacao() {
         return publicacao;
     }
@@ -113,8 +92,11 @@ public class Comentario {
         this.publicacao = publicacao;
     }
 
-  
+    public Set<Reacao> getReacoes() {
+        return reacoes;
+    }
 
-    
-
+    public void setReacoes(Set<Reacao> reacoes) {
+        this.reacoes = reacoes;
+    }
 }

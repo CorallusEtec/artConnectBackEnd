@@ -1,56 +1,60 @@
 package corallus.artConnect.artConnect.service;
 
+import java.util.ArrayList;
 import java.util.List;
-
+import corallus.artConnect.artConnect.dto.request.arte.ArteEditRequest;
+import corallus.artConnect.artConnect.dto.request.arte.ArteSaveRequest;
 import corallus.artConnect.artConnect.dto.response.util.MessageResponse;
-import org.springframework.beans.factory.annotation.Autowired;
+import corallus.artConnect.artConnect.error.errors.ArteAlreadyExistsException;
 import org.springframework.stereotype.Service;
-
 import corallus.artConnect.artConnect.entity.Arte;
 import corallus.artConnect.artConnect.error.errors.ArteNotFoundException;
 import corallus.artConnect.artConnect.repository.ArteRepository;
 
 @Service
-public class ArteService implements IValidacoes {
-    @Autowired
-    private ArteRepository arteRepository;
-    
+public class ArteService {
+
+    private final ArteRepository arteRepository;
+
+    // INJEÇÃO DE DEPENDÊNCIA
+    public ArteService(ArteRepository arteRepository) {
+        this.arteRepository = arteRepository;
+    }
+
     public List<Arte> findAll() {
         List<Arte> lista = this.arteRepository.findAll();
-
         return lista;
     } 
 
     public Arte findById(Long id) {
-        if(!this.arteRepository.existsById(id)) {
-            throw new ArteNotFoundException();
-        }
-
-        Arte arte = this.arteRepository.findById(id).get();
-
+        Arte arte = this.arteRepository.findById(id)
+                .orElseThrow(ArteNotFoundException::new);
         return arte;
     }
 
-    public MessageResponse save(Arte arte) {
-        arte.setId(null);
 
-        validarString(null, new String[] { arte.getNomeArte() });
+    public MessageResponse save(ArteSaveRequest saveRequest) {
+        if(this.arteRepository.existsByNomeArte(saveRequest.nomeArte())) {
+            throw new ArteAlreadyExistsException();
+        }
+
+        Arte arte = new Arte();
+        arte.setNomeArte(saveRequest.nomeArte());
+        arte.setArtistas(new ArrayList<>());
 
         this.arteRepository.save(arte);
         return new MessageResponse("Arte criada.");
     }
 
-    public MessageResponse edit(Long id, Arte arte) {
-        if(!this.arteRepository.existsById(id)) {
-            throw new ArteNotFoundException();
-        }
-        
-        validarString(null, new String[] { arte.getNomeArte() });
+
+    public MessageResponse edit(Long id, ArteEditRequest editRequest) {
+        Arte arte = this.arteRepository.findById(id)
+                .orElseThrow(ArteNotFoundException::new);
 
         arte.setId(id);
+        arte.setNomeArte(editRequest.nomeArte());
 
         this.arteRepository.save(arte);
-
         return new MessageResponse("Arte alterada com sucesso.");
     }
 
@@ -60,22 +64,6 @@ public class ArteService implements IValidacoes {
         }
 
         this.arteRepository.deleteById(id);
-
         return new MessageResponse("Arte deletada com sucesso.");
     }
-
-    @Override
-    public void validarString(String msgErro, String[] campos) {
-        for (String texto : campos) {
-            if(texto.equals(null) || texto.trim().isEmpty()) {
-                if(msgErro == null) {
-                    throw new IllegalArgumentException("Há campos vazios na requisição.");
-                } else {
-                    throw new IllegalArgumentException(msgErro);
-                }
-            }
-        }   
-    }
-
-    
 }

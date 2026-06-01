@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.naming.AuthenticationException;
 
+import corallus.artConnect.artConnect.error.errors.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -12,10 +13,6 @@ import org.springframework.security.authentication.InsufficientAuthenticationExc
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import corallus.artConnect.artConnect.error.errors.ArteNotFoundException;
-import corallus.artConnect.artConnect.error.errors.ResourceNotFoundException;
-import corallus.artConnect.artConnect.error.errors.UserAlreadyExistsException;
-import corallus.artConnect.artConnect.error.errors.UserNotFoundException;
 
 @RestControllerAdvice
 public class GlobalErrorHandling {
@@ -48,7 +45,25 @@ public class GlobalErrorHandling {
 		return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
     }
 
-    /**
+	/**
+	 *
+	 * Arte já existente (Já cadastrada)
+	 *
+	 */
+
+	@ExceptionHandler(ArteAlreadyExistsException.class)
+	public ResponseEntity<ApiError> arteAlreadyExists(Exception e) {
+		ApiError error = new ApiError(
+				LocalDateTime.now(),
+				HttpStatus.CONFLICT.name(),
+				HttpStatus.CONFLICT.value(),
+				List.of(e.getMessage())
+		);
+		return new ResponseEntity<>(error, HttpStatus.CONFLICT);
+	}
+
+
+	/**
      * USUARIO NÃO ENCONTRADO
      */
     @ExceptionHandler(UserNotFoundException.class)
@@ -103,6 +118,12 @@ public class GlobalErrorHandling {
 		  );
 		  return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
     }
+
+	/**
+	 *
+	 * Método com argumentos inválidos (Requisição com argumentos inválidos)
+	 *
+	 */
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ApiError> methodArgumentNotValid(Exception e) {

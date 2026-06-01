@@ -1,183 +1,93 @@
 package corallus.artConnect.artConnect.service;
 
-
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.stream.Collectors;
-
 import corallus.artConnect.artConnect.dto.response.util.MessageResponse;
+import corallus.artConnect.artConnect.mapper.artista.ArtistaCadastroMapper;
+import corallus.artConnect.artConnect.mapper.artista.ArtistaMapper;
 import corallus.artConnect.artConnect.queryFilter.ArtistaFindAllQF;
-import org.springframework.beans.factory.annotation.Autowired;
+import corallus.artConnect.artConnect.repository.atores.UsuarioRepository;
 import org.springframework.stereotype.Service;
-
 import corallus.artConnect.artConnect.dto.request.artista.ArtistaCadastroRequest;
 import corallus.artConnect.artConnect.dto.request.artista.ArtistaEditRequest;
 import corallus.artConnect.artConnect.dto.response.artista.ArtistaResponse;
-import corallus.artConnect.artConnect.entity.Publicacao;
-import corallus.artConnect.artConnect.entity.Seguida;
 import corallus.artConnect.artConnect.entity.atores.Artista;
-import corallus.artConnect.artConnect.entity.contato.Contato;
-import corallus.artConnect.artConnect.entity.reacao.Reacao;
-import corallus.artConnect.artConnect.entity.status.Status;
 import corallus.artConnect.artConnect.enumeration.ETipoConta;
-import corallus.artConnect.artConnect.enumeration.ETipoStatus;
-import corallus.artConnect.artConnect.error.errors.ArteNotFoundException;
-import corallus.artConnect.artConnect.error.errors.ResourceNotFoundException;
 import corallus.artConnect.artConnect.error.errors.UserAlreadyExistsException;
 import corallus.artConnect.artConnect.error.errors.UserNotFoundException;
-import corallus.artConnect.artConnect.repository.ArteRepository;
-import corallus.artConnect.artConnect.repository.TagRepository;
 import corallus.artConnect.artConnect.repository.atores.ArtistaRepository;
-import corallus.artConnect.artConnect.repository.atores.UsuarioRepository;
-import corallus.artConnect.artConnect.repository.status.StatusRepository;
-import corallus.artConnect.artConnect.repository.status.TipoStatusRepository;
 
 @Service
-public class ArtistaService implements IValidacoes {
+public class ArtistaService {
 
-    @Autowired
-    private ArtistaRepository artistaRepository;
+    private final UsuarioRepository usuarioRepository;
 
-    @Autowired
-    private TipoStatusRepository tipoStatusRepository;
+    private final ArtistaRepository artistaRepository;
 
-    @Autowired
-    private UsuarioRepository usuarioRepository;
+    private final StatusService statusService;
 
-    @Autowired
-    private ArteRepository arteRepository;
+    private final ArtistaMapper artistaMapper;
 
-    @Autowired
-    private StatusRepository statusRepository;
+    private final ArtistaCadastroMapper artistaCadastroMapper;
 
-    @Autowired
-    private TagRepository tagRepository;
+    public ArtistaService(UsuarioRepository usuarioRepository,
+                          ArtistaRepository artistaRepository,
+                          StatusService statusService,
+                          ArtistaMapper artistaMapper,
+                          ArtistaCadastroMapper artistaCadastroMapper) {
+        this.usuarioRepository = usuarioRepository;
+        this.artistaRepository = artistaRepository;
+        this.statusService = statusService;
+        this.artistaMapper = artistaMapper;
+        this.artistaCadastroMapper = artistaCadastroMapper;
+    }
 
     public List<ArtistaResponse> findAll(ArtistaFindAllQF filter) {
-        List<ArtistaResponse> lista = this.artistaRepository.findAll(filter.toSpecification())
-                .stream()
-        .map(ArtistaResponse::toDTO)
-        .collect(Collectors.toList());
-        
-        return lista;    
+        List<Artista> lista = this.artistaRepository.findAll(filter.toSpecification());
+        return this.artistaMapper.toDTOList(lista);
     }
-
 
     public ArtistaResponse findById(Long id) {
-        Artista model = this.artistaRepository.findById(id)
-        .orElseThrow(()->new UserNotFoundException());
+        Artista artista = this.artistaRepository.findById(id)
+        .orElseThrow(UserNotFoundException::new);
 
-        return ArtistaResponse.toDTO(model);
+        return this.artistaMapper.toDTO(artista);
     }
-       
-    
-    public MessageResponse save(ArtistaCadastroRequest artistaDTO) {
-        
-        if(this.usuarioRepository.existsByEmail(artistaDTO.email())) {
+
+    public MessageResponse save(ArtistaCadastroRequest cadastroRequest) {
+        if(this.usuarioRepository.existsByEmail(cadastroRequest.email())) {
             throw new UserAlreadyExistsException();
         }
 
-
-        validarString(null, new String[] {artistaDTO.nome(), artistaDTO.email(), artistaDTO.senha()});
-        Artista artista = new Artista();
-        artista.setNome(artistaDTO.nome());
-        artista.setEmail(artistaDTO.email());
-        artista.setSenha(artistaDTO.senha());
-
-        // Listas vazias por padrão no cadastro
-
-        artista.setReacoes(new HashSet<Reacao>());
-        artista.setSeguidores(new HashSet<Seguida>());
-        artista.setSeguido(new HashSet<Seguida>());
-        artista.setContatos(new ArrayList<Contato>());
-        artista.setPublicacoes(new ArrayList<Publicacao>());
-
-
+        Artista artista = this.artistaCadastroMapper.toEntity(cadastroRequest);
+        artista.setId(null); // Garantir que não sobrescreva no banco
 
         // STATUS PADRÃO DE CRIAÇÂO: ATIVO
-        Status statusInicial = new Status();
-        statusInicial.setTipoStatus(this.tipoStatusRepository.findByNomeTipoStatus(ETipoStatus.ATIVO.name()).get());
-        statusInicial.setDataModificacao(LocalDateTime.now());
+        artista.setStatus(this.statusService.generateStatus());
 
-        this.statusRepository.save(statusInicial);
-        
-
-        // DATA, STATUS E TIPO DE CONTA
+        // DATA E TIPO DE CONTA
         artista.setDataCriacao(LocalDateTime.now());
-        artista.setStatus(statusInicial);
-        artista.setTipoConta(ETipoConta.ARTISTA.name());
-
-
-        artista.setStatus(statusInicial);
+        artista.setTipoConta(ETipoConta.ARTISTA);
         
         this.artistaRepository.save(artista);
         return new MessageResponse("Artista cadastrado com sucesso!");
     }
 
-  
-    public MessageResponse edit(Long id, ArtistaEditRequest artistaDTO) {
-
-        // CAMPOS QUE NÃO PODEM FICAR VAZIOS OU NULOS
-        validarString("O nome não pode ser vazio.", new String[] {artistaDTO.nome()});
-        
-        // BUSCA ARTISTA NO BANCO
+    public MessageResponse edit(Long id, ArtistaEditRequest editRequest) {
+        // VERIFICA SE O ARTISTA EXSITE NO BANCO
         Artista artista = this.artistaRepository.findById(id)
-        .orElseThrow(()->new UserNotFoundException("Não foi possivel editar: Conta não existente."));
-        
-        artista.setNome(artistaDTO.nome());
-        artista.setNomeArtistico(artistaDTO.nomeArtistico());
-        artista.setDataNasc(artistaDTO.dataNasc());
-        
-        if(artistaDTO.arte() != null) {
-            if(this.arteRepository.existsById(artistaDTO.arte().getId())) {
-                artista.setArte(this.arteRepository.findById(artistaDTO.arte().getId()).orElseThrow(()->new ArteNotFoundException()));
-            } else {artista.setArte(null);}
-        }
-        
+                .orElseThrow(UserNotFoundException::new);
 
+        artista.setNome(editRequest.nome());
+        artista.setNomeArtistico(editRequest.nomeArtistico());
+        artista.setDataNasc(editRequest.dataNasc());
+        artista.setArte(editRequest.arte());
 
         // Logradouro
-        artista.setNomeLog(artistaDTO.nomeLog());
-        artista.setNumLog(artistaDTO.numLog());
-        artista.setCep(artistaDTO.cep());
-        artista.setBairro(artistaDTO.bairro());
-        artista.setComplemento(artistaDTO.complemento());
-        artista.setCidade(artistaDTO.cidade());
-        artista.setUf(artistaDTO.uf());
-
-        
-        if(artistaDTO.listaTags() != null) {
-            artista.setListaTags(
-                artistaDTO.listaTags().stream()
-                .map(t->this.tagRepository.findById(t.getId()).orElseThrow(()->new ResourceNotFoundException("Tag não existente")))
-                .collect(Collectors.toList())
-            );
-        } else {
-            artista.setListaTags(null);
-        }
-        
-
-
-        artista.setTextoBio(artistaDTO.textoBio());
+        UsuarioService.fillCommonEdits(artista, editRequest);
 
         this.artistaRepository.save(artista);
         return new MessageResponse("Artista atualizado com sucesso!");
     }
 
-
-    // USAR PARA VALIDAR CAMPOS STRING NAS REQUISIÇÕES
-    @Override
-    public void validarString(String msgErro, String[] campos) {
-        for (String texto : campos) {
-            if(texto == (null) || texto.trim().isEmpty()) {
-                if(msgErro == null) {
-                    throw new IllegalArgumentException("Há campos vazios na requisição.");
-                } else {
-                    throw new IllegalArgumentException(msgErro);
-                }
-            }
-        }
-    }
 }

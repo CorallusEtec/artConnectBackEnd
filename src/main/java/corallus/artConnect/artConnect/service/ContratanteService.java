@@ -120,28 +120,21 @@ public class ContratanteService implements IValidacoes {
     }
 
 
-    public MessageResponse edit(Long id, ContratanteEditRequest contratanteDTO) {
+    public MessageResponse edit(Long id, ContratanteEditRequest editRequest) {
 
         // CAMPOS QUE NÃO PODEM ESTAR VAZIO
         validarString(null, new String[] { contratanteDTO.nome() });
         
         Contratante contratante = this.contratanteRepository.findById(id)
         // SE NÃO EXISTIR
-        .orElseThrow(()->new UserNotFoundException());
+        .orElseThrow(UserNotFoundException::new);
         contratante.setNome(contratanteDTO.nome());
         contratante.setRazaoSocial(contratanteDTO.razaoSocial());
        
         // LOGRADOURO
-        contratante.setNomeLog(contratanteDTO.nomeLog());
-        contratante.setNumLog(contratanteDTO.numLog());
-        contratante.setCep(contratanteDTO.cep());
-        contratante.setBairro(contratanteDTO.bairro());
-        contratante.setComplemento(contratanteDTO.complemento());
-        contratante.setCidade(contratanteDTO.cidade());
-        contratante.setUf(contratanteDTO.uf());
+        UsuarioService.fillCommonEdits(contratante, editRequest);
 
         // OUTROS DADOS
-        contratante.setTextoBio(contratanteDTO.textoBio());
         contratante.setDataNasc(contratanteDTO.dataNasc());
         contratante.setSexo(contratanteDTO.sexo());
 
