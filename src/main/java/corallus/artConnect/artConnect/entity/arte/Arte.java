@@ -1,4 +1,4 @@
-package corallus.artConnect.artConnect.entity;
+package corallus.artConnect.artConnect.entity.arte;
 
 import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnore;
