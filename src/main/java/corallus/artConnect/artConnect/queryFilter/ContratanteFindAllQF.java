@@ -7,14 +7,12 @@ import static corallus.artConnect.artConnect.specification.ContratanteSpec.*;
 public class ContratanteFindAllQF {
 
     private String nome;
-    private String tipoContratante;
     private String cidade;
     private String uf;
 
 
     public Specification<Contratante> toSpecification() {
         return nomeContains(nome)
-                .and(tipoContratanteContains(tipoContratante))
                 .and(cidadeContains(cidade))
                 .and(ufContains(uf));
     }
@@ -28,14 +26,6 @@ public class ContratanteFindAllQF {
 
     public void setNome(String nome) {
         this.nome = nome;
-    }
-
-    public String getTipoContratante() {
-        return tipoContratante;
-    }
-
-    public void setTipoContratante(String tipoContratante) {
-        this.tipoContratante = tipoContratante;
     }
 
     public String getCidade() {

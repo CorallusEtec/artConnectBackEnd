@@ -1,15 +1,12 @@
 package corallus.artConnect.artConnect.controller;
 
 import java.util.List;
-
 import corallus.artConnect.artConnect.dto.response.util.MessageResponse;
 import corallus.artConnect.artConnect.queryFilter.ContratanteFindAllQF;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import corallus.artConnect.artConnect.dto.request.contratante.ContratanteCadastroRequest;
 import corallus.artConnect.artConnect.dto.request.contratante.ContratanteEditRequest;
 import corallus.artConnect.artConnect.dto.response.contratante.ContratanteResponse;
 import corallus.artConnect.artConnect.service.ContratanteService;
@@ -29,12 +26,6 @@ public class ContratanteController {
         List<ContratanteResponse> lista = this.contratanteService.findAll(find);
     
         return new ResponseEntity<>(lista, HttpStatus.OK);
-    }
-
-    @PostMapping("/save")
-    public ResponseEntity<MessageResponse> save(@RequestParam(name = "tipo", defaultValue = "cpf") String tipo, @RequestBody @Valid ContratanteCadastroRequest cadastro) {
-        MessageResponse msg = this.contratanteService.save(tipo, cadastro);
-        return new ResponseEntity<>(msg, HttpStatus.CREATED);
     }
     
     @PutMapping("/{id}")

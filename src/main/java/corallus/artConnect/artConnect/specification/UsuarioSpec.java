@@ -1,7 +1,7 @@
 package corallus.artConnect.artConnect.specification;
 
-import corallus.artConnect.artConnect.entity.atores.Artista;
 import corallus.artConnect.artConnect.entity.atores.Usuario;
+import corallus.artConnect.artConnect.enumeration.ETipoConta;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.util.ObjectUtils;
 
@@ -19,7 +19,8 @@ public class UsuarioSpec {
         };
     }
 
-    public static Specification<Usuario> tipoContaContains(String tipoConta) {
+    public static Specification<Usuario> tipoContaContains(String tipoContaString) {
+        ETipoConta tipoConta = ETipoConta.valueOf(tipoContaString);
         return (root, query, builder) -> {
             if(ObjectUtils.isEmpty(tipoConta)) {
                 return  null;
@@ -58,4 +59,15 @@ public class UsuarioSpec {
             }
         };
     }
+
+    public static Specification<Usuario> dataCriacaoEnds(LocalDateTime dataCriacao) {
+        return (root, query, builder) -> {
+            if(ObjectUtils.isEmpty(dataCriacao)) {
+                return null;
+            } else {
+                return builder.lessThanOrEqualTo(root.get("dataCriacao"), dataCriacao);
+            }
+        };
+    }
+
 }

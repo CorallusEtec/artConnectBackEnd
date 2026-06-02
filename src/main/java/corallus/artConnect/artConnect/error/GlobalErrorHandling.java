@@ -46,11 +46,8 @@ public class GlobalErrorHandling {
     }
 
 	/**
-	 *
 	 * Arte já existente (Já cadastrada)
-	 *
 	 */
-
 	@ExceptionHandler(ArteAlreadyExistsException.class)
 	public ResponseEntity<ApiError> arteAlreadyExists(Exception e) {
 		ApiError error = new ApiError(
@@ -60,6 +57,20 @@ public class GlobalErrorHandling {
 				List.of(e.getMessage())
 		);
 		return new ResponseEntity<>(error, HttpStatus.CONFLICT);
+	}
+
+	/**
+	 * Exceção ao tentar registrar (instanciar) um novo usuario
+	 */
+	@ExceptionHandler(CreateUserException.class)
+	public ResponseEntity<ApiError> createUserNotFound(Exception e) {
+		ApiError error = new ApiError(
+				LocalDateTime.now(),
+				HttpStatus.FAILED_DEPENDENCY.name(),
+				HttpStatus.FAILED_DEPENDENCY.value(),
+				List.of(e.getMessage())
+		);
+		return new ResponseEntity<>(error, HttpStatus.FAILED_DEPENDENCY);
 	}
 
 
@@ -120,9 +131,7 @@ public class GlobalErrorHandling {
     }
 
 	/**
-	 *
-	 * Método com argumentos inválidos (Requisição com argumentos inválidos)
-	 *
+	 * Metodo com argumentos inválidos (Requisição com argumentos inválidos)
 	 */
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
@@ -136,6 +145,9 @@ public class GlobalErrorHandling {
 		  return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }
 
+	/**
+	 * Requisição com crendenciais de autenticação inválida
+	 */
     @ExceptionHandler(BadCredentialsException.class)
     public ResponseEntity<ApiError> badCredentials(Exception e) {
         ApiError error = new ApiError(
@@ -147,6 +159,9 @@ public class GlobalErrorHandling {
 		  return new ResponseEntity<>(error, HttpStatus.UNAUTHORIZED);
     }
 
+	/**
+	 * Exceção genérica ao tentar autenticar
+	 */
     @ExceptionHandler(AuthenticationException.class)
     public ResponseEntity<ApiError> authException(Exception e) {
         ApiError error = new ApiError(
@@ -158,6 +173,9 @@ public class GlobalErrorHandling {
 		  return new ResponseEntity<>(error, HttpStatus.UNAUTHORIZED);
     }
 
+	/**
+	 * Credenciais faltando na autenticação
+	 */
     @ExceptionHandler(InsufficientAuthenticationException.class)
     public ResponseEntity<ApiError> insufficientAuth(Exception e) {
         ApiError error = new ApiError(

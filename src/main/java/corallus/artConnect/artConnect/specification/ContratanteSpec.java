@@ -36,14 +36,4 @@ public class ContratanteSpec {
             }
         };
     }
-
-    public static Specification<Contratante> tipoContratanteContains(String tipo) {
-        return (root, query, builder) -> {
-            if(ObjectUtils.isEmpty(tipo)) {
-                return null;
-            } else {
-                return builder.like(root.get("tipoConta"), "%"+"_"+tipo);
-            }
-        };
-    }
 }

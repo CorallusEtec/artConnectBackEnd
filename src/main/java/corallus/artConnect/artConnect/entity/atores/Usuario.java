@@ -1,9 +1,7 @@
 package corallus.artConnect.artConnect.entity.atores;
 
 import java.time.LocalDateTime;
-import java.util.Collection;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import corallus.artConnect.artConnect.enumeration.ETipoConta;
 import jakarta.persistence.*;
@@ -27,12 +25,12 @@ public abstract class Usuario implements UserDetails{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     // Dados Importantes
     private Long id;
-    @JoinColumn(nullable = false)
+    @Column(nullable = false)
     private String nome;
 
-    @JoinColumn(unique = true, nullable = false)
+    @Column(unique = true, nullable = false)
     private String email;
-    @JoinColumn(nullable = false)
+    @Column(nullable = false)
     private String senha;
     @Enumerated(EnumType.STRING)
     private ETipoConta tipoConta;
@@ -53,15 +51,15 @@ public abstract class Usuario implements UserDetails{
     private String textoBio;
 
     @OneToMany(mappedBy = "seguidor")
-    private Set<Seguida> seguidores;
+    private Set<Seguida> seguidores = new HashSet<>();
     @OneToMany(mappedBy = "seguido")
-    private Set<Seguida> seguido;
+    private Set<Seguida> seguido = new HashSet<>();
     @OneToMany(mappedBy = "usuario")
-    private List<Contato> contatos;
+    private List<Contato> contatos = new ArrayList<>();
     @OneToMany(mappedBy = "autor")
-    private List<Publicacao> publicacoes;
+    private List<Publicacao> publicacoes = new ArrayList<>();
     @OneToMany(mappedBy = "usuario")
-    private Set<Reacao> reacoes;
+    private Set<Reacao> reacoes = new HashSet<>();
     
     // Metodos UserDetails
     @Override

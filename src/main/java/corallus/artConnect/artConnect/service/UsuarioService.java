@@ -34,15 +34,11 @@ public class UsuarioService {
 
     public UsuarioResponse findById(Long id) {
         Usuario entity = this.usuarioRepository.findById(id)
-        .orElseThrow(UserNotFoundException::new);
-
-        if(entity.getTipoConta() == ETipoConta.ADMIN) {
-            throw new UserNotFoundException();
-        }
+                .filter(u->u.getTipoConta() != ETipoConta.ADMIN)
+            .orElseThrow(UserNotFoundException::new);
 
         return this.usuarioMapper.toDTO(entity);
     }
-
 
     public static void fillCommonEdits(Usuario u, CommonEdit dto) {
         u.setNomeLog(dto.nomeLog());

@@ -21,15 +21,15 @@ public class ArteService {
         this.arteRepository = arteRepository;
     }
 
+    // MÉTODOS LÓGICOS
+
     public List<Arte> findAll() {
-        List<Arte> lista = this.arteRepository.findAll();
-        return lista;
+        return this.arteRepository.findAll();
     } 
 
     public Arte findById(Long id) {
-        Arte arte = this.arteRepository.findById(id)
+        return this.arteRepository.findById(id)
                 .orElseThrow(ArteNotFoundException::new);
-        return arte;
     }
 
 

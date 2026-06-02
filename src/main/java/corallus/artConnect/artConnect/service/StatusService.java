@@ -30,7 +30,11 @@ public class StatusService {
         return this.statusRepository.findAll();
     }
 
-
+    /**
+     * Instancia e persiste um novo status, sendo o ativo o Status padrão
+     *
+     * @return Retorna um novo status com o tipo ATIVO
+     */
     public Status generateStatus() {
         Status status = new Status();
 
@@ -40,8 +44,16 @@ public class StatusService {
         return this.statusRepository.save(status);
     }
 
+    /**
+     * Instancia e persiste um novo status com o tipo alterável.
+     *
+     * @param tipoStatus O tipo do status a ser criado, seguindo a enumeração {@link ETipoStatus}
+     * @return Retorna o Status já persistido no banco
+     */
     public Status generateStatus(ETipoStatus tipoStatus) {
         Status status = new Status();
+        // SE tipoStatus FOR null; RETORNA O STATUS PADRÃO (ATIVO)
+        if(tipoStatus == null) {tipoStatus = ETipoStatus.ATIVO;}
 
         status.setTipoStatus(this.tipoStatusService.findByName(tipoStatus));
         status.setDataModificacao(LocalDateTime.now());
@@ -49,8 +61,18 @@ public class StatusService {
         return this.statusRepository.save(status);
     }
 
+    /**
+     * Instancia e persiste um novo status com o tipo alterável e com uma descrição opcional.
+     *
+     * @param tipoStatus O tipo do status a ser criado, seguindo a enumeração {@link ETipoStatus}
+     * @param descricao Descrição do status
+     * @return Retorna o Status já persistido no banco
+     */
     public Status generateStatus(ETipoStatus tipoStatus, String descricao) {
         Status status = new Status();
+
+        // SE tipoStatus FOR null; RETORNA O STATUS PADRÃO (ATIVO)
+        if(tipoStatus == null) {tipoStatus = ETipoStatus.ATIVO;}
 
         status.setTipoStatus(this.tipoStatusService.findByName(tipoStatus));
         status.setDataModificacao(LocalDateTime.now());

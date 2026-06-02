@@ -2,6 +2,9 @@ package corallus.artConnect.artConnect.queryFilter;
 
 import corallus.artConnect.artConnect.entity.atores.Usuario;
 import org.springframework.data.jpa.domain.Specification;
+
+import java.time.LocalDateTime;
+
 import static corallus.artConnect.artConnect.specification.UsuarioSpec.*;
 
 public class UsuarioFindAllQF {
@@ -9,12 +12,16 @@ public class UsuarioFindAllQF {
     private String tipoConta;
     private String cidade;
     private String uf;
+    private LocalDateTime dataCriacaoStarts;
+    private LocalDateTime dataCriacaoEnds;
 
     public Specification<Usuario> toSpecifications() {
         return nomeContains(nome)
                 .and(tipoContaContains(tipoConta))
                 .and(cidadeContains(cidade))
-                .and(ufContains(uf));
+                .and(ufContains(uf))
+                .and(dataCriacaoStarts(dataCriacaoStarts))
+                .and(dataCriacaoEnds(dataCriacaoEnds));
     }
 
     // GET E SET
@@ -49,5 +56,21 @@ public class UsuarioFindAllQF {
 
     public void setUf(String uf) {
         this.uf = uf;
+    }
+
+    public LocalDateTime getDataCriacaoEnds() {
+        return dataCriacaoEnds;
+    }
+
+    public void setDataCriacaoEnds(LocalDateTime dataCriacaoEnds) {
+        this.dataCriacaoEnds = dataCriacaoEnds;
+    }
+
+    public LocalDateTime getDataCriacaoStarts() {
+        return dataCriacaoStarts;
+    }
+
+    public void setDataCriacaoStarts(LocalDateTime dataCriacaoStarts) {
+        this.dataCriacaoStarts = dataCriacaoStarts;
     }
 }
