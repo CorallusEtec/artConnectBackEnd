@@ -1,10 +1,10 @@
 package corallus.artConnect.artConnect.enumeration;
-/*
-    ENUMERAÇÃO COM OS TIPOS DE USUÁRIO (CONTA) QUE USAM A APLICAÇÃO
-*/
+/**
+ * Enumeração com os tipos de usuário (conta) que usam a aplicação
+ * @author SamuMeneDev
+ */
 public enum ETipoConta {
     ARTISTA,
-    CONTRATANTE_CPF,
-    CONTRATANTE_CNPJ,
-    ADMIN
+    CONTRATANTE,
+    ADMIN;
 }

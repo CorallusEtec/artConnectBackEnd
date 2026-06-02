@@ -2,7 +2,7 @@ package corallus.artConnect.artConnect.entity.atores;
 
 import java.time.LocalDate;
 
-import corallus.artConnect.artConnect.entity.Arte;
+import corallus.artConnect.artConnect.entity.arte.Arte;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToOne;
 

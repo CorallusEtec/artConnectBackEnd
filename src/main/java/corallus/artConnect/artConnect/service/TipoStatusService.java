@@ -24,8 +24,7 @@ public class TipoStatusService {
      */
 
     public TipoStatus findByName(ETipoStatus eTipoStatus) {
-        var tipoStatus = this.tipoStatusRepository.findByNomeTipoStatus(eTipoStatus.name())
+        return this.tipoStatusRepository.findByNomeTipoStatus(eTipoStatus)
                 .orElseThrow(ResourceNotFoundException::new);
-        return tipoStatus;
     }
 }

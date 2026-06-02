@@ -1,6 +1,8 @@
 package corallus.artConnect.artConnect.entity.status;
 
 import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import corallus.artConnect.artConnect.enumeration.ETipoStatus;
 import jakarta.persistence.*;
 
@@ -14,6 +16,7 @@ public class TipoStatus {
     @Enumerated(EnumType.STRING)
     private ETipoStatus nomeTipoStatus;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "tipoStatus")
     private List<Status> status;
     // CONSTRUTOR

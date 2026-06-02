@@ -1,18 +1,19 @@
 package corallus.artConnect.artConnect.entity.atores;
 
 import java.time.LocalDate;
+
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.JoinColumn;
 
 @Entity
 public class Contratante extends Usuario {
     
-    @JoinColumn(unique = true)
+    @Column(unique = true)
     private String cpf;
     private Character sexo;
     private LocalDate dataNasc;
     private String razaoSocial;
-    @JoinColumn(unique = true)
+    @Column(unique = true)
     private String cnpj;
 
 

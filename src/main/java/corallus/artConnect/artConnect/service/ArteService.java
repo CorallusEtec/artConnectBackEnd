@@ -6,10 +6,10 @@ import corallus.artConnect.artConnect.dto.request.arte.ArteEditRequest;
 import corallus.artConnect.artConnect.dto.request.arte.ArteSaveRequest;
 import corallus.artConnect.artConnect.dto.response.util.MessageResponse;
 import corallus.artConnect.artConnect.error.errors.ArteAlreadyExistsException;
+import corallus.artConnect.artConnect.repository.arte.ArteRepository;
 import org.springframework.stereotype.Service;
-import corallus.artConnect.artConnect.entity.Arte;
+import corallus.artConnect.artConnect.entity.arte.Arte;
 import corallus.artConnect.artConnect.error.errors.ArteNotFoundException;
-import corallus.artConnect.artConnect.repository.ArteRepository;
 
 @Service
 public class ArteService {
@@ -21,15 +21,15 @@ public class ArteService {
         this.arteRepository = arteRepository;
     }
 
+    // MÉTODOS LÓGICOS
+
     public List<Arte> findAll() {
-        List<Arte> lista = this.arteRepository.findAll();
-        return lista;
+        return this.arteRepository.findAll();
     } 
 
     public Arte findById(Long id) {
-        Arte arte = this.arteRepository.findById(id)
+        return this.arteRepository.findById(id)
                 .orElseThrow(ArteNotFoundException::new);
-        return arte;
     }
 
 

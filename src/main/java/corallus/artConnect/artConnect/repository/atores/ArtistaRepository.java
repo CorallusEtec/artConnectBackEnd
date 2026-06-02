@@ -6,5 +6,5 @@ import corallus.artConnect.artConnect.entity.atores.Artista;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
 public interface ArtistaRepository extends JpaRepository<Artista, Long>, JpaSpecificationExecutor<Artista> {
-    
+    boolean existsByEmail(String email);
 }
