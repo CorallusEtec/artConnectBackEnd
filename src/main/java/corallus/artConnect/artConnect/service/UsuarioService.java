@@ -25,10 +25,8 @@ public class UsuarioService {
     }
 
     public List<UsuarioResponse> findAll(UsuarioFindAllQF filter) {
-        List<Usuario> lista = this.usuarioRepository.findAll(filter.toSpecifications())
-                .stream()
-                .filter(u->u.getTipoConta() != ETipoConta.ADMIN)
-                .toList();
+        List<Usuario> lista = this.usuarioRepository.findAll(filter.toSpecifications());
+
         return this.usuarioMapper.toDTOList(lista);
     }
 

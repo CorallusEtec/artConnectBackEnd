@@ -20,11 +20,11 @@ public class UsuarioSpec {
     }
 
     public static Specification<Usuario> tipoContaContains(String tipoContaString) {
-        ETipoConta tipoConta = ETipoConta.valueOf(tipoContaString);
         return (root, query, builder) -> {
-            if(ObjectUtils.isEmpty(tipoConta)) {
+            if(ObjectUtils.isEmpty(tipoContaString)) {
                 return  null;
             } else {
+                ETipoConta tipoConta = ETipoConta.valueOf(tipoContaString);
                 return builder.like(root.get("tipoConta"), tipoConta+"%");
             }
         };
