@@ -1,6 +1,7 @@
 package corallus.artConnect.artConnect.dto.request.reacao;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 
 public record ReacaoRequest(
@@ -8,14 +9,14 @@ public record ReacaoRequest(
         @Pattern(regexp = "LIKE|DESLIKE", message = "Tipo de reação inválida")
         String nomeTipoReacao,
 
-        @NotBlank(message = "O recurso de reação não pode ser vazio")
+        @NotNull(message = "O recurso de reação não pode ser vazio")
         Long idRecurso, // ID do que será reagido
 
         @NotBlank(message = "O tipo de recurso não pode ser vazio")
         @Pattern(regexp = "COMENTARIO|PUBLICACAO")
         String tipoRecurso,
 
-        @NotBlank(message = "Não foi possível realizar essa ação")
+        @NotNull(message = "Não foi possível realizar essa ação")
         Long idAutor
 ) {
     

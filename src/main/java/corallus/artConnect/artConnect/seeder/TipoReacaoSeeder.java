@@ -1,6 +1,5 @@
 package corallus.artConnect.artConnect.seeder;
 
-import java.util.ArrayList;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 import corallus.artConnect.artConnect.entity.reacao.TipoReacao;
@@ -21,7 +20,7 @@ public class TipoReacaoSeeder implements CommandLineRunner {
     public void run(String...args) throws Exception {
        if (tipoReacaoRepository.count() == 0) {
             for(ETipoReacao t : ETipoReacao.values()) {
-                this.tipoReacaoRepository.save(new TipoReacao(null, t, new ArrayList<>()));
+                this.tipoReacaoRepository.save(new TipoReacao(t));
             }
        }
     }

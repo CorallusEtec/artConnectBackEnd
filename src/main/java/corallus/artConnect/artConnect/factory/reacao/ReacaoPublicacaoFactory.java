@@ -4,20 +4,22 @@ import corallus.artConnect.artConnect.dto.request.reacao.ReacaoRequest;
 import corallus.artConnect.artConnect.entity.reacao.Reacao;
 import corallus.artConnect.artConnect.error.errors.ResourceNotFoundException;
 import corallus.artConnect.artConnect.repository.PublicacaoRepository;
+import corallus.artConnect.artConnect.repository.reacao.ReacaoRepository;
 import org.springframework.stereotype.Component;
+import java.util.Objects;
 
 @Component
 public class ReacaoPublicacaoFactory implements ReacaoFactoryCreator{
     private final PublicacaoRepository publicacaoRepository;
-    private final ReacaoFactory reacaoFactory;
+    private final ReacaoRepository reacaoRepository;
 
     // INJEÇÃO DE DEPENDÊNCIA
     public ReacaoPublicacaoFactory(
             PublicacaoRepository publicacaoRepository,
-            ReacaoFactory reacaoFactory
+            ReacaoRepository reacaoRepository
     ){
         this.publicacaoRepository = publicacaoRepository;
-        this.reacaoFactory = reacaoFactory;
+        this.reacaoRepository = reacaoRepository;
     }
 
     @Override
@@ -32,8 +34,10 @@ public class ReacaoPublicacaoFactory implements ReacaoFactoryCreator{
                 .filter(r->r.getUsuario().getId().equals(reacao.getUsuario().getId()))
                 .findFirst();
 
-        return this.reacaoFactory.compararReacao(reacaoAtual, reacao);
+        if(ReacaoFactoryCreator.compararReacao(reacaoAtual, reacao)==null) {
+            return ReacaoFactoryCreator.compararReacao(reacaoAtual, reacao);
+        } else {
+            return this.reacaoRepository.save(Objects.requireNonNull(ReacaoFactoryCreator.compararReacao(reacaoAtual, reacao)));
+        }
     }
-
-
 }

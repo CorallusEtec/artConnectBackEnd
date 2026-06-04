@@ -23,7 +23,7 @@ public class TipoStatusSeeder implements CommandLineRunner{
             // PARA CADA TIPO DE STATUS
             for(ETipoStatus t : ETipoStatus.values()) {
                 // CRIA NO BANCO
-                this.tipoStatusRepository.save(new TipoStatus(null, t));
+                this.tipoStatusRepository.save(new TipoStatus(t));
             }
         }
     }
