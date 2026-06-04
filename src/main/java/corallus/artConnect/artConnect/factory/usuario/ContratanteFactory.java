@@ -5,26 +5,15 @@ import corallus.artConnect.artConnect.entity.atores.Contratante;
 import corallus.artConnect.artConnect.entity.atores.Usuario;
 import corallus.artConnect.artConnect.enumeration.ETipoConta;
 import corallus.artConnect.artConnect.repository.atores.ContratanteRepository;
-import corallus.artConnect.artConnect.service.StatusService;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
-import java.time.LocalDateTime;
 
 @Component
 public class ContratanteFactory implements UsuarioFactoryCreator {
 
-    private final PasswordEncoder passwordEncoder;
-    private final StatusService statusService;
     private final ContratanteRepository contratanteRepository;
 
     // INJEÇÃO DE DEPENDÊNCIA
-    public ContratanteFactory(
-                    PasswordEncoder passwordEncoder,
-                    StatusService statusService,
-                    ContratanteRepository contratanteRepository
-    ) {
-        this.passwordEncoder = passwordEncoder;
-        this.statusService = statusService;
+    public ContratanteFactory(ContratanteRepository contratanteRepository) {
         this.contratanteRepository = contratanteRepository;
     }
 
@@ -36,19 +25,8 @@ public class ContratanteFactory implements UsuarioFactoryCreator {
      */
 
     @Override
-    public Usuario createUsuario(UserRegisterRequest registerRequest) {
-
-        Contratante contratante = new Contratante();
-        contratante.setTipoConta(ETipoConta.valueOf(registerRequest.tipoConta()));
-
-        String senha = this.passwordEncoder.encode(registerRequest.senha());
-
-        contratante.setNome(registerRequest.nome());
-        contratante.setSenha(senha);
-        contratante.setEmail(registerRequest.email());
-        contratante.setDataCriacao(LocalDateTime.now());
-
-        contratante.setStatus(this.statusService.generateStatus());
-        return this.contratanteRepository.save(contratante);
+    public <U extends Usuario> Usuario composeUsuario(U usuario, UserRegisterRequest registerRequest) {
+        usuario.setTipoConta(ETipoConta.CONTRATANTE);
+        return this.contratanteRepository.save((Contratante) usuario);
     }
 }
