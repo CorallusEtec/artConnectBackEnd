@@ -1,9 +1,11 @@
 package corallus.artConnect.artConnect.controller;
 
 import corallus.artConnect.artConnect.dto.response.util.MessageResponse;
+import corallus.artConnect.artConnect.entity.atores.Usuario;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -28,8 +30,8 @@ public class ContatoController {
     }
 
     @PostMapping("/save")
-    public ResponseEntity<MessageResponse> save(@RequestBody @Valid ContatoSaveRequest contato) {
-        MessageResponse msg = this.contatoService.save(contato);
+    public ResponseEntity<MessageResponse> save(@AuthenticationPrincipal Usuario usuario, @RequestBody @Valid ContatoSaveRequest contato) {
+        MessageResponse msg = this.contatoService.save(usuario, contato);
         
         return new ResponseEntity<>(msg, HttpStatus.CREATED);
     }

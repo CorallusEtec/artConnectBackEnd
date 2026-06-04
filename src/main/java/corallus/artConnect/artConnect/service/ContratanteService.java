@@ -2,6 +2,7 @@ package corallus.artConnect.artConnect.service;
 
 import java.util.List;
 import corallus.artConnect.artConnect.dto.response.util.MessageResponse;
+import corallus.artConnect.artConnect.error.errors.NotAuthorizedException;
 import corallus.artConnect.artConnect.mapper.contratante.ContratanteMapper;
 import corallus.artConnect.artConnect.queryFilter.ContratanteFindAllQF;
 import org.springframework.stereotype.Service;
@@ -18,8 +19,6 @@ public class ContratanteService {
     private final ContratanteMapper contratanteMapper;
 
     // INJEÇÃO DE DEPENDÊNCIA
-
-
     public ContratanteService(
             ContratanteRepository contratanteRepository,
             ContratanteMapper contratanteMapper
@@ -40,9 +39,10 @@ public class ContratanteService {
     }
 
     public MessageResponse edit(Long id, ContratanteEditRequest editRequest) {
+        // VERIFICA SE NÃO EXISTIR
         Contratante contratante = this.contratanteRepository.findById(id)
-        // SE NÃO EXISTIR
-        .orElseThrow(UserNotFoundException::new);
+        .orElseThrow(NotAuthorizedException::new);
+
         contratante.setNome(editRequest.nome());
         contratante.setRazaoSocial(editRequest.razaoSocial());
        
