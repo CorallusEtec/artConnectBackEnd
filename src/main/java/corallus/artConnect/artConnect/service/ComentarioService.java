@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 import corallus.artConnect.artConnect.dto.response.util.MessageResponse;
+import corallus.artConnect.artConnect.error.errors.NotAuthorizedException;
 import corallus.artConnect.artConnect.error.errors.UserNotFoundException;
 import corallus.artConnect.artConnect.mapper.comentario.ComentarioMapper;
 import corallus.artConnect.artConnect.repository.atores.UsuarioRepository;
@@ -54,8 +55,7 @@ public class ComentarioService {
         /*
          * SE o Status da publicação não for ATIVO, gera uma 
          * exceção (Tentando acessar publicação bloqueada ou )
-         */  
-        
+         */
         if(p.getStatusPublicacao()
             .getTipoStatus()
             .getNomeTipoStatus() != ETipoStatus.ATIVO
@@ -74,17 +74,18 @@ public class ComentarioService {
     }
 
     // Comentar em uma publicação
-    public MessageResponse comentar(ComentarioRequest dto) {
+    public MessageResponse comentar(Long idUsuario, ComentarioRequest request) {
 
-        Publicacao publicacao = this.publicacaoRepository.findById(dto.idPublicacao())
+        Publicacao publicacao = this.publicacaoRepository.findById(request.idPublicacao())
         .orElseThrow(()->new ResourceNotFoundException("Publicação não encontrada"));
 
         Comentario comentario  = new Comentario();
-        comentario.setMensagem(dto.mensagem());
+        comentario.setMensagem(request.mensagem());
         comentario.setStatusComentario(this.statusService.generateStatus());
         comentario.setDataComentario(LocalDateTime.now());
         comentario.setReacoes(new HashSet<>());
-        comentario.setUsuario(this.usuarioRepository.findById(dto.idAutor()).orElseThrow(UserNotFoundException::new));
+        comentario.setUsuario(this.usuarioRepository.findById(idUsuario)
+                .orElseThrow(NotAuthorizedException::new));
         comentario.setPublicacao(publicacao);
 
         this.comentarioRepository.save(comentario);

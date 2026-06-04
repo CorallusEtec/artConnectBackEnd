@@ -17,33 +17,27 @@ import corallus.artConnect.artConnect.error.errors.UserNotFoundException;
 public class ContatoService {
 
     private final TipoContatoRepository tipoContatoRepository;
-
-    private final UsuarioRepository usuarioRepository;
-
     private final ContatoRepository contatoRepository;
 
-    public ContatoService(TipoContatoRepository tipoContatoRepository,
-                          UsuarioRepository usuarioRepository,
-                          ContatoRepository contatoRepository) {
+    // INJEÇÃO DE DEPENDÊNCIA
+    public ContatoService(
+            TipoContatoRepository tipoContatoRepository,
+            ContatoRepository contatoRepository
+    ){
         this.tipoContatoRepository = tipoContatoRepository;
-        this.usuarioRepository = usuarioRepository;
         this.contatoRepository = contatoRepository;
     }
 
-    public MessageResponse save(ContatoSaveRequest contatoDto) {
-        // Buscando usuario
-        Usuario u = this.usuarioRepository.findById(contatoDto.idUsuario())
-        .orElseThrow(UserNotFoundException::new);
-
+    public MessageResponse save(Usuario usuario, ContatoSaveRequest saveRequest) {
         // Buscando tipo de contato
-        TipoContato t = this.tipoContatoRepository.findById(contatoDto.idTipoContato())
+        TipoContato tipoContato = this.tipoContatoRepository.findById(saveRequest.idTipoContato())
         .orElseThrow(()->new ResourceNotFoundException("Tipo de contato não encontrado ou inexistente"));
 
         // Criando contato
         Contato contato = new Contato();
-        contato.setTipoContato(t);
-        contato.setUsuario(u);
-        contato.setValorContato(contatoDto.valorContato());
+        contato.setTipoContato(tipoContato);
+        contato.setUsuario(usuario);
+        contato.setValorContato(saveRequest.valorContato());
 
         this.contatoRepository.save(contato);
         return new MessageResponse("Contato adicionado");

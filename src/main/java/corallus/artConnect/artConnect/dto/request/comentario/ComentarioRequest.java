@@ -7,8 +7,5 @@ public record ComentarioRequest(
         String mensagem,
 
         @NotBlank(message = "Não foi possível comentar")
-        Long idAutor,
-
-        @NotBlank(message = "Não foi possível comentar")
         Long idPublicacao
 ) {}

@@ -3,7 +3,7 @@ package corallus.artConnect.artConnect.service;
 import corallus.artConnect.artConnect.dto.request.reacao.ReacaoRequest;
 import corallus.artConnect.artConnect.dto.response.reacao.ReacaoResponse;
 import corallus.artConnect.artConnect.entity.reacao.Reacao;
-import corallus.artConnect.artConnect.error.errors.UserNotFoundException;
+import corallus.artConnect.artConnect.error.errors.NotAuthorizedException;
 import corallus.artConnect.artConnect.factory.reacao.ReacaoFactory;
 import corallus.artConnect.artConnect.mapper.reacao.ReacaoMapper;
 import org.springframework.stereotype.Service;
@@ -26,10 +26,10 @@ public class ReacaoService {
         this.reacaoFactory = reacaoFactory;
     }
 
-    public ReacaoResponse reagir(ReacaoRequest reacaoRequest) {
+    public ReacaoResponse reagir(Long idAutor, ReacaoRequest reacaoRequest) {
         // Se o usuario não exisitir
-        if(!this.usuarioRepository.existsById(reacaoRequest.idAutor())) {
-            throw new UserNotFoundException("Usuario não encontrado");
+        if(!this.usuarioRepository.existsById(idAutor)) {
+            throw new NotAuthorizedException();
         }
         Reacao reacaoEntity = this.reacaoFactory.createReacao(reacaoRequest);
         return this.reacaoMapper.toDTO(reacaoEntity);

@@ -2,6 +2,7 @@ package corallus.artConnect.artConnect.service;
 
 import java.util.List;
 import corallus.artConnect.artConnect.dto.response.util.MessageResponse;
+import corallus.artConnect.artConnect.error.errors.NotAuthorizedException;
 import corallus.artConnect.artConnect.mapper.artista.ArtistaMapper;
 import corallus.artConnect.artConnect.queryFilter.ArtistaFindAllQF;
 import org.springframework.stereotype.Service;
@@ -40,7 +41,7 @@ public class ArtistaService {
     public MessageResponse edit(Long id, ArtistaEditRequest editRequest) {
         // VERIFICA SE O ARTISTA EXSITE NO BANCO
         Artista artista = this.artistaRepository.findById(id)
-                .orElseThrow(UserNotFoundException::new);
+                .orElseThrow(NotAuthorizedException::new);
 
         artista.setNome(editRequest.nome());
         artista.setNomeArtistico(editRequest.nomeArtistico());

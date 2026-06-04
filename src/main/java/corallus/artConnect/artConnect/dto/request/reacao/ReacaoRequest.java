@@ -14,10 +14,7 @@ public record ReacaoRequest(
 
         @NotBlank(message = "O tipo de recurso não pode ser vazio")
         @Pattern(regexp = "COMENTARIO|PUBLICACAO")
-        String tipoRecurso,
-
-        @NotNull(message = "Não foi possível realizar essa ação")
-        Long idAutor
+        String tipoRecurso
 ) {
     
 }

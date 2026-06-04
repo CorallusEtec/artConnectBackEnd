@@ -2,14 +2,11 @@ package corallus.artConnect.artConnect.error;
 
 import java.time.LocalDateTime;
 import java.util.List;
-
 import javax.naming.AuthenticationException;
-
 import corallus.artConnect.artConnect.error.errors.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.InsufficientAuthenticationException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -159,6 +156,16 @@ public class GlobalErrorHandling {
 		  return new ResponseEntity<>(error, HttpStatus.UNAUTHORIZED);
     }
 
+	@ExceptionHandler(NotAuthorizedException.class)
+	public ResponseEntity<ApiError> notAuthorized(Exception e) {
+		ApiError error = new ApiError(
+				LocalDateTime.now(),
+				HttpStatus.FORBIDDEN.name(),
+				HttpStatus.FORBIDDEN.value(),
+				List.of(e.getMessage())
+		);
+		return new ResponseEntity<>(error, HttpStatus.UNAUTHORIZED);
+	}
 	/**
 	 * Exceção genérica ao tentar autenticar
 	 */
@@ -169,20 +176,6 @@ public class GlobalErrorHandling {
 				HttpStatus.UNAUTHORIZED.name(),
 				HttpStatus.UNAUTHORIZED.value(),
 				List.of("Erro na autenticação", e.getMessage())
-		  );
-		  return new ResponseEntity<>(error, HttpStatus.UNAUTHORIZED);
-    }
-
-	/**
-	 * Credenciais faltando na autenticação
-	 */
-    @ExceptionHandler(InsufficientAuthenticationException.class)
-    public ResponseEntity<ApiError> insufficientAuth(Exception e) {
-        ApiError error = new ApiError(
-				LocalDateTime.now(),
-				HttpStatus.UNAUTHORIZED.name(),
-				HttpStatus.UNAUTHORIZED.value(),
-				List.of("Acesso negado", e.getMessage())
 		  );
 		  return new ResponseEntity<>(error, HttpStatus.UNAUTHORIZED);
     }
