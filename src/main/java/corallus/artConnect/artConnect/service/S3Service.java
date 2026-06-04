@@ -33,7 +33,7 @@ public class S3Service {
                 request,
                 software.amazon.awssdk.core.sync.RequestBody.fromBytes(file.getBytes())
             );
-            String url = "https://" + bucketName + ".s3.sa-east-1.amazonaws.com/" + fileName;
-            return url;
+        return "https://" + bucketName + ".s3.sa-east-1.amazonaws.com/" + fileName;
+
     }
 }

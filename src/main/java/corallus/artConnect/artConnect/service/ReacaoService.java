@@ -1,40 +1,31 @@
 package corallus.artConnect.artConnect.service;
 
-import java.time.LocalDateTime;
-import java.util.Optional;
 
 import corallus.artConnect.artConnect.mapper.reacao.ReacaoMapper;
 import org.springframework.stereotype.Service;
-import corallus.artConnect.artConnect.dto.request.reacao.ReacaoRequest;
-import corallus.artConnect.artConnect.dto.response.reacao.ReacaoResponse;
-import corallus.artConnect.artConnect.entity.reacao.Reacao;
-import corallus.artConnect.artConnect.enumeration.ETipoReacao;
-import corallus.artConnect.artConnect.error.errors.ResourceNotFoundException;
-import corallus.artConnect.artConnect.error.errors.UserNotFoundException;
 import corallus.artConnect.artConnect.repository.ComentarioRepository;
 import corallus.artConnect.artConnect.repository.PublicacaoRepository;
 import corallus.artConnect.artConnect.repository.atores.UsuarioRepository;
 import corallus.artConnect.artConnect.repository.reacao.ReacaoRepository;
 import corallus.artConnect.artConnect.repository.reacao.TipoReacaoRepository;
-
+@Deprecated
 @Service
+
+/**
+ * Service em manutenção
+ *
+ * @deprecated Essa classe será reescrita
+ */
 public class ReacaoService {
 
     private final ReacaoRepository reacaoRepository;
-
     private final TipoReacaoRepository tipoReacaoRepository;
-
     private final PublicacaoRepository publicacaoRepository;
-
     private final ReacaoMapper reacaoMapper;
-
     private final UsuarioRepository usuarioRepository;
-
     private final ComentarioRepository comentarioRepository;
 
     // INJEÇÃO DE DEPENDÊNCIA
-
-
     public ReacaoService(ReacaoRepository reacaoRepository,
                          TipoReacaoRepository tipoReacaoRepository,
                          PublicacaoRepository publicacaoRepository,
@@ -48,7 +39,7 @@ public class ReacaoService {
         this.usuarioRepository = usuarioRepository;
         this.comentarioRepository = comentarioRepository;
     }
-
+    /*
     public ReacaoResponse reagirPublicacao(Long postId, ReacaoRequest reacaoPostDTO) {
         
         // Se o usuario não exisitir
@@ -210,14 +201,6 @@ public class ReacaoService {
 
         return this.reacaoMapper.toDTO(reacaoEntity);
     }
+    */
 
-
-    private boolean reacaoValida(ETipoReacao reacao) {
-        for(ETipoReacao s : ETipoReacao.values()) {
-            if(s == reacao) {
-                return true;
-            }
-        }
-        return false;
-    }
 }

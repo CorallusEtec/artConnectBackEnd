@@ -13,8 +13,12 @@ import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-
+@NoArgsConstructor
+@Getter @Setter
 @Entity
 public class Comentario {
     
@@ -37,66 +41,4 @@ public class Comentario {
     
     @OneToMany(mappedBy = "comentario")
     private Set<Reacao> reacoes;
-    
-    // CONSTRUTOR
-
-    public Comentario() {}
-
-    // GET E SET
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Status getStatusComentario() {
-        return statusComentario;
-    }
-
-    public void setStatusComentario(Status statusComentario) {
-        this.statusComentario = statusComentario;
-    }
-
-    public LocalDateTime getDataComentario() {
-        return dataComentario;
-    }
-
-    public void setDataComentario(LocalDateTime dataComentario) {
-        this.dataComentario = dataComentario;
-    }
-
-    public String getMensagem() {
-        return mensagem;
-    }
-
-    public void setMensagem(String mensagem) {
-        this.mensagem = mensagem;
-    }
-
-    public Usuario getUsuario() {
-        return usuario;
-    }
-
-    public void setUsuario(Usuario usuario) {
-        this.usuario = usuario;
-    }
-
-    public Publicacao getPublicacao() {
-        return publicacao;
-    }
-
-    public void setPublicacao(Publicacao publicacao) {
-        this.publicacao = publicacao;
-    }
-
-    public Set<Reacao> getReacoes() {
-        return reacoes;
-    }
-
-    public void setReacoes(Set<Reacao> reacoes) {
-        this.reacoes = reacoes;
-    }
 }

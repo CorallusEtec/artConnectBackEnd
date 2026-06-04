@@ -66,7 +66,6 @@ public class PublicacaoService {
             if (temImagem) {
 
                 String fileName = UUID.randomUUID() + "-" + file.getOriginalFilename();
-
                 s3Client.putObject(
                         PutObjectRequest.builder()
                                 .bucket(bucketName)
@@ -75,7 +74,6 @@ public class PublicacaoService {
                                 .build(),
                         RequestBody.fromBytes(file.getBytes())
                 );
-
                 url = "https://" + bucketName + ".s3.sa-east-1.amazonaws.com/" + fileName;
             }
 
@@ -109,64 +107,6 @@ public class PublicacaoService {
         .getNomeTipoStatus() != ETipoStatus.ATIVO);
 
         // Transformação em DTO
-        /*List<PublicacaoResponse> dto = listaPubli.stream()
-        .map(
-            (e)->new PublicacaoResponse.builder()
-            .id(e.getId())
-            .legenda(e.getLegenda())
-            .urlMidia(e.getUrlMidia())
-            .dataPublicacao(e.getDataPublicacao())
-            .autor(UsuarioResponse.toDTO(e.getAutor()))
-            .totalComentarios(e.getComentarios().size())
-            // As reações são separadas por tipo e quantidade
-            .reacoes(this.filterReacaoDetails(e.getReacoes()))
-            .build())
-        .collect(Collectors.toList());*/
-
         return this.publicacaoMapper.toDTOList(listaPubli);
     }
-
-    /*
-     * Método que separa todas as reações por tipo e suas quantidades
-     *
-     * @param reacoes Coleção com as reações
-     * @return Retorna uma lista com as reações separadas por tipo
-     */
-    /*
-    private List<ReacaoDetailsResponse> filterReacaoDetails(Set<Reacao> reacoes) {
-        // Transforma as reações (Set) em DTOS (List)
-        var lista = new ArrayList<ReacaoResponse>(
-            reacoes.stream()
-            .map(ReacaoResponse::toDTO)
-            .collect(Collectors.toSet())
-        );
-        
-        // Carrega os tipos de reação existentes
-        List<TipoReacao> tiposReacao = this.tipoReacaoRepository.findAll();
-        
-        // Lista de Reações agrupadas por tipo
-        var listDetails = new ArrayList<ReacaoDetailsResponse>();
-        
-        // Pra cada tipo de reação um Detail é criado e adicionado na lista
-        for(int i=0; i<tiposReacao.size(); i++) {
-            final int iFinal = i;
-            
-            var detail = new ReacaoDetailsResponse.builder()
-            .tipoReacao(tiposReacao.get(i))
-            .totalReacoes(
-                lista.stream()
-                .filter(e->e.tipoReacao()
-                    .getNomeTipo()
-                    .equalsIgnoreCase(tiposReacao.get(iFinal).getNomeTipo()))
-                .collect(Collectors.toList()).size())
-            .build();
-
-            listDetails.add(detail);
-            
-        }
-
-        // Retorna a lista de reações e seus insights
-        return listDetails;
-    }
-    */
 }
