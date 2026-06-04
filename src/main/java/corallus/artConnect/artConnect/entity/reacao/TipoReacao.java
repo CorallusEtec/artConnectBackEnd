@@ -1,5 +1,6 @@
 package corallus.artConnect.artConnect.entity.reacao;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -24,4 +25,11 @@ public class TipoReacao {
     @JsonIgnore
     @OneToMany(mappedBy = "tipoReacao")
     private List<Reacao> reacoes;
+
+    // PARA SEEDERS
+    public TipoReacao(ETipoReacao nomeTipo) {
+        this.setId(null);
+        this.setReacoes(new ArrayList<>());
+        this.setNomeTipo(nomeTipo);
+    }
 }

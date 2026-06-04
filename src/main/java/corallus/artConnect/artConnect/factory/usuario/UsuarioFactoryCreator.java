@@ -11,10 +11,13 @@ import corallus.artConnect.artConnect.entity.atores.Usuario;
 public interface UsuarioFactoryCreator {
 
     /**
-     * Factory que instancia e perssiste um novo usuario baseado no tipo de conta desejada.
+     * Metodo que adiciona dados específicos nas especialização de Usuario
      *
-     * @param registerRequest DTO com os dados do cadastro
-     * @return Retorna o objeto do tipo usuario da generalização escolida
+     * @param usuario Objeto que será complementado no método.
+     * @param registerRequest DTO de cadastro caso haja atributos específicos para adicionar.
+     * @return Retorna o usuário com os dados preenchidos.
+     * @param <U> Tipo que representa as generalizações de Usuario.
      */
-    Usuario createUsuario(UserRegisterRequest registerRequest);
+
+    <U extends Usuario> Usuario  composeUsuario (U usuario, UserRegisterRequest registerRequest);
 }

@@ -24,4 +24,10 @@ public class TipoStatus {
     @JsonIgnore
     @OneToMany(mappedBy = "tipoStatus")
     private List<Status> status;
+
+    // PARA AS SEEDERS
+    public TipoStatus(ETipoStatus nomeTipoStatus){
+        this.setId(null);
+        this.setNomeTipoStatus(nomeTipoStatus);
+    }
 }
