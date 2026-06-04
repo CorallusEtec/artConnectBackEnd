@@ -13,9 +13,7 @@ import corallus.artConnect.artConnect.repository.atores.UsuarioRepository;
 
 @Service
 public class UsuarioService {
-
     private final UsuarioRepository usuarioRepository;
-
     private final UsuarioMapper usuarioMapper;
 
     // INJEÇÃO DE DEPENDÊNCIA
@@ -25,10 +23,7 @@ public class UsuarioService {
     }
 
     public List<UsuarioResponse> findAll(UsuarioFindAllQF filter) {
-        List<Usuario> lista = this.usuarioRepository.findAll(filter.toSpecifications())
-                .stream()
-                .filter(u->u.getTipoConta() != ETipoConta.ADMIN)
-                .toList();
+        List<Usuario> lista = this.usuarioRepository.findAll(filter.toSpecifications());
         return this.usuarioMapper.toDTOList(lista);
     }
 
@@ -36,7 +31,6 @@ public class UsuarioService {
         Usuario entity = this.usuarioRepository.findById(id)
                 .filter(u->u.getTipoConta() != ETipoConta.ADMIN)
             .orElseThrow(UserNotFoundException::new);
-
         return this.usuarioMapper.toDTO(entity);
     }
 

@@ -11,7 +11,6 @@ import corallus.artConnect.artConnect.repository.contato.TipoContatoRepository;
 public class TipoContatoService {
 
     private final TipoContatoRepository tipoContatoRepository;
-
     private final TipoContatoMapper tipoContatoMapper;
 
     // INJEÇÃO DE DEPENDÊNCIA

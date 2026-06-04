@@ -49,7 +49,6 @@ public class ContratanteFactory implements UsuarioFactoryCreator {
         contratante.setDataCriacao(LocalDateTime.now());
 
         contratante.setStatus(this.statusService.generateStatus());
-        System.out.println("Funcionando ate a qui");
         return this.contratanteRepository.save(contratante);
     }
 }

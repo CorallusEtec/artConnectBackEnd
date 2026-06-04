@@ -1,9 +1,7 @@
 package corallus.artConnect.artConnect.service;
 
 import corallus.artConnect.artConnect.dto.response.util.MessageResponse;
-import corallus.artConnect.artConnect.entity.atores.Admin;
 import corallus.artConnect.artConnect.factory.usuario.UsuarioFactory;
-import corallus.artConnect.artConnect.repository.atores.AdminRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -11,21 +9,14 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import corallus.artConnect.artConnect.dto.request.usuario.UserLoginRequest;
 import corallus.artConnect.artConnect.dto.request.usuario.UserRegisterRequest;
 import corallus.artConnect.artConnect.dto.response.usuario.UsuarioLoginResponse;
-import corallus.artConnect.artConnect.entity.atores.Artista;
-import corallus.artConnect.artConnect.entity.atores.Contratante;
 import corallus.artConnect.artConnect.entity.atores.Usuario;
-import corallus.artConnect.artConnect.enumeration.ETipoConta;
 import corallus.artConnect.artConnect.error.errors.UserAlreadyExistsException;
 import corallus.artConnect.artConnect.error.errors.UserNotFoundException;
-import corallus.artConnect.artConnect.repository.atores.ArtistaRepository;
-import corallus.artConnect.artConnect.repository.atores.ContratanteRepository;
 import corallus.artConnect.artConnect.repository.atores.UsuarioRepository;
-import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Service
