@@ -5,6 +5,7 @@ import corallus.artConnect.artConnect.dto.response.util.MessageResponse;
 import corallus.artConnect.artConnect.entity.arte.Arte;
 import corallus.artConnect.artConnect.entity.arte.GeneroArte;
 import corallus.artConnect.artConnect.error.errors.ArteNotFoundException;
+import corallus.artConnect.artConnect.error.errors.GeneroArteAlreadyExistsException;
 import corallus.artConnect.artConnect.repository.arte.ArteRepository;
 import corallus.artConnect.artConnect.repository.arte.GeneroArteRepository;
 import org.springframework.stereotype.Service;
@@ -27,6 +28,10 @@ public class GeneroArteService {
     }
 
     public MessageResponse save(GeneroArteSaveRequest saveRequest) {
+        if(this.generoArteRepository.existsByNomeGeneroArte(saveRequest.nomeGeneroArte())) {
+            throw new GeneroArteAlreadyExistsException();
+        }
+
         Arte arte = this.arteRepository.findById(saveRequest.arteId())
         .orElseThrow(ArteNotFoundException::new);
 

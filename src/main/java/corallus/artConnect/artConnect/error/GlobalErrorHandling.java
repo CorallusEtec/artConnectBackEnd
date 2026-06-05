@@ -57,6 +57,20 @@ public class GlobalErrorHandling {
 	}
 
 	/**
+	 * Gênero de arte já existente (Já cadastrado)
+	 */
+	@ExceptionHandler(GeneroArteAlreadyExistsException.class)
+	public ResponseEntity<ApiError> generoArteAlreadyExists(Exception e) {
+		ApiError error = new ApiError(
+				LocalDateTime.now(),
+				HttpStatus.CONFLICT.name(),
+				HttpStatus.CONFLICT.value(),
+				List.of(e.getMessage())
+		);
+		return new ResponseEntity<>(error, HttpStatus.CONFLICT);
+	}
+
+	/**
 	 * Exceção ao tentar registrar (instanciar) um novo usuario
 	 */
 	@ExceptionHandler(CreateUserException.class)
