@@ -9,6 +9,7 @@ import corallus.artConnect.artConnect.mapper.reacao.ReacaoMapper;
 import org.springframework.stereotype.Service;
 import corallus.artConnect.artConnect.repository.atores.UsuarioRepository;
 
+
 @Service
 public class ReacaoService {
     private final ReacaoMapper reacaoMapper;
@@ -31,7 +32,8 @@ public class ReacaoService {
         if(!this.usuarioRepository.existsById(idAutor)) {
             throw new NotAuthorizedException();
         }
-        Reacao reacaoEntity = this.reacaoFactory.createReacao(reacaoRequest);
+        Reacao reacaoEntity = this.reacaoFactory.createReacao(idAutor, reacaoRequest);
         return this.reacaoMapper.toDTO(reacaoEntity);
     }
+
 }

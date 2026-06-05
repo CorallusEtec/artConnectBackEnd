@@ -4,6 +4,15 @@ import corallus.artConnect.artConnect.dto.response.reacao.ReacaoResponse;
 import corallus.artConnect.artConnect.entity.reacao.Reacao;
 import corallus.artConnect.artConnect.mapper.BaseMapper;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+
+import java.util.List;
 
 @Mapper(componentModel = "spring")
-public interface ReacaoMapper extends BaseMapper<Reacao, ReacaoResponse> {}
+public interface ReacaoMapper {
+    @Mapping(target = "idPublicacao", source = "publicacao.id")
+    ReacaoResponse toDTO(Reacao entity);
+
+
+    List<ReacaoResponse> toDTOList(List<Reacao> entityList);
+}

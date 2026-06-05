@@ -7,7 +7,6 @@ import corallus.artConnect.artConnect.repository.ComentarioRepository;
 import corallus.artConnect.artConnect.repository.reacao.ReacaoRepository;
 import org.springframework.stereotype.Component;
 
-import java.util.Objects;
 
 @Component
 public class ReacaoComentarioFactory implements ReacaoFactoryCreator{
@@ -35,11 +34,18 @@ public class ReacaoComentarioFactory implements ReacaoFactoryCreator{
                 .filter(r->r.getUsuario().getId().equals(reacao.getUsuario().getId()))
                 .findFirst();
 
-        if(ReacaoFactoryCreator.compararReacao(reacaoAtual, reacao)==null) {
+        // SE TIVER UMA REAÇÃO
+        if(reacaoAtual.isPresent()) {
+            // A REAÇÃO ATUALIZADA VAI TER O MESMO ID DA ATUAL
+            reacao.setId(reacaoAtual.get().getId());
 
-            return ReacaoFactoryCreator.compararReacao(reacaoAtual, reacao);
-        } else {
-            return this.reacaoRepository.save(Objects.requireNonNull(ReacaoFactoryCreator.compararReacao(reacaoAtual, reacao)));
+            // SE TIVER E FOR A MESMA REAÇÃO
+            if(reacao.getTipoReacao().getNomeTipo() == reacaoAtual.get().getTipoReacao().getNomeTipo()) {
+                this.reacaoRepository.deleteById(reacao.getId());
+                return null;
+            }
         }
+        // SE NÃO FOR A MESMA REAÇÃO OU SE NÃO EXISTIR, CRIA UMA NOVA REAÇÃO
+        return this.reacaoRepository.save(reacao);
     }
 }

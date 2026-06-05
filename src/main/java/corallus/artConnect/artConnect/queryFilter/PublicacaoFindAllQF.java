@@ -18,11 +18,13 @@ public class PublicacaoFindAllQF {
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime dataFim;
     private String nomeAutor;
+    private String nomeTipoStatus;
 
     public Specification<Publicacao> toSpecifications() {
         return legendaContains(legenda)
                 .and(dataInicioEquals(dataInicio))
                 .and(dataFimEquals(dataFim))
-                .and(nomeAutorContains(nomeAutor));
+                .and(nomeAutorContains(nomeAutor))
+                .and(nomeTipoStatusEquals(nomeAutor));
     }
 }
