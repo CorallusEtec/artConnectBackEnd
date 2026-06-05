@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 import java.time.LocalDateTime;
 
 @Component
-public class ReacaoFactory implements ReacaoFactoryCreator {
+public class ReacaoFactory {
 
     private final ReacaoPublicacaoFactory reacaoPublicacaoFactory;
     private final ReacaoComentarioFactory reacaoComentarioFactory;
@@ -35,9 +35,8 @@ public class ReacaoFactory implements ReacaoFactoryCreator {
      * @param request DTO de reação
      * @return Retorna a reação instânciada de perssistida no banco
      */
-    public Reacao createReacao(ReacaoRequest request) {
-        Reacao reacao = this.composeReacao(new Reacao(), request);
-
+    public Reacao createReacao(Long idAutor, ReacaoRequest request) {
+        Reacao reacao = this.composeReacao(idAutor, new Reacao(), request);
         switch (request.tipoRecurso()) {
             case "COMENTARIO" -> {
                 return this.reacaoComentarioFactory.composeReacao(reacao, request);
@@ -47,10 +46,9 @@ public class ReacaoFactory implements ReacaoFactoryCreator {
         }
     }
 
-    @Override
-    public Reacao composeReacao(Reacao reacao, ReacaoRequest reacaoRequest) {
+    public Reacao composeReacao(Long idAutor, Reacao reacao, ReacaoRequest reacaoRequest) {
         reacao.setDataReacao(LocalDateTime.now());
-        reacao.setUsuario(this.usuarioRepository.findById(reacaoRequest.idAutor()).get());
+        reacao.setUsuario(this.usuarioRepository.findById(idAutor).get());
         reacao.setTipoReacao(this.tipoReacaoService.getTipoReacao(ETipoReacao.valueOf(reacaoRequest.nomeTipoReacao())));
         return reacao;
     }

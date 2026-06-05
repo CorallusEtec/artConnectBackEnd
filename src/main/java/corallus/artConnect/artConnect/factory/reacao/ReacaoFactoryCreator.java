@@ -32,18 +32,4 @@ public interface ReacaoFactoryCreator {
      * @apiNote O parametro <i>reacaoAtual</i> deve estar com o usuario e o id do usuario configurado,
      * caso contrário a comparação não será feita corretamente
      */
-    static Reacao compararReacao(Optional<Reacao> reacaoAtual, Reacao reacaoNova) {
-        // SE TIVER UMA REAÇÃO
-        if(reacaoAtual.isPresent()) {
-            // A REAÇÃO ATUALIZADA VAI TER O MESMO ID DA ATUAL
-            reacaoNova.setId(reacaoAtual.get().getId());
-
-            // SE TIVER E FOR A MESMA REAÇÃO
-            if(reacaoNova.getTipoReacao().getNomeTipo() == reacaoAtual.get().getTipoReacao().getNomeTipo()) {
-                return null;
-            }
-        }
-        // SE NÃO FOR A MESMA REAÇÃO OU SE NÃO EXISTIR, CRIA UMA NOVA REAÇÃO
-        return reacaoNova;
-    }
 }

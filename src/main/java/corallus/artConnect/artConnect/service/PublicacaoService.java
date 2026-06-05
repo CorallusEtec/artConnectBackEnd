@@ -1,19 +1,15 @@
 package corallus.artConnect.artConnect.service;
 
-
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import corallus.artConnect.artConnect.dto.response.util.MessageResponse;
 import corallus.artConnect.artConnect.mapper.publicacao.PublicacaoMapper;
 import corallus.artConnect.artConnect.queryFilter.PublicacaoFindAllQF;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-
 import corallus.artConnect.artConnect.dto.response.publicacao.PublicacaoResponse;
 import corallus.artConnect.artConnect.entity.Publicacao;
 import corallus.artConnect.artConnect.entity.atores.Usuario;
-import corallus.artConnect.artConnect.enumeration.ETipoStatus;
 import corallus.artConnect.artConnect.repository.PublicacaoRepository;
 import corallus.artConnect.artConnect.repository.atores.UsuarioRepository;
 import software.amazon.awssdk.core.sync.RequestBody;
@@ -24,18 +20,12 @@ import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 public class PublicacaoService {
 
     private final PublicacaoRepository publicacaoRepository;
-
     private final UsuarioRepository usuarioRepository;
-
     private final StatusService statusService;
-
     private final PublicacaoMapper publicacaoMapper;
-
     private final S3Client s3Client;
 
     // INJEÇÃO DE DEPENDÊNCIA
-
-
     public PublicacaoService(PublicacaoRepository publicacaoRepository,
                              UsuarioRepository usuarioRepository,
                              StatusService statusService,
@@ -99,14 +89,7 @@ public class PublicacaoService {
     }
 
     public List<PublicacaoResponse> findAll(PublicacaoFindAllQF find) {
-        List<Publicacao> listaPubli = this.publicacaoRepository.findAll(find.toSpecifications());
-
-        // Se não for Ativo, remove da lista
-        listaPubli.removeIf(e -> e.getStatusPublicacao()
-        .getTipoStatus()
-        .getNomeTipoStatus() != ETipoStatus.ATIVO);
-
-        // Transformação em DTO
-        return this.publicacaoMapper.toDTOList(listaPubli);
+        var entityList = this.publicacaoRepository.findAll(find.toSpecifications());
+        return this.publicacaoMapper.toDTOList(entityList);
     }
 }

@@ -2,9 +2,11 @@ package corallus.artConnect.artConnect.dto.response.publicacao;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import corallus.artConnect.artConnect.dto.response.reacao.ReacaoDetailsResponse;
-import corallus.artConnect.artConnect.dto.response.usuario.UsuarioResponse;
+import corallus.artConnect.artConnect.dto.response.reacao.ReacaoResponse;
+import corallus.artConnect.artConnect.dto.response.usuario.UsuarioPublicacaoResponse;
+import lombok.Builder;
 
+@Builder
 public record PublicacaoResponse (
 
     Long id,
@@ -12,10 +14,10 @@ public record PublicacaoResponse (
     String urlMidia,
     LocalDateTime dataPublicacao,
 
-    UsuarioResponse autor,
-    Integer totalReacoes,
-    Integer totalComentarios,
+    UsuarioPublicacaoResponse autor,
+    Long totalComentarios,
 
-    List<ReacaoDetailsResponse> reacoes
+
+    List<ReacaoResponse> reacoes
 ) {}
 
