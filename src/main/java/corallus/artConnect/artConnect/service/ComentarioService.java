@@ -22,13 +22,9 @@ import corallus.artConnect.artConnect.repository.PublicacaoRepository;
 public class ComentarioService {
 
     private final PublicacaoRepository publicacaoRepository;
-
     private final ComentarioRepository comentarioRepository;
-
     private final StatusService statusService;
-
     private final UsuarioRepository usuarioRepository;
-
     private final ComentarioMapper comentarioMapper;
 
     // INJEÇÃO DE DEPENDÊNCIA

@@ -145,7 +145,6 @@ public class GlobalErrorHandling {
 	/**
 	 * Metodo com argumentos inválidos (Requisição com argumentos inválidos)
 	 */
-
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ApiError> methodArgumentNotValid(MethodArgumentNotValidException e) {
         List<String> requestErrors = e.getBindingResult()
@@ -186,6 +185,7 @@ public class GlobalErrorHandling {
 		);
 		return new ResponseEntity<>(error, HttpStatus.FORBIDDEN);
 	}
+
 	/**
 	 * Exceção genérica ao tentar autenticar
 	 */

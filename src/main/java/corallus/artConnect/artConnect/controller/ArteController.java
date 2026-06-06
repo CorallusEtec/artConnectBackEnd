@@ -4,6 +4,8 @@ import corallus.artConnect.artConnect.config.SecurityConfig;
 import corallus.artConnect.artConnect.dto.request.arte.ArteEditRequest;
 import corallus.artConnect.artConnect.dto.request.arte.ArteSaveRequest;
 import corallus.artConnect.artConnect.dto.response.util.MessageResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -51,6 +53,10 @@ public class ArteController {
      * @return O objeto com os dados da arte correnspondente.
      */
     @GetMapping("/{id}")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", useReturnTypeSchema = true),
+            @ApiResponse(responseCode = "404", description = "Arte não encontrada.")
+    })
     public ResponseEntity<Arte> findById(
             @PathVariable Long id
     ) {
@@ -65,6 +71,11 @@ public class ArteController {
      * @return Mensagem caso a arte tenha sido cadastrada com sucesso.
      */
     @PostMapping("/save")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Arte criada."),
+            @ApiResponse(responseCode = "400", description = "Erro de requisição"),
+            @ApiResponse(responseCode = "409", description = "Arte já cadastrada.")
+    })
     public ResponseEntity<MessageResponse> save(
             @RequestBody @Valid
             ArteSaveRequest saveRequest
@@ -81,6 +92,11 @@ public class ArteController {
      * @return Mensagem caso a arte tenha sido alterada com sucesso.
      */
     @PutMapping("/{id}")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Arte alterada com sucesso."),
+            @ApiResponse(responseCode = "400", description = "Erro de requisição"),
+            @ApiResponse(responseCode = "404", description = "Arte não encontrada.")
+    })
     public ResponseEntity<MessageResponse> edit(
             @PathVariable Long id,
             @RequestBody @Valid
@@ -97,6 +113,10 @@ public class ArteController {
      * @return Mensagem caso a arte tenha sido excluida com sucesso.
      */
     @DeleteMapping("/{id}")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Arte deletada com sucesso."),
+            @ApiResponse(responseCode = "404", description = "Arte não encontrada.")
+    })
     public ResponseEntity<MessageResponse> delete(
             @PathVariable Long id
     ) {

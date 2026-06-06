@@ -1,9 +1,14 @@
 package corallus.artConnect.artConnect.controller;
 
 import java.io.IOException;
+
+import corallus.artConnect.artConnect.config.SecurityConfig;
 import corallus.artConnect.artConnect.dto.response.util.MessageResponse;
 import corallus.artConnect.artConnect.entity.atores.Usuario;
 import corallus.artConnect.artConnect.queryFilter.PublicacaoFindAllQF;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
@@ -24,6 +29,7 @@ import corallus.artConnect.artConnect.service.PublicacaoService;
 @RestController
 @RequestMapping("/publicacao")
 @Tag(name = "Publicação Controller", description = "Manipula o salvamento de publicações e outras ações pertinentes à publicação.")
+@SecurityRequirement(name = SecurityConfig.SECURITY)
 public class PublicacaoController {
     private final PublicacaoService publicacaoService;
 
@@ -43,6 +49,11 @@ public class PublicacaoController {
      * @throws IOException Exceção caso ocorra um erro no carregamento do arquivo.
      */
     @PostMapping("/save")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Publicação feita com sucesso."),
+            @ApiResponse(responseCode = "400", description = "Erro de requisição"),
+            @ApiResponse(responseCode = "403", description = "Não autenticado")
+    })
     public ResponseEntity<MessageResponse> save(
         @RequestPart(value = "legenda", required = false) String legenda,
         @RequestPart(value = "file", required = false) MultipartFile arquivo,
@@ -66,6 +77,9 @@ public class PublicacaoController {
      * usuário autênticado estarão {@code null}
      */
     @GetMapping("/findAll")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", useReturnTypeSchema = true),
+    })
     public ResponseEntity<Page<PublicacaoResponse>> findAll(
             @ParameterObject  PublicacaoFindAllQF queryFilter,
             @AuthenticationPrincipal Usuario usuario,

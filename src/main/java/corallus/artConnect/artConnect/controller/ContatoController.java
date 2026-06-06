@@ -1,7 +1,11 @@
 package corallus.artConnect.artConnect.controller;
 
+import corallus.artConnect.artConnect.config.SecurityConfig;
 import corallus.artConnect.artConnect.dto.response.util.MessageResponse;
 import corallus.artConnect.artConnect.entity.atores.Usuario;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -22,6 +26,7 @@ import corallus.artConnect.artConnect.service.ContatoService;
 @RestController
 @RequestMapping("/contato")
 @Tag(name = "Contato Controller", description = "Ações relacionada a contato dos usuarios.")
+@SecurityRequirement(name = SecurityConfig.SECURITY)
 public class ContatoController {
 
     private final ContatoService contatoService;
@@ -39,6 +44,12 @@ public class ContatoController {
      * @return Mensagem caso o contato tenha sido adicionado com sucesso.
      */
     @PostMapping("/save")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Contato salvo com sucesso."),
+            @ApiResponse(responseCode = "400", description = "Erro de requisição"),
+            @ApiResponse(responseCode = "403", description = "Não autenticado"),
+            @ApiResponse(responseCode = "404", description = "Tipo de contato não encontrada.")
+    })
     public ResponseEntity<MessageResponse> save(
             @AuthenticationPrincipal Usuario usuario,
             @RequestBody @Valid ContatoSaveRequest contato
@@ -55,6 +66,11 @@ public class ContatoController {
      * @return Mensagem caso o contato tenha sido removido com sucesso.
      */
     @DeleteMapping("/{idContato}")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Contato excluido com sucesso."),
+            @ApiResponse(responseCode = "400", description = "Erro de requisição"),
+            @ApiResponse(responseCode = "404", description = "Contato não encontrada.")
+    })
     public ResponseEntity<MessageResponse> delete(
             @AuthenticationPrincipal Usuario usuario,
             @PathVariable Long idContato
@@ -71,6 +87,12 @@ public class ContatoController {
      * @return Mensagem caso o contato tenha sido editado com sucesso.
      */
     @PutMapping("/{idContato}")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Contato alterado com sucesso."),
+            @ApiResponse(responseCode = "400", description = "Erro de requisição"),
+            @ApiResponse(responseCode = "403", description = "Não autenticado"),
+            @ApiResponse(responseCode = "404", description = "Contato não encontrada.")
+    })
     public ResponseEntity<MessageResponse> edit(
             @AuthenticationPrincipal Usuario usuario,
             @PathVariable Long idContato,
@@ -79,5 +101,4 @@ public class ContatoController {
         MessageResponse msg = this.contatoService.edit(usuario, idContato, editRequest);
         return new ResponseEntity<>(msg, HttpStatus.OK);
     }
-    
 }

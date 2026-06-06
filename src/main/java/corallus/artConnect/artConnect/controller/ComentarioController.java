@@ -1,8 +1,12 @@
 package corallus.artConnect.artConnect.controller;
 
+import corallus.artConnect.artConnect.config.SecurityConfig;
 import corallus.artConnect.artConnect.dto.response.util.MessageResponse;
 import corallus.artConnect.artConnect.entity.atores.Usuario;
 import corallus.artConnect.artConnect.queryFilter.ComentarioFindByPostQF;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springdoc.core.annotations.ParameterObject;
@@ -26,6 +30,7 @@ import corallus.artConnect.artConnect.service.ComentarioService;
 @RestController
 @RequestMapping("/comentario")
 @Tag(name = "Cometário Controller", description = "Controller para as ações relacionadas a comentários de publicações do sistema.")
+@SecurityRequirement(name = SecurityConfig.SECURITY)
 public class ComentarioController {
 
     private final ComentarioService comentarioService;
@@ -43,6 +48,12 @@ public class ComentarioController {
      * @return Mensagem caso o comentário tenha sido publicado.
      */
     @PostMapping("/comment")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Comentário publicado."),
+            @ApiResponse(responseCode = "400", description = "Erro de requisição"),
+            @ApiResponse(responseCode = "403", description = "Não autenticado"),
+            @ApiResponse(responseCode = "404", description = "Publicação não encontrada.")
+    })
     public ResponseEntity<MessageResponse> comment(
             @AuthenticationPrincipal Usuario usuario,
             @RequestBody @Valid ComentarioRequest comentario
@@ -59,7 +70,11 @@ public class ComentarioController {
      * @param queryFilter Configuração de filtros da busca
      * @return Lista paginada com os comentários encontrados da publicação correspondente.
      */
-    @GetMapping("/findByPost/{id}") ResponseEntity<Page<ComentarioResponse>> findComments(
+    @GetMapping("/findByPost/{id}")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", useReturnTypeSchema = true)
+    })
+    public ResponseEntity<Page<ComentarioResponse>> findComments(
             @PathVariable Long id,
             @ParameterObject @PageableDefault(sort = "id") Pageable pageable,
             @ParameterObject ComentarioFindByPostQF queryFilter) {

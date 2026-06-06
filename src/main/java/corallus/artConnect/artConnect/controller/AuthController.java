@@ -2,6 +2,8 @@ package corallus.artConnect.artConnect.controller;
 
 import corallus.artConnect.artConnect.config.SecurityConfig;
 import corallus.artConnect.artConnect.dto.response.util.MessageResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
@@ -39,6 +41,11 @@ public class AuthController {
      * @return Objeto com o 'token' de autenticação e o Id do usuário.
      */
     @PostMapping("/login")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", useReturnTypeSchema = true),
+            @ApiResponse(responseCode = "400", description = "Erro de requisição"),
+            @ApiResponse(responseCode = "403", description = "Credenciais inválidas.")
+    })
     public ResponseEntity<UsuarioLoginResponse> login(
             @RequestBody @Valid
             UserLoginRequest loginRequest
@@ -54,6 +61,11 @@ public class AuthController {
      * @return Mensagem caso o cadastro tenha sido efetuado.
      */
     @PostMapping("/register")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Usuário cadastrado com sucesso."),
+            @ApiResponse(responseCode = "400", description = "Erro de requisição"),
+            @ApiResponse(responseCode = "409", description = "Usuário já cadastrado | Email já cadastrado.")
+    })
 	public ResponseEntity<MessageResponse> registrar(
         @RequestBody @Valid UserRegisterRequest registerRequest
     ) {

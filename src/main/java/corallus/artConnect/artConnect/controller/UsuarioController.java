@@ -1,6 +1,10 @@
 package corallus.artConnect.artConnect.controller;
 
+import corallus.artConnect.artConnect.config.SecurityConfig;
 import corallus.artConnect.artConnect.queryFilter.UsuarioFindAllQF;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
@@ -18,6 +22,7 @@ import corallus.artConnect.artConnect.service.UsuarioService;
 @RestController
 @RequestMapping("/usuario")
 @Tag(name = "Usuario Controller", description = "Ações reacionada a todos os tipos de usuário do sistema.")
+@SecurityRequirement(name = SecurityConfig.SECURITY)
 public class UsuarioController {
 
     private final UsuarioService usuarioService;
@@ -36,6 +41,9 @@ public class UsuarioController {
      * @return Lista paginada dos usuários cadastrados no sistema.
      */
     @GetMapping("/findAll")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", useReturnTypeSchema = true),
+    })
     public ResponseEntity<Page<UsuarioResponse>> findAll(
             @ParameterObject  UsuarioFindAllQF queryFilter,
             @ParameterObject @PageableDefault(sort = "id")
@@ -53,6 +61,10 @@ public class UsuarioController {
      * @return Objeto do usuário correnspondente ao Id.
      */
     @GetMapping("/{id}")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", useReturnTypeSchema = true),
+            @ApiResponse(responseCode = "404", description = "Usuário não encontrado.")
+    })
     public ResponseEntity<UsuarioResponse> findById(@PathVariable Long id) {
         UsuarioResponse usuario = this.usuarioService.findById(id);
         return new ResponseEntity<>(usuario, HttpStatus.OK);

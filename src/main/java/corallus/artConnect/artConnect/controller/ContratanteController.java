@@ -4,6 +4,8 @@ import corallus.artConnect.artConnect.config.SecurityConfig;
 import corallus.artConnect.artConnect.dto.response.util.MessageResponse;
 import corallus.artConnect.artConnect.entity.atores.Usuario;
 import corallus.artConnect.artConnect.queryFilter.ContratanteFindAllQF;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -23,6 +25,7 @@ import corallus.artConnect.artConnect.service.ContratanteService;
 @RestController
 @SecurityRequirement(name = SecurityConfig.SECURITY)
 @Tag(name = "Contratante Controller", description = "Ações relacionadas aos contratantes do sistema.")
+@SecurityRequirement(name = SecurityConfig.SECURITY)
 public class ContratanteController {
     private final ContratanteService contratanteService;
 
@@ -39,6 +42,9 @@ public class ContratanteController {
      * @return Retorna a lista paginada com os contratantes do sistema.
      */
     @GetMapping("/findAll")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", useReturnTypeSchema = true),
+    })
     public ResponseEntity<Page<ContratanteResponse>> findAll(
             @ParameterObject  ContratanteFindAllQF queryFilter,
             @ParameterObject @PageableDefault(sort = "id") Pageable pageable
@@ -55,6 +61,11 @@ public class ContratanteController {
      * @return Mensagem caso os dados do contratante tenham sido alterados com sucesso.
      */
     @PutMapping("/edit")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Contratante alterado com sucesso."),
+            @ApiResponse(responseCode = "400", description = "Erro de requisição"),
+            @ApiResponse(responseCode = "403", description = "Não autenticado.")
+    })
     public ResponseEntity<MessageResponse> edit(
             @AuthenticationPrincipal Usuario contratante,
             @RequestBody @Valid ContratanteEditRequest editRequest
@@ -70,6 +81,10 @@ public class ContratanteController {
      * @return O objeto do contratante correspondente
      */
     @GetMapping("/{id}")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", useReturnTypeSchema = true),
+            @ApiResponse(responseCode = "404", description = "Contratante não encontrado.")
+    })
     public ResponseEntity<ContratanteResponse> find(@PathVariable Long id) {
         ContratanteResponse contratante = this.contratanteService.findById(id);
         return new ResponseEntity<>(contratante, HttpStatus.OK);

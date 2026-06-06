@@ -4,6 +4,8 @@ import corallus.artConnect.artConnect.config.SecurityConfig;
 import corallus.artConnect.artConnect.dto.response.util.MessageResponse;
 import corallus.artConnect.artConnect.entity.atores.Usuario;
 import corallus.artConnect.artConnect.queryFilter.ArtistaFindAllQF;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -58,6 +60,11 @@ public class ArtistaController {
      * @return Mensagem caso os dados tenha sido alterados com sucesso.
      */
     @PutMapping("/edit")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Artista alterada com sucesso."),
+            @ApiResponse(responseCode = "400", description = "Erro de requisição"),
+            @ApiResponse(responseCode = "404", description = "Artista não encontrada.")
+    })
     public ResponseEntity<MessageResponse> edit(
             @AuthenticationPrincipal Usuario auth,
             @RequestBody @Valid ArtistaEditRequest editRequest
@@ -73,6 +80,10 @@ public class ArtistaController {
      * @return Objeto com dados do artista encontrado.
      */
     @GetMapping("/{id}")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", useReturnTypeSchema = true),
+            @ApiResponse(responseCode = "404", description = "Artista não encontrada.")
+    })
     public ResponseEntity<ArtistaResponse> findById(
             @PathVariable Long id
     ) {
