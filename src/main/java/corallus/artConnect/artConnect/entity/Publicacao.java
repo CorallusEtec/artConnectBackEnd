@@ -7,7 +7,11 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import corallus.artConnect.artConnect.entity.atores.Usuario;
 import corallus.artConnect.artConnect.entity.reacao.Reacao;
 import corallus.artConnect.artConnect.entity.status.Status;
+import corallus.artConnect.artConnect.enumeration.ETipoMidia;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -44,4 +48,7 @@ public class Publicacao {
     
     private String legenda;
     private String urlMidia;
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = true)
+    private ETipoMidia tipoMidia;
 }

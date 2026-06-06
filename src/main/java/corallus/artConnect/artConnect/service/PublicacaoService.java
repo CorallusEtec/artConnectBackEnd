@@ -15,6 +15,8 @@ import corallus.artConnect.artConnect.repository.atores.UsuarioRepository;
 import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
+import corallus.artConnect.artConnect.enumeration.ETipoMidia;
+
 
 @Service
 public class PublicacaoService {
@@ -27,21 +29,21 @@ public class PublicacaoService {
 
     // INJEÇÃO DE DEPENDÊNCIA
     public PublicacaoService(PublicacaoRepository publicacaoRepository,
-                             UsuarioRepository usuarioRepository,
-                             StatusService statusService,
-                             PublicacaoMapper publicacaoMapper,
-                             S3Client s3Client) {
-        this.publicacaoRepository = publicacaoRepository;
-        this.usuarioRepository = usuarioRepository;
-        this.statusService = statusService;
-        this.publicacaoMapper = publicacaoMapper;
-        this.s3Client = s3Client;
-    }
+        UsuarioRepository usuarioRepository,
+        StatusService statusService,
+        PublicacaoMapper publicacaoMapper,
+        S3Client s3Client) {
+            this.publicacaoRepository = publicacaoRepository;
+            this.usuarioRepository = usuarioRepository;
+            this.statusService = statusService;
+            this.publicacaoMapper = publicacaoMapper;
+            this.s3Client = s3Client;
+        }
 
     @Value("${aws.s3.bucket}")
     private String bucketName;
 
-    public MessageResponse save(String legenda, MultipartFile file, Long autorId) {
+    public MessageResponse save(String legenda, MultipartFile file, String tipoMidiaStr, Long autorId) {
         try {
 
             boolean temLegenda = legenda != null && !legenda.isBlank();
@@ -55,14 +57,21 @@ public class PublicacaoService {
 
             if (temImagem) {
 
-                String fileName = UUID.randomUUID() + "-" + file.getOriginalFilename();
+                if (tipoMidiaStr == null || tipoMidiaStr.isBlank()) {
+                    throw new IllegalArgumentException("Tipo de midia é obrigatório quando há arquivo");
+                }
+
+                ETipoMidia tipoMidia = parseTipoMidia(tipoMidiaStr);
+
+                String pasta = tipoMidia.name().toLowerCase() + "/";
+                String fileName = pasta + UUID.randomUUID() + "-" + file.getOriginalFilename();
                 s3Client.putObject(
-                        PutObjectRequest.builder()
-                                .bucket(bucketName)
-                                .key(fileName)
-                                .contentType(file.getContentType())
-                                .build(),
-                        RequestBody.fromBytes(file.getBytes())
+                    PutObjectRequest.builder()
+                        .bucket(bucketName)
+                        .key(fileName)
+                        .contentType(file.getContentType())
+                        .build(),
+                    RequestBody.fromBytes(file.getBytes())
                 );
                 url = "https://" + bucketName + ".s3.sa-east-1.amazonaws.com/" + fileName;
             }
@@ -74,6 +83,7 @@ public class PublicacaoService {
             pub.setLegenda(temLegenda ? legenda : null);
             pub.setUrlMidia(url);
             pub.setAutor(autor);
+            pub.setTipoMidia(temImagem ? parseTipoMidia(tipoMidiaStr) : null);
 
             // STATUS PADRÃO DE CRIAÇÂO: ATIVO
             pub.setStatusPublicacao(this.statusService.generateStatus());
@@ -92,4 +102,15 @@ public class PublicacaoService {
         var entityList = this.publicacaoRepository.findAll(find.toSpecifications());
         return this.publicacaoMapper.toDTOList(entityList);
     }
+
+    private ETipoMidia parseTipoMidia(String tipoMidiaStr) {
+        try {
+            return ETipoMidia.valueOf(tipoMidiaStr.toUpperCase());
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException(
+                "Tipo inválido: '" + tipoMidiaStr + "'. Aceitos: " + Arrays.toString(ETipoMidia.values())
+            );
+        }
+    }   
+    
 }

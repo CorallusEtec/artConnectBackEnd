@@ -30,9 +30,10 @@ public class PublicacaoController {
     public ResponseEntity<MessageResponse> save(
         @RequestPart(value = "legenda", required = false) String legenda,
         @RequestPart(value = "file", required = false) MultipartFile image,
+        @RequestPart(value = "tipoMidia", required=false) String tipoMidia,
         @AuthenticationPrincipal Usuario usuario
     ) {
-        MessageResponse msg = this.publicacaoService.save(legenda, image, usuario.getId());
+        MessageResponse msg = this.publicacaoService.save(legenda, image, tipoMidia, usuario.getId());
         return new ResponseEntity<>(msg, HttpStatus.CREATED);
     }
 
