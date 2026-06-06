@@ -1,8 +1,7 @@
 package corallus.artConnect.artConnect.factory.reacao;
 
 import corallus.artConnect.artConnect.dto.request.reacao.ReacaoRequest;
-import corallus.artConnect.artConnect.entity.reacao.Reacao;
-import java.util.Optional;
+import corallus.artConnect.artConnect.entity.Reacao;
 
 /**
  * Interface que define a assinatura para o pattern de Factory
@@ -20,16 +19,4 @@ public interface ReacaoFactoryCreator {
      * @return retorna a Reação instânciada e perssistida seja no comentario, seja na publicação.
      */
     Reacao composeReacao(Reacao reacao, ReacaoRequest reacaoRequest);
-
-
-    /**
-     * Metodo que faz as comparações entre a reação que está no banco de dados (ou não)
-     * e a reação que será perssistida.
-     *
-     * @param reacaoAtual A reação que está no banco de dados
-     * @param reacaoNova A reação que será perssistida
-     * @return A reação preparada para ser salva no banco. Caso o tipo da reação seja o mesmo entre as duas, o retorno é null
-     * @apiNote O parametro <i>reacaoAtual</i> deve estar com o usuario e o id do usuario configurado,
-     * caso contrário a comparação não será feita corretamente
-     */
 }

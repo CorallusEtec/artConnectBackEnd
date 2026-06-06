@@ -54,14 +54,14 @@ public class PublicacaoSpec {
             }
         };
     }
-    public static Specification<Publicacao> nomeTipoStatusEquals(String tipoStatus) {
+    public static Specification<Publicacao> tipoStatusEquals(String tipoStatus) {
         return (root, query, criteriaBuilder) -> {
             if(ObjectUtils.isEmpty(tipoStatus)) {
                 return root.join("statusPublicacao")
-                        .join("tipoStatus").get("nomeTipoStatus").equalTo(ETipoStatus.ATIVO);
+                        .get("tipoStatus").equalTo(ETipoStatus.ATIVO);
             } else {
                 return root.join("statusPublicacao")
-                        .join("tipoStatus").get("nomeTipoStatus").equalTo(ETipoStatus.valueOf(tipoStatus));
+                        .get("tipoStatus").equalTo(ETipoStatus.valueOf(tipoStatus));
             }
         };
     }

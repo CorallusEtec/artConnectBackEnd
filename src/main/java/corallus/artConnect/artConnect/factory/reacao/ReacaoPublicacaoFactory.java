@@ -1,7 +1,7 @@
 package corallus.artConnect.artConnect.factory.reacao;
 
 import corallus.artConnect.artConnect.dto.request.reacao.ReacaoRequest;
-import corallus.artConnect.artConnect.entity.reacao.Reacao;
+import corallus.artConnect.artConnect.entity.Reacao;
 import corallus.artConnect.artConnect.error.errors.ResourceNotFoundException;
 import corallus.artConnect.artConnect.repository.PublicacaoRepository;
 import corallus.artConnect.artConnect.repository.reacao.ReacaoRepository;
@@ -42,7 +42,7 @@ public class ReacaoPublicacaoFactory implements ReacaoFactoryCreator{
             reacao.setPublicacao(reacaoAtual.get().getPublicacao());
 
             // SE TIVER E FOR A MESMA REAÇÃO
-            if(reacao.getTipoReacao().getNomeTipo() == reacaoAtual.get().getTipoReacao().getNomeTipo()) {
+            if(reacao.getTipoReacao() == reacaoAtual.get().getTipoReacao()) {
                 this.reacaoRepository.deleteById(reacao.getId());
                 return null;
             }

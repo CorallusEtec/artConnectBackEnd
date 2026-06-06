@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 import corallus.artConnect.artConnect.dto.response.util.MessageResponse;
 import corallus.artConnect.artConnect.error.errors.NotAuthorizedException;
-import corallus.artConnect.artConnect.error.errors.UserNotFoundException;
 import corallus.artConnect.artConnect.mapper.comentario.ComentarioMapper;
 import corallus.artConnect.artConnect.repository.atores.UsuarioRepository;
 import org.springframework.stereotype.Service;
@@ -33,8 +32,6 @@ public class ComentarioService {
     private final ComentarioMapper comentarioMapper;
 
     // INJEÇÃO DE DEPENDÊNCIA
-
-
     public ComentarioService(PublicacaoRepository publicacaoRepository,
                              ComentarioRepository comentarioRepository,
                              StatusService statusService,
@@ -57,8 +54,7 @@ public class ComentarioService {
          * exceção (Tentando acessar publicação bloqueada ou )
          */
         if(p.getStatusPublicacao()
-            .getTipoStatus()
-            .getNomeTipoStatus() != ETipoStatus.ATIVO
+            .getTipoStatus() != ETipoStatus.ATIVO
         ) { throw new IllegalArgumentException("Publicação Indisponível"); }
 
 
@@ -66,8 +62,7 @@ public class ComentarioService {
         List<Comentario> comentarios = p.getComentarios()
         .stream().filter(
             c->c.getStatusComentario()
-            .getTipoStatus().getNomeTipoStatus()
-            .equals(ETipoStatus.ATIVO))
+            .getTipoStatus().equals(ETipoStatus.ATIVO))
         .collect(Collectors.toList());
 
         return this.comentarioMapper.toDTOList(comentarios);

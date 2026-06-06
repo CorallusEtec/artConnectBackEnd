@@ -6,5 +6,4 @@ public record UsuarioPublicacaoResponse(
         Long id,
         String nome,
         ETipoConta tipoConta
-) {
-}
+) {}

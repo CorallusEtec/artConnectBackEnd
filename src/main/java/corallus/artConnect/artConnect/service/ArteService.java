@@ -32,7 +32,6 @@ public class ArteService {
                 .orElseThrow(ArteNotFoundException::new);
     }
 
-
     public MessageResponse save(ArteSaveRequest saveRequest) {
         if(this.arteRepository.existsByNomeArte(saveRequest.nomeArte())) {
             throw new ArteAlreadyExistsException();
@@ -45,7 +44,6 @@ public class ArteService {
         this.arteRepository.save(arte);
         return new MessageResponse("Arte criada.");
     }
-
 
     public MessageResponse edit(Long id, ArteEditRequest editRequest) {
         Arte arte = this.arteRepository.findById(id)

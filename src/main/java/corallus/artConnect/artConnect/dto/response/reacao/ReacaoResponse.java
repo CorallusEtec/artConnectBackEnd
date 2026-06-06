@@ -3,7 +3,7 @@ package corallus.artConnect.artConnect.dto.response.reacao;
 import java.time.LocalDateTime;
 
 import corallus.artConnect.artConnect.dto.response.usuario.UsuarioPublicacaoResponse;
-import corallus.artConnect.artConnect.entity.reacao.TipoReacao;
+import corallus.artConnect.artConnect.enumeration.ETipoReacao;
 
 /** <h3>RecaoResponse</h3>
  * <p>
@@ -16,9 +16,9 @@ import corallus.artConnect.artConnect.entity.reacao.TipoReacao;
  * @param tipoReacao O tipo dessa reação (LIKE, DESLIKE etc)
  */
 public record ReacaoResponse(
-    Long idPublicacao,
-    UsuarioPublicacaoResponse usuario,
-    Long idComentario,
-    LocalDateTime dataReacao,
-    TipoReacao tipoReacao
+        Long idPublicacao,
+        UsuarioPublicacaoResponse usuario,
+        Long idComentario,
+        LocalDateTime dataReacao,
+        ETipoReacao tipoReacao
 ) {}

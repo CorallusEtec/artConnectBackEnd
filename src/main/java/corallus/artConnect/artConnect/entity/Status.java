@@ -1,7 +1,7 @@
-package corallus.artConnect.artConnect.entity.status;
+package corallus.artConnect.artConnect.entity;
 
 import java.time.LocalDateTime;
-
+import corallus.artConnect.artConnect.enumeration.ETipoStatus;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,9 +15,9 @@ public class Status {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    
-    @ManyToOne
-    private TipoStatus tipoStatus;
+
+    @Enumerated(EnumType.STRING)
+    private ETipoStatus tipoStatus;
 
     private String descricao;
     private LocalDateTime dataModificacao;

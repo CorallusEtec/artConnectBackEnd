@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.util.*;
 import corallus.artConnect.artConnect.dto.response.reacao.ReacaoPublicacaoResponse;
 import corallus.artConnect.artConnect.dto.response.util.MessageResponse;
-import corallus.artConnect.artConnect.entity.reacao.Reacao;
+import corallus.artConnect.artConnect.entity.Reacao;
 import corallus.artConnect.artConnect.enumeration.ETipoReacao;
 import corallus.artConnect.artConnect.enumeration.ETipoStatus;
 import corallus.artConnect.artConnect.mapper.publicacao.PublicacaoDetailsMapper;
@@ -102,7 +102,7 @@ public class PublicacaoService {
     private PublicacaoResponse getPublicacaoResponse(Publicacao publicacao, Usuario usuario) {
         return PublicacaoResponse.builder()
                 .totalComentarios(Math.toIntExact(publicacao.getComentarios().stream().filter(c->c.getStatusComentario()
-                        .getTipoStatus().getNomeTipoStatus() == ETipoStatus.ATIVO).count()))
+                        .getTipoStatus() == ETipoStatus.ATIVO).count()))
                 .publicacao(this.publicacaoDetailsMapper.toDTO(publicacao))
                 .reacoes(this.getReacaoPublicacao(publicacao.getReacoes()))
                 .reacaoUsuario(getReacaoUsuario(publicacao, usuario))
@@ -126,9 +126,8 @@ public class PublicacaoService {
                         .getId()
                         .equals(usuario.getId()))
                 .findFirst();
-        return reacao.map(r -> r.getTipoReacao().getNomeTipo()).orElse(null);
+        return reacao.map(Reacao::getTipoReacao).orElse(null);
     }
-
 
     /**
      * Metodo que retorna uma lista com as totalidades de cada reação de uma publicação.
@@ -141,7 +140,7 @@ public class PublicacaoService {
             var reacaoPublicacao = ReacaoPublicacaoResponse.builder()
                     .tipoReacao(t)
                     .total(Math.toIntExact(reacoes.stream()
-                            .filter(r->r.getTipoReacao().getNomeTipo()==t).count()))
+                            .filter(r->r.getTipoReacao()==t).count()))
                     .build();
             lista.add(reacaoPublicacao);
         }

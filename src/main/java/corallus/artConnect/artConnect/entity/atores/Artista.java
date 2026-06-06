@@ -18,6 +18,5 @@ public class Artista extends Usuario {
 
     @ManyToOne
     private Arte arte;
-
     private Character sexo;
 }

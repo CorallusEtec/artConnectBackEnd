@@ -7,7 +7,7 @@ import java.util.Set;
 
 import corallus.artConnect.artConnect.dto.response.contato.ContatoResponse;
 import corallus.artConnect.artConnect.entity.Seguida;
-import corallus.artConnect.artConnect.entity.status.Status;
+import corallus.artConnect.artConnect.entity.Status;
 import corallus.artConnect.artConnect.enumeration.ETipoConta;
 
 public record ContratanteResponse(
