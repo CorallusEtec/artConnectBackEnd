@@ -1,8 +1,10 @@
 package corallus.artConnect.artConnect.controller;
 
+import corallus.artConnect.artConnect.config.SecurityConfig;
 import corallus.artConnect.artConnect.dto.request.arte.ArteEditRequest;
 import corallus.artConnect.artConnect.dto.request.arte.ArteSaveRequest;
 import corallus.artConnect.artConnect.dto.response.util.MessageResponse;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springdoc.core.annotations.ParameterObject;
@@ -18,7 +20,7 @@ import corallus.artConnect.artConnect.service.ArteService;
 @RequestMapping("/arte")
 @RestController
 @Tag(name = "Arte Controller", description = "Operações e buscas sobre os tipos de arte.")
-
+@SecurityRequirement(name = SecurityConfig.SECURITY)
 public class ArteController {
     private final ArteService arteService;
     // INJEÇÃO DE DEPENDÊNCIA
@@ -27,7 +29,7 @@ public class ArteController {
     }
 
     /**
-     * Busca todas os tipos de arte cadastradas no sistema, com busca paginada.
+     * Busca todos os tipos de artes cadastradas no sistema, com busca paginada.
      *
      * @param pageable Configurações da paginação que podem ser alteradas na requisição.
      * @return Retorna uma lista paginada com os tipos de arte do sistema.

@@ -1,5 +1,6 @@
 package corallus.artConnect.artConnect.entity.contato;
 
+import java.util.ArrayList;
 import java.util.List;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -21,5 +22,5 @@ public class TipoContato {
     private String tipoContato;
 
     @OneToMany(mappedBy = "tipoContato")
-    private List<Contato> contatos;
+    private List<Contato> contatos = new ArrayList<>();
 }

@@ -2,13 +2,13 @@ package corallus.artConnect.artConnect.controller;
 
 import java.util.List;
 
+import corallus.artConnect.artConnect.dto.request.tipoContato.TipoContatoSaveRequest;
+import corallus.artConnect.artConnect.dto.response.util.MessageResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import corallus.artConnect.artConnect.dto.response.tipoContato.TipoContatoResponse;
 import corallus.artConnect.artConnect.service.TipoContatoService;
@@ -45,5 +45,17 @@ public class TipoContatoController {
     public ResponseEntity<TipoContatoResponse> findById(@PathVariable Long id) {
         var tipoContato = this.tipoContatoService.findById(id);
         return new ResponseEntity<>(tipoContato, HttpStatus.OK);
+    }
+
+    /**
+     * Cria um novo tipo de contato no sistema.
+     *
+     * @param saveRequest Request com os dados necessários para criar um tipo de contato.
+     * @return Mensagem caso o tipo de contato seja criado com sucesso.
+     */
+    @PostMapping("save")
+    public ResponseEntity<MessageResponse> save(@RequestBody @Valid TipoContatoSaveRequest saveRequest) {
+        var msg = this.tipoContatoService.save(saveRequest);
+        return new ResponseEntity<>(msg, HttpStatus.CREATED);
     }
 }

@@ -1,8 +1,10 @@
 package corallus.artConnect.artConnect.controller;
 
+import corallus.artConnect.artConnect.config.SecurityConfig;
 import corallus.artConnect.artConnect.dto.response.util.MessageResponse;
 import corallus.artConnect.artConnect.entity.atores.Usuario;
 import corallus.artConnect.artConnect.queryFilter.ContratanteFindAllQF;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springdoc.core.annotations.ParameterObject;
@@ -19,6 +21,7 @@ import corallus.artConnect.artConnect.service.ContratanteService;
 
 @RequestMapping("/contratante")
 @RestController
+@SecurityRequirement(name = SecurityConfig.SECURITY)
 @Tag(name = "Contratante Controller", description = "Ações relacionadas aos contratantes do sistema.")
 public class ContratanteController {
     private final ContratanteService contratanteService;
