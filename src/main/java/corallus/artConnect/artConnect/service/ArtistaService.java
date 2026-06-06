@@ -27,7 +27,7 @@ public class ArtistaService {
         this.artistaMapper = artistaMapper;
     }
 
-    public Page<ArtistaResponse> findAll(Pageable pageable, ArtistaFindAllQF filter) {
+    public Page<ArtistaResponse> findAll(ArtistaFindAllQF filter, Pageable pageable) {
         Page<Artista> lista = this.artistaRepository.findAll(filter.toSpecification(), pageable);
         return lista.map(artistaMapper::toDTO);
     }

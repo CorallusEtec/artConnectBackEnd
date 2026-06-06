@@ -1,5 +1,7 @@
 package corallus.artConnect.artConnect.config;
 
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
+import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -17,10 +19,12 @@ import corallus.artConnect.artConnect.security.SecurityFilter;
 
 @Configuration
 @EnableWebSecurity
+@SecurityScheme(name = SecurityConfig.SECURITY, type = SecuritySchemeType.HTTP, bearerFormat = "JWT", scheme = "bearer")
 public class SecurityConfig {
 
     private final SecurityFilter securityFilter;
 
+    public static final String SECURITY = "bearerAuth";
 
     // INJEÇÃO DE DEPENDÊNCIA
     public SecurityConfig(SecurityFilter securityFilter) {
@@ -38,7 +42,8 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
                 .requestMatchers(HttpMethod.POST, "/auth/register").permitAll()
                 .requestMatchers(HttpMethod.GET, "/generoArte/**").permitAll()
-            
+                .requestMatchers("/doc.html/**", "/v3/api-docs/**", "/swagger-ui/**").permitAll()
+
                 .requestMatchers("/usuario/**").permitAll()
                 .requestMatchers(HttpMethod.GET, "/artista/**").permitAll()
                 .requestMatchers(HttpMethod.GET, "/contratante/**").permitAll()

@@ -1,6 +1,9 @@
 package corallus.artConnect.artConnect.controller;
 
+import corallus.artConnect.artConnect.config.SecurityConfig;
 import corallus.artConnect.artConnect.dto.response.util.MessageResponse;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,8 +17,12 @@ import corallus.artConnect.artConnect.dto.response.usuario.UsuarioLoginResponse;
 import corallus.artConnect.artConnect.service.AuthService;
 import jakarta.validation.Valid;
 
+
 @RestController
 @RequestMapping("/auth")
+
+@Tag(name = "Auth Controller", description = "Controller responsável pelo cadastro e autenticação dos usuários.")
+@SecurityRequirement(name = SecurityConfig.SECURITY)
 public class AuthController {
 
     private final AuthService authService;
