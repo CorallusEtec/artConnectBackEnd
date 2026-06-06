@@ -26,12 +26,15 @@ public class ReacaoPublicacaoFactory implements ReacaoFactoryCreator{
         // VERIFICA SE EXISTE E PEGA A PUBLICACAO
         var publi = this.publicacaoRepository.findById(reacaoRequest.idRecurso())
                 .orElseThrow(()->new ResourceNotFoundException("Publicação não encontrada"));
+
+        // RELACIONA A PUBLICAÇÃO ENCONTRADA COM A REAÇÃO
         reacao.setPublicacao(publi);
 
         // BUSCA A REAÇÃO JA EXISTENTE (OU NÃO)
         var reacaoAtual = publi.getReacoes().stream()
                 .filter(r->r.getUsuario().getId().equals(reacao.getUsuario().getId()))
                 .findFirst();
+
         // SE TIVER UMA REAÇÃO
         if(reacaoAtual.isPresent()) {
             // A REAÇÃO ATUALIZADA VAI TER O MESMO ID DA ATUAL

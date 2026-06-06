@@ -36,16 +36,20 @@ public class ReacaoFactory {
      * @return Retorna a reação instânciada de perssistida no banco
      */
     public Reacao createReacao(Long idAutor, ReacaoRequest request) {
+        // INICIALIZA UMA NOVA REAÇÃO
         Reacao reacao = this.composeReacao(idAutor, new Reacao(), request);
         switch (request.tipoRecurso()) {
             case "COMENTARIO" -> {
+                // RETORNA A REAÇÃO JÁ CRIADA
                 return this.reacaoComentarioFactory.composeReacao(reacao, request);
             } case "PUBLICACAO" -> {
+                // RETORNA A REAÇÃO JÁ CRIADA
                 return this.reacaoPublicacaoFactory.composeReacao(reacao, request);
             } default -> throw new IllegalArgumentException("Tipo de recurso indisponível para reações");
         }
     }
 
+    // CONFIGURAÇÕES QUE TODA REAÇÃO TEM
     public Reacao composeReacao(Long idAutor, Reacao reacao, ReacaoRequest reacaoRequest) {
         reacao.setDataReacao(LocalDateTime.now());
         reacao.setUsuario(this.usuarioRepository.findById(idAutor).get());
