@@ -1,10 +1,11 @@
 package corallus.artConnect.artConnect.service;
 
-import java.util.List;
 import corallus.artConnect.artConnect.dto.response.util.MessageResponse;
 import corallus.artConnect.artConnect.error.errors.NotAuthorizedException;
 import corallus.artConnect.artConnect.mapper.artista.ArtistaMapper;
 import corallus.artConnect.artConnect.queryFilter.ArtistaFindAllQF;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import corallus.artConnect.artConnect.dto.request.artista.ArtistaEditRequest;
 import corallus.artConnect.artConnect.dto.response.artista.ArtistaResponse;
@@ -26,9 +27,9 @@ public class ArtistaService {
         this.artistaMapper = artistaMapper;
     }
 
-    public List<ArtistaResponse> findAll(ArtistaFindAllQF filter) {
-        List<Artista> lista = this.artistaRepository.findAll(filter.toSpecification());
-        return this.artistaMapper.toDTOList(lista);
+    public Page<ArtistaResponse> findAll(Pageable pageable, ArtistaFindAllQF filter) {
+        Page<Artista> lista = this.artistaRepository.findAll(filter.toSpecification(), pageable);
+        return lista.map(artistaMapper::toDTO);
     }
 
     public ArtistaResponse findById(Long id) {

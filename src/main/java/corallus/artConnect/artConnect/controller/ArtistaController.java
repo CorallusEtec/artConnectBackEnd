@@ -1,10 +1,12 @@
 package corallus.artConnect.artConnect.controller;
 
-import java.util.List;
 import corallus.artConnect.artConnect.dto.response.util.MessageResponse;
 import corallus.artConnect.artConnect.entity.atores.Usuario;
 import corallus.artConnect.artConnect.queryFilter.ArtistaFindAllQF;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -25,8 +27,8 @@ public class ArtistaController {
     }
 
     @GetMapping("/findAll")
-    public ResponseEntity<List<ArtistaResponse>> findAll(ArtistaFindAllQF filter) {
-        List<ArtistaResponse> lista = this.artistaService.findAll(filter);
+    public ResponseEntity<Page<ArtistaResponse>> findAll(@PageableDefault(sort = "id") Pageable pageable, ArtistaFindAllQF filter) {
+        Page<ArtistaResponse> lista = this.artistaService.findAll(pageable, filter);
         return new ResponseEntity<>(lista, HttpStatus.OK);
     }
 

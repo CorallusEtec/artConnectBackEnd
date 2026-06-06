@@ -8,7 +8,7 @@ import corallus.artConnect.artConnect.entity.Reacao;
 
 public record ComentarioResponse(
     Long id,
-    Status statusComentario,
+    Status status,
     LocalDateTime dataComentario,
     String mensagem,
     UsuarioResponse autor,

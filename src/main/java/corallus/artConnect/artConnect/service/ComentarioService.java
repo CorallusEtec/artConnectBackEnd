@@ -2,18 +2,18 @@ package corallus.artConnect.artConnect.service;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
-import java.util.List;
-import java.util.stream.Collectors;
 import corallus.artConnect.artConnect.dto.response.util.MessageResponse;
 import corallus.artConnect.artConnect.error.errors.NotAuthorizedException;
 import corallus.artConnect.artConnect.mapper.comentario.ComentarioMapper;
+import corallus.artConnect.artConnect.queryFilter.ComentarioFindByPostQF;
 import corallus.artConnect.artConnect.repository.atores.UsuarioRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import corallus.artConnect.artConnect.dto.request.comentario.ComentarioRequest;
 import corallus.artConnect.artConnect.dto.response.comentario.ComentarioResponse;
 import corallus.artConnect.artConnect.entity.Comentario;
 import corallus.artConnect.artConnect.entity.Publicacao;
-import corallus.artConnect.artConnect.enumeration.ETipoStatus;
 import corallus.artConnect.artConnect.error.errors.ResourceNotFoundException;
 import corallus.artConnect.artConnect.repository.ComentarioRepository;
 import corallus.artConnect.artConnect.repository.PublicacaoRepository;
@@ -45,29 +45,12 @@ public class ComentarioService {
     }
 
     // Buscar Comentários de uma postagem
-    public List<ComentarioResponse> findByPost(Long postId) {
-        Publicacao p = this.publicacaoRepository.findById(postId)
-        .orElseThrow(()->new ResourceNotFoundException("Publicação não encontrada"));
+    public Page<ComentarioResponse> findByPost(Long postId, Pageable pageable, ComentarioFindByPostQF queryFilter) {
+        Page<Comentario> comentarios = this.comentarioRepository.findAllByPublicacao_Id(postId, pageable, queryFilter.getSpecification());
 
-        /*
-         * SE o Status da publicação não for ATIVO, gera uma 
-         * exceção (Tentando acessar publicação bloqueada ou )
-         */
-        if(p.getStatusPublicacao()
-            .getTipoStatus() != ETipoStatus.ATIVO
-        ) { throw new IllegalArgumentException("Publicação Indisponível"); }
+        return comentarios.map(comentarioMapper::toDTO);
 
-
-        // Conversão para DTO
-        List<Comentario> comentarios = p.getComentarios()
-        .stream().filter(
-            c->c.getStatusComentario()
-            .getTipoStatus().equals(ETipoStatus.ATIVO))
-        .collect(Collectors.toList());
-
-        return this.comentarioMapper.toDTOList(comentarios);
     }
-
     // Comentar em uma publicação
     public MessageResponse comentar(Long idUsuario, ComentarioRequest request) {
 
@@ -76,7 +59,7 @@ public class ComentarioService {
 
         Comentario comentario  = new Comentario();
         comentario.setMensagem(request.mensagem());
-        comentario.setStatusComentario(this.statusService.generateStatus());
+        comentario.setStatus(this.statusService.generateStatus());
         comentario.setDataComentario(LocalDateTime.now());
         comentario.setReacoes(new HashSet<>());
         comentario.setUsuario(this.usuarioRepository.findById(idUsuario)

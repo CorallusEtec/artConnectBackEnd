@@ -25,7 +25,7 @@ public class Comentario {
     private Long id;
 
     @OneToOne
-    private Status statusComentario;
+    private Status status;
     private LocalDateTime dataComentario;
     private String mensagem;
 
