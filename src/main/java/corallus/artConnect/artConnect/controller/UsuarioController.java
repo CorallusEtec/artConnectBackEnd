@@ -1,7 +1,9 @@
 package corallus.artConnect.artConnect.controller;
 
-import java.util.List;
 import corallus.artConnect.artConnect.queryFilter.UsuarioFindAllQF;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,8 +25,10 @@ public class UsuarioController {
     }
 
     @GetMapping("/findAll")
-    public ResponseEntity<List<UsuarioResponse>> findAll(UsuarioFindAllQF filter) {
-        List<UsuarioResponse> lista = usuarioService.findAll(filter);
+    public ResponseEntity<Page<UsuarioResponse>> findAll(
+            UsuarioFindAllQF filter,
+            @PageableDefault(sort = "id") Pageable pageable) {
+        var lista = usuarioService.findAll(filter, pageable);
         return new ResponseEntity<>(lista, HttpStatus.OK);
     }
 

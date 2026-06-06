@@ -1,10 +1,11 @@
 package corallus.artConnect.artConnect.service;
 
-import java.util.List;
 import corallus.artConnect.artConnect.dto.request.CommonEdit;
 import corallus.artConnect.artConnect.enumeration.ETipoConta;
 import corallus.artConnect.artConnect.mapper.usuario.UsuarioMapper;
 import corallus.artConnect.artConnect.queryFilter.UsuarioFindAllQF;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import corallus.artConnect.artConnect.entity.atores.Usuario;
 import corallus.artConnect.artConnect.error.errors.UserNotFoundException;
@@ -22,9 +23,9 @@ public class UsuarioService {
         this.usuarioMapper = usuarioMapper;
     }
 
-    public List<UsuarioResponse> findAll(UsuarioFindAllQF filter) {
-        List<Usuario> lista = this.usuarioRepository.findAll(filter.toSpecifications());
-        return this.usuarioMapper.toDTOList(lista);
+    public Page<UsuarioResponse> findAll(UsuarioFindAllQF filter, Pageable pageable) {
+        Page<Usuario> lista = this.usuarioRepository.findAll(filter.toSpecifications(), pageable);
+        return lista.map(usuarioMapper::toDTO);
     }
 
     public UsuarioResponse findById(Long id) {

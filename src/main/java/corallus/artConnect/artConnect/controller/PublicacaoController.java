@@ -1,10 +1,12 @@
 package corallus.artConnect.artConnect.controller;
 
 import java.io.IOException;
-import java.util.List;
 import corallus.artConnect.artConnect.dto.response.util.MessageResponse;
 import corallus.artConnect.artConnect.entity.atores.Usuario;
 import corallus.artConnect.artConnect.queryFilter.PublicacaoFindAllQF;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -39,8 +41,11 @@ public class PublicacaoController {
     }
 
     @GetMapping("/findAll")
-    public ResponseEntity<List<PublicacaoResponse>> findAll(PublicacaoFindAllQF find, @AuthenticationPrincipal Usuario usuario) {
-        List<PublicacaoResponse> lista = this.publicacaoService.findAll(find, usuario);
+    public ResponseEntity<Page<PublicacaoResponse>> findAll(
+            PublicacaoFindAllQF find,
+            @AuthenticationPrincipal Usuario usuario,
+            @PageableDefault(size = 7, sort = "id") Pageable pageable) {
+        var lista = this.publicacaoService.findAll(find, usuario, pageable);
         return new ResponseEntity<>(lista, HttpStatus.OK);
     }
 }

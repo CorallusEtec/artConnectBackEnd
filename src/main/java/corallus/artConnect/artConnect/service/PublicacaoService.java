@@ -11,6 +11,8 @@ import corallus.artConnect.artConnect.enumeration.ETipoStatus;
 import corallus.artConnect.artConnect.mapper.publicacao.PublicacaoDetailsMapper;
 import corallus.artConnect.artConnect.queryFilter.PublicacaoFindAllQF;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import corallus.artConnect.artConnect.dto.response.publicacao.PublicacaoResponse;
@@ -87,13 +89,11 @@ public class PublicacaoService {
             return new MessageResponse("Postagem criada com sucesso!");
     }
 
-    public List<PublicacaoResponse> findAll(PublicacaoFindAllQF find, Usuario usuario) {
-        List<Publicacao> publicacaoList = this.publicacaoRepository.findAll(find.toSpecifications());
+    public Page<PublicacaoResponse> findAll(PublicacaoFindAllQF find, Usuario usuario, Pageable pageable) {
+        Page<Publicacao> publicacaoList = this.publicacaoRepository.findAll(find.toSpecifications(), pageable);
 
         // CONVERTE OS DADOS DA PUBLICAÇÃO
-        return publicacaoList.stream()
-                .map(p->this.getPublicacaoResponse(p, usuario))
-                .toList();
+        return publicacaoList.map(p->this.getPublicacaoResponse(p, usuario));
     }
 
     /**
@@ -109,7 +109,7 @@ public class PublicacaoService {
      */
     private PublicacaoResponse getPublicacaoResponse(Publicacao publicacao, Usuario usuario) {
         return PublicacaoResponse.builder()
-                .totalComentarios(Math.toIntExact(publicacao.getComentarios().stream().filter(c->c.getStatusComentario()
+                .totalComentarios(Math.toIntExact(publicacao.getComentarios().stream().filter(c->c.getStatus()
                         .getTipoStatus() == ETipoStatus.ATIVO).count()))
                 .publicacao(this.publicacaoDetailsMapper.toDTO(publicacao))
                 .reacoes(this.getReacaoPublicacao(publicacao.getReacoes()))

@@ -1,10 +1,12 @@
 package corallus.artConnect.artConnect.controller;
 
-import java.util.List;
-
 import corallus.artConnect.artConnect.dto.response.util.MessageResponse;
 import corallus.artConnect.artConnect.entity.atores.Usuario;
+import corallus.artConnect.artConnect.queryFilter.ComentarioFindByPostQF;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -36,8 +38,11 @@ public class ComentarioController {
         return new ResponseEntity<>(msg, HttpStatus.CREATED);
     }
 
-    @GetMapping("/findByPost/{id}") ResponseEntity<List<ComentarioResponse>> findComments(@PathVariable Long id) {
-        List<ComentarioResponse> listaComentario = this.comentarioService.findByPost(id);
+    @GetMapping("/findByPost/{id}") ResponseEntity<Page<ComentarioResponse>> findComments(
+            @PathVariable Long id,
+            @PageableDefault(sort = "id") Pageable pageable,
+            ComentarioFindByPostQF queryFilter) {
+        Page<ComentarioResponse> listaComentario = this.comentarioService.findByPost(id, pageable, queryFilter);
         return new ResponseEntity<>(listaComentario, HttpStatus.OK);
     }
 }

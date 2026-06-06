@@ -1,11 +1,12 @@
 package corallus.artConnect.artConnect.controller;
 
-import java.util.List;
-
 import corallus.artConnect.artConnect.dto.request.arte.ArteEditRequest;
 import corallus.artConnect.artConnect.dto.request.arte.ArteSaveRequest;
 import corallus.artConnect.artConnect.dto.response.util.MessageResponse;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -31,8 +32,8 @@ public class ArteController {
     }
 
     @GetMapping("/findAll")
-    public ResponseEntity<List<Arte>> findAll() {
-        List<Arte> lista = this.arteService.findAll();
+    public ResponseEntity<Page<Arte>> findAll(@PageableDefault(size = 5, sort = "id") Pageable pageable) {
+        Page<Arte> lista = this.arteService.findAll(pageable);
         return new ResponseEntity<>(lista, HttpStatus.OK);
     }
 

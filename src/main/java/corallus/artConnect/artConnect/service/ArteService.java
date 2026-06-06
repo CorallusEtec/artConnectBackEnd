@@ -1,12 +1,13 @@
 package corallus.artConnect.artConnect.service;
 
 import java.util.ArrayList;
-import java.util.List;
 import corallus.artConnect.artConnect.dto.request.arte.ArteEditRequest;
 import corallus.artConnect.artConnect.dto.request.arte.ArteSaveRequest;
 import corallus.artConnect.artConnect.dto.response.util.MessageResponse;
 import corallus.artConnect.artConnect.error.errors.ArteAlreadyExistsException;
 import corallus.artConnect.artConnect.repository.arte.ArteRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import corallus.artConnect.artConnect.entity.arte.Arte;
 import corallus.artConnect.artConnect.error.errors.ArteNotFoundException;
@@ -23,8 +24,8 @@ public class ArteService {
 
     // MÉTODOS LÓGICOS
 
-    public List<Arte> findAll() {
-        return this.arteRepository.findAll();
+    public Page<Arte> findAll(Pageable pageable) {
+        return this.arteRepository.findAll(pageable);
     } 
 
     public Arte findById(Long id) {
