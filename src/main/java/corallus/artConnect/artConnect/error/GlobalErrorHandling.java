@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import javax.naming.AuthenticationException;
 import corallus.artConnect.artConnect.error.errors.*;
+import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -146,12 +147,17 @@ public class GlobalErrorHandling {
 	 */
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<ApiError> methodArgumentNotValid(Exception e) {
-        ApiError error = new ApiError(
+    public ResponseEntity<ApiError> methodArgumentNotValid(MethodArgumentNotValidException e) {
+        List<String> requestErrors = e.getBindingResult()
+				.getFieldErrors().stream()
+				.map(DefaultMessageSourceResolvable::getDefaultMessage)
+				.toList();
+
+		ApiError error = new ApiError(
 				LocalDateTime.now(),
 				HttpStatus.BAD_REQUEST.name(),
 				HttpStatus.BAD_REQUEST.value(),
-				List.of("Há campos inválidos na requisição", e.getMessage())
+				requestErrors
 		  );
 		  return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }
