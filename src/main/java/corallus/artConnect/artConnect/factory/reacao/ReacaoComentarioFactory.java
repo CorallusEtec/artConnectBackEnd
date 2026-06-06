@@ -27,6 +27,7 @@ public class ReacaoComentarioFactory implements ReacaoFactoryCreator{
         // VERIFICA SE EXISTE E PEGA O COMENTARIO
         var comentario = this.comentarioRepository.findById(reacaoRequest.idRecurso())
                 .orElseThrow(()->new ResourceNotFoundException("Comentário não encontrado"));
+        // RELACIONA O COMENTÁRIO ENCONTRADO COM A REAÇÃO
         reacao.setComentario(comentario);
 
         // BUSCA A REAÇÃO JA EXISTENTE (OU NÃO)

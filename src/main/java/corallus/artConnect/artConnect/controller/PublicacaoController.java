@@ -1,5 +1,6 @@
 package corallus.artConnect.artConnect.controller;
 
+import java.io.IOException;
 import java.util.List;
 import corallus.artConnect.artConnect.dto.response.util.MessageResponse;
 import corallus.artConnect.artConnect.entity.atores.Usuario;
@@ -31,14 +32,14 @@ public class PublicacaoController {
         @RequestPart(value = "legenda", required = false) String legenda,
         @RequestPart(value = "file", required = false) MultipartFile image,
         @AuthenticationPrincipal Usuario usuario
-    ) {
-        MessageResponse msg = this.publicacaoService.save(legenda, image, usuario.getId());
+    ) throws IOException {
+        MessageResponse msg = this.publicacaoService.save(legenda, image, usuario);
         return new ResponseEntity<>(msg, HttpStatus.CREATED);
     }
 
     @GetMapping("/findAll")
-    public ResponseEntity<List<PublicacaoResponse>> findAll(PublicacaoFindAllQF find) {
-        List<PublicacaoResponse> lista = this.publicacaoService.findAll(find);
+    public ResponseEntity<List<PublicacaoResponse>> findAll(PublicacaoFindAllQF find, @AuthenticationPrincipal Usuario usuario) {
+        List<PublicacaoResponse> lista = this.publicacaoService.findAll(find, usuario);
         return new ResponseEntity<>(lista, HttpStatus.OK);
     }
 }
