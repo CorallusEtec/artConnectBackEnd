@@ -2,6 +2,8 @@ package corallus.artConnect.artConnect.entity.atores;
 
 import java.time.LocalDateTime;
 import java.util.*;
+
+import corallus.artConnect.artConnect.entity.Status;
 import corallus.artConnect.artConnect.enumeration.ETipoConta;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -14,9 +16,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import corallus.artConnect.artConnect.entity.Publicacao;
 import corallus.artConnect.artConnect.entity.Seguida;
 import corallus.artConnect.artConnect.entity.contato.Contato;
-import corallus.artConnect.artConnect.entity.reacao.Reacao;
-import corallus.artConnect.artConnect.entity.status.Status;
-
+import corallus.artConnect.artConnect.entity.Reacao;
 
 @Setter
 @Getter

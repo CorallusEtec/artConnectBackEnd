@@ -64,9 +64,8 @@ public class AuthService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-         UserDetails user = this.usuarioRepository.findByEmail(username)
+        return this.usuarioRepository.findByEmail(username)
         .orElseThrow(UserNotFoundException::new);
-        
-        return user;
+
     }
 }

@@ -4,8 +4,6 @@ import java.time.LocalDateTime;
 import java.util.Set;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import corallus.artConnect.artConnect.entity.atores.Usuario;
-import corallus.artConnect.artConnect.entity.reacao.Reacao;
-import corallus.artConnect.artConnect.entity.status.Status;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -28,7 +26,6 @@ public class Comentario {
 
     @OneToOne
     private Status statusComentario;
-
     private LocalDateTime dataComentario;
     private String mensagem;
 

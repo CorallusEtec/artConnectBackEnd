@@ -1,10 +1,9 @@
 package corallus.artConnect.artConnect.factory.reacao;
 
 import corallus.artConnect.artConnect.dto.request.reacao.ReacaoRequest;
-import corallus.artConnect.artConnect.entity.reacao.Reacao;
+import corallus.artConnect.artConnect.entity.Reacao;
 import corallus.artConnect.artConnect.enumeration.ETipoReacao;
 import corallus.artConnect.artConnect.repository.atores.UsuarioRepository;
-import corallus.artConnect.artConnect.service.TipoReacaoService;
 import org.springframework.stereotype.Component;
 import java.time.LocalDateTime;
 
@@ -14,19 +13,16 @@ public class ReacaoFactory {
     private final ReacaoPublicacaoFactory reacaoPublicacaoFactory;
     private final ReacaoComentarioFactory reacaoComentarioFactory;
     private final UsuarioRepository usuarioRepository;
-    private final TipoReacaoService tipoReacaoService;
 
     // INJEÇÃO DE DEPENDÊNCIA
     public ReacaoFactory(
             ReacaoPublicacaoFactory reacaoPublicacaoFactory,
             ReacaoComentarioFactory reacaoComentarioFactory,
-            UsuarioRepository usuarioRepository,
-            TipoReacaoService tipoReacaoService
+            UsuarioRepository usuarioRepository
     ) {
         this.reacaoPublicacaoFactory = reacaoPublicacaoFactory;
         this.reacaoComentarioFactory = reacaoComentarioFactory;
         this.usuarioRepository = usuarioRepository;
-        this.tipoReacaoService = tipoReacaoService;
     }
 
     /**
@@ -53,7 +49,7 @@ public class ReacaoFactory {
     public Reacao composeReacao(Long idAutor, Reacao reacao, ReacaoRequest reacaoRequest) {
         reacao.setDataReacao(LocalDateTime.now());
         reacao.setUsuario(this.usuarioRepository.findById(idAutor).get());
-        reacao.setTipoReacao(this.tipoReacaoService.getTipoReacao(ETipoReacao.valueOf(reacaoRequest.nomeTipoReacao())));
+        reacao.setTipoReacao(ETipoReacao.valueOf(reacaoRequest.nomeTipoReacao()));
         return reacao;
     }
 }

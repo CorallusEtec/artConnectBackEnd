@@ -8,10 +8,8 @@ import corallus.artConnect.artConnect.entity.atores.Usuario;
 import corallus.artConnect.artConnect.entity.contato.Contato;
 import corallus.artConnect.artConnect.entity.contato.TipoContato;
 import corallus.artConnect.artConnect.error.errors.ResourceNotFoundException;
-import corallus.artConnect.artConnect.repository.atores.UsuarioRepository;
 import corallus.artConnect.artConnect.repository.contato.ContatoRepository;
 import corallus.artConnect.artConnect.repository.contato.TipoContatoRepository;
-import corallus.artConnect.artConnect.error.errors.UserNotFoundException;
 
 @Service
 public class ContatoService {

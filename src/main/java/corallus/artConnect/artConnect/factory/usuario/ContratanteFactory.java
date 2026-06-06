@@ -17,13 +17,6 @@ public class ContratanteFactory implements UsuarioFactoryCreator {
         this.contratanteRepository = contratanteRepository;
     }
 
-    /**
-     * Implementação que instância e perssiste um novo {@link Usuario} com a especialização de {@link Contratante}
-     *
-     * @param registerRequest DTO de cadastro
-     * @return retorna um contratante já instânciado.
-     */
-
     @Override
     public <U extends Usuario> Usuario composeUsuario(U usuario, UserRegisterRequest registerRequest) {
         usuario.setTipoConta(ETipoConta.CONTRATANTE);

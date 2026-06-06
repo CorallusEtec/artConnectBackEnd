@@ -16,6 +16,5 @@ public class GeneroArte {
     private String nomeGeneroArte;
 
     @ManyToOne
-    @JoinColumn(name = "arte_id")
     private Arte arte;
 }

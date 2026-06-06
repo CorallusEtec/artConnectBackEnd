@@ -24,5 +24,6 @@ public class Arte {
     @JsonIgnore
     @OneToMany(mappedBy = "arte")
     private List<GeneroArte> generosArte;
+    @OneToMany(mappedBy = "arte")
     private List<Artista> artistas;
 }

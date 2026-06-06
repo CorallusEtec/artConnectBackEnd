@@ -4,7 +4,8 @@ import java.io.IOException;
 import java.util.*;
 import corallus.artConnect.artConnect.dto.response.reacao.ReacaoPublicacaoResponse;
 import corallus.artConnect.artConnect.dto.response.util.MessageResponse;
-import corallus.artConnect.artConnect.entity.reacao.Reacao;
+import corallus.artConnect.artConnect.entity.Reacao;
+import corallus.artConnect.artConnect.enumeration.ETipoMidia;
 import corallus.artConnect.artConnect.enumeration.ETipoReacao;
 import corallus.artConnect.artConnect.enumeration.ETipoStatus;
 import corallus.artConnect.artConnect.mapper.publicacao.PublicacaoDetailsMapper;
@@ -44,7 +45,7 @@ public class PublicacaoService {
     @Value("${aws.s3.bucket}")
     private String bucketName;
 
-    public MessageResponse save(String legenda, MultipartFile file, Usuario autor) throws IOException {
+    public MessageResponse save(String legenda, MultipartFile file, String tipoMidiaStr, Usuario autor) throws IOException {
             boolean temLegenda = legenda != null && !legenda.isBlank();
             boolean temImagem = file != null && !file.isEmpty();
 
@@ -54,8 +55,14 @@ public class PublicacaoService {
 
             String url = null;
             if (temImagem) {
+                if (tipoMidiaStr == null || tipoMidiaStr.isBlank()) {
+                    throw new IllegalArgumentException("Tipo de midia é obrigatório quando há arquivo");
+                }
 
-                String fileName = UUID.randomUUID() + "-" + file.getOriginalFilename();
+                ETipoMidia tipoMidia = parseTipoMidia(tipoMidiaStr);
+
+                String pasta = tipoMidia.name().toLowerCase() + "/";
+                String fileName = pasta + UUID.randomUUID() + "-" + file.getOriginalFilename();
                 s3Client.putObject(
                         PutObjectRequest.builder()
                                 .bucket(bucketName)
@@ -71,6 +78,7 @@ public class PublicacaoService {
             pub.setLegenda(temLegenda ? legenda : null);
             pub.setUrlMidia(url);
             pub.setAutor(autor);
+            pub.setTipoMidia(temImagem ? parseTipoMidia(tipoMidiaStr) : null);
 
             // STATUS PADRÃO DE CRIAÇÂO: ATIVO
             pub.setStatusPublicacao(this.statusService.generateStatus());
@@ -102,7 +110,7 @@ public class PublicacaoService {
     private PublicacaoResponse getPublicacaoResponse(Publicacao publicacao, Usuario usuario) {
         return PublicacaoResponse.builder()
                 .totalComentarios(Math.toIntExact(publicacao.getComentarios().stream().filter(c->c.getStatusComentario()
-                        .getTipoStatus().getNomeTipoStatus() == ETipoStatus.ATIVO).count()))
+                        .getTipoStatus() == ETipoStatus.ATIVO).count()))
                 .publicacao(this.publicacaoDetailsMapper.toDTO(publicacao))
                 .reacoes(this.getReacaoPublicacao(publicacao.getReacoes()))
                 .reacaoUsuario(getReacaoUsuario(publicacao, usuario))
@@ -126,9 +134,8 @@ public class PublicacaoService {
                         .getId()
                         .equals(usuario.getId()))
                 .findFirst();
-        return reacao.map(r -> r.getTipoReacao().getNomeTipo()).orElse(null);
+        return reacao.map(Reacao::getTipoReacao).orElse(null);
     }
-
 
     /**
      * Metodo que retorna uma lista com as totalidades de cada reação de uma publicação.
@@ -141,10 +148,20 @@ public class PublicacaoService {
             var reacaoPublicacao = ReacaoPublicacaoResponse.builder()
                     .tipoReacao(t)
                     .total(Math.toIntExact(reacoes.stream()
-                            .filter(r->r.getTipoReacao().getNomeTipo()==t).count()))
+                            .filter(r->r.getTipoReacao()==t).count()))
                     .build();
             lista.add(reacaoPublicacao);
         }
         return lista;
+    }
+
+    private ETipoMidia parseTipoMidia(String tipoMidiaStr) {
+        try {
+            return ETipoMidia.valueOf(tipoMidiaStr.toUpperCase());
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException(
+                    "Tipo inválido: '" + tipoMidiaStr + "'. Aceitos: " + Arrays.toString(ETipoMidia.values())
+            );
+        }
     }
 }
