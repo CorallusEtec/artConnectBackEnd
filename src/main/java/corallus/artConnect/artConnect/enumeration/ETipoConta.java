@@ -6,5 +6,10 @@ package corallus.artConnect.artConnect.enumeration;
 public enum ETipoConta {
     ARTISTA,
     CONTRATANTE,
-    ADMIN
+    ADMIN;
+
+    /**
+     * Atributo usado para validar requests que pedem tipo de conta.
+     */
+    public static final String tipoContaRegExp = "ARTISTA|CONTRATANTE|ADMIN";
 }

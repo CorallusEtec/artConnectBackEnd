@@ -41,8 +41,7 @@ public class ArtistaController {
      */
     @GetMapping("/findAll")
     public ResponseEntity<Page<ArtistaResponse>> findAll(
-            @ParameterObject
-            ArtistaFindAllQF filter,
+            @ParameterObject ArtistaFindAllQF filter,
             @ParameterObject @PageableDefault(sort = "id")
             Pageable pageable
     ) {
@@ -67,8 +66,16 @@ public class ArtistaController {
         return new ResponseEntity<>(msg, HttpStatus.OK);
     }
 
+    /**
+     * Busca um artista pelo Id.
+     *
+     * @param id Id do artista a ser buscado.
+     * @return Objeto com dados do artista encontrado.
+     */
     @GetMapping("/{id}")
-    public ResponseEntity<ArtistaResponse> findById(@PathVariable Long id) {
+    public ResponseEntity<ArtistaResponse> findById(
+            @PathVariable Long id
+    ) {
         ArtistaResponse artista = this.artistaService.findById(id);
         return new ResponseEntity<>(artista, HttpStatus.OK);
     }

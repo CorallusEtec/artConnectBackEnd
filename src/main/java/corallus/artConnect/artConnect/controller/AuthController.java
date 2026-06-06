@@ -32,12 +32,27 @@ public class AuthController {
         this.authService = authService;
     }
 
+    /**
+     * Realiza a autenticação (login) de um usuário no sistema.
+     *
+     * @param loginRequest Objeto com as credenciais para login.
+     * @return Objeto com o 'token' de autenticação e o Id do usuário.
+     */
     @PostMapping("/login")
-    public ResponseEntity<UsuarioLoginResponse> login(@RequestBody @Valid UserLoginRequest loginRequest) {
+    public ResponseEntity<UsuarioLoginResponse> login(
+            @RequestBody @Valid
+            UserLoginRequest loginRequest
+    ) {
         var response = this.authService.login(loginRequest);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
-    
+
+    /**
+     * Cadastra um novo usuario no sistema.
+     *
+     * @param registerRequest Request com os dados de cadastro de um usuário.
+     * @return Mensagem caso o cadastro tenha sido efetuado.
+     */
     @PostMapping("/register")
 	public ResponseEntity<MessageResponse> registrar(
         @RequestBody @Valid UserRegisterRequest registerRequest

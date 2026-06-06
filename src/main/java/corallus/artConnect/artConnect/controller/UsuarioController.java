@@ -1,6 +1,8 @@
 package corallus.artConnect.artConnect.controller;
 
 import corallus.artConnect.artConnect.queryFilter.UsuarioFindAllQF;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -15,6 +17,7 @@ import corallus.artConnect.artConnect.service.UsuarioService;
 
 @RestController
 @RequestMapping("/usuario")
+@Tag(name = "Usuario Controller", description = "Ações reacionada a todos os tipos de usuário do sistema.")
 public class UsuarioController {
 
     private final UsuarioService usuarioService;
@@ -24,14 +27,31 @@ public class UsuarioController {
         this.usuarioService = usuarioService;
     }
 
+    /**
+     * Lista todos os usuários cadastrados no sistema, com sistema de paginação
+     * e filtros de busca.
+     *
+     * @param queryFilter Configuração de filtros de busca.
+     * @param pageable Configurações de paginação.
+     * @return Lista paginada dos usuários cadastrados no sistema.
+     */
     @GetMapping("/findAll")
     public ResponseEntity<Page<UsuarioResponse>> findAll(
-            UsuarioFindAllQF filter,
-            @PageableDefault(sort = "id") Pageable pageable) {
-        var lista = usuarioService.findAll(filter, pageable);
+            @ParameterObject  UsuarioFindAllQF queryFilter,
+            @ParameterObject @PageableDefault(sort = "id")
+            Pageable pageable
+    ) {
+        var lista = usuarioService.findAll(queryFilter, pageable);
         return new ResponseEntity<>(lista, HttpStatus.OK);
     }
 
+
+    /**
+     * Busca um usuário pelo Id.
+     *
+     * @param id Id do usuário buscado.
+     * @return Objeto do usuário correnspondente ao Id.
+     */
     @GetMapping("/{id}")
     public ResponseEntity<UsuarioResponse> findById(@PathVariable Long id) {
         UsuarioResponse usuario = this.usuarioService.findById(id);

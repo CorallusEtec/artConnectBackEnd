@@ -43,9 +43,9 @@ public class ArteController {
     }
 
     /**
-     * Busca uma arte pelo ID
+     * Busca uma arte pelo Id
      *
-     * @param id ID da arte buscada.
+     * @param id Id da arte buscada.
      * @return O objeto com os dados da arte correnspondente.
      */
     @GetMapping("/{id}")
@@ -72,9 +72,9 @@ public class ArteController {
     }
 
     /**
-     * Altera o nome de um tipo de arte pelo ID.
+     * Altera o nome de um tipo de arte pelo Id.
      *
-     * @param id ID da arte correspondente.
+     * @param id Id da arte correspondente.
      * @param editRequest Request com os novos valores da arte.
      * @return Mensagem caso a arte tenha sido alterada com sucesso.
      */
@@ -89,7 +89,7 @@ public class ArteController {
     }
 
     /**
-     * Exclui um tipo de arte do sistema pelo ID.
+     * Exclui um tipo de arte do sistema pelo Id.
      *
      * @param id ID da arte a ser deletada.
      * @return Mensagem caso a arte tenha sido excluida com sucesso.

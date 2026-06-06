@@ -2,6 +2,7 @@ package corallus.artConnect.artConnect.controller;
 
 import corallus.artConnect.artConnect.dto.response.util.MessageResponse;
 import corallus.artConnect.artConnect.entity.atores.Usuario;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +16,7 @@ import corallus.artConnect.artConnect.service.ReacaoService;
 
 @RestController
 @RequestMapping("/reacao")
+@Tag(name = "Reação Controller", description = "Controla as ações de reação de recursos (Publicações, comentários etc) no sistema.")
 public class ReacaoController {
     private final ReacaoService reacaoService;
 
@@ -23,6 +25,16 @@ public class ReacaoController {
         this.reacaoService = reacaoService;
     }
 
+    /**
+     * Adiciona uma reação numa publicação ou um comentário.
+     *
+     * @param usuario Referência do usuário autênticado, que fará a reação.
+     * @param reacaoRequest Request com os dados para realizar a reação.
+     * @return Mensagem caso a reação tenha sito feita.
+     *
+     * @apiNote O conteúdo da mensagem poderá ser "Reagido" ou "Desreagido"
+     * de acordo com a ação do usuário.
+     */
     @PostMapping("/reagir")
     public ResponseEntity<MessageResponse> reagir(@AuthenticationPrincipal Usuario usuario, @RequestBody @Valid ReacaoRequest reacaoRequest) {
         MessageResponse response = this.reacaoService.reagir(usuario.getId(), reacaoRequest);

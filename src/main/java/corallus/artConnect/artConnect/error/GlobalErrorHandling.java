@@ -184,7 +184,7 @@ public class GlobalErrorHandling {
 				HttpStatus.FORBIDDEN.value(),
 				List.of(e.getMessage())
 		);
-		return new ResponseEntity<>(error, HttpStatus.UNAUTHORIZED);
+		return new ResponseEntity<>(error, HttpStatus.FORBIDDEN);
 	}
 	/**
 	 * Exceção genérica ao tentar autenticar

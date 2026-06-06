@@ -1,5 +1,6 @@
 package corallus.artConnect.artConnect.dto.request.usuario;
 
+import corallus.artConnect.artConnect.enumeration.ETipoConta;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
@@ -18,6 +19,6 @@ public record UserRegisterRequest(
     String senha,
 
     @NotBlank(message = "Erro ao cadastrar usuário")
-    @Pattern(regexp = "ARTISTA|CONTRATANTE|ADMIN", message = "Tipo de usuario inválido")
+    @Pattern(regexp = ETipoConta.tipoContaRegExp, message = "Tipo de usuario inválido")
     String tipoConta
 ) {}

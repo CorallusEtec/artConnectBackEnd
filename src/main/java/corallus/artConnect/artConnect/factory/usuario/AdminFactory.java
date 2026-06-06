@@ -20,6 +20,11 @@ public class AdminFactory implements UsuarioFactoryCreator{
     @Override
     public <U extends Usuario> Usuario composeUsuario(U usuario, UserRegisterRequest registerRequest) {
         usuario.setTipoConta(ETipoConta.ADMIN);
-        return this.adminRepository.save((Admin) usuario);
+        if(this.adminRepository.count() > 0) {
+            throw new IllegalArgumentException("Esse tipo de conta não pode ser criado.");
+        } else {
+            return this.adminRepository.save((Admin) usuario);
+        }
+
     }
 }
