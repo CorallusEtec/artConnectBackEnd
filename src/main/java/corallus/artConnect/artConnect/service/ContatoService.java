@@ -1,6 +1,7 @@
 package corallus.artConnect.artConnect.service;
 
 import corallus.artConnect.artConnect.dto.response.util.MessageResponse;
+import corallus.artConnect.artConnect.error.errors.NotAuthorizedException;
 import org.springframework.stereotype.Service;
 import corallus.artConnect.artConnect.dto.request.contato.ContatoEditRequest;
 import corallus.artConnect.artConnect.dto.request.contato.ContatoSaveRequest;
@@ -10,6 +11,8 @@ import corallus.artConnect.artConnect.entity.contato.TipoContato;
 import corallus.artConnect.artConnect.error.errors.ResourceNotFoundException;
 import corallus.artConnect.artConnect.repository.contato.ContatoRepository;
 import corallus.artConnect.artConnect.repository.contato.TipoContatoRepository;
+
+import java.util.Objects;
 
 @Service
 public class ContatoService {
@@ -41,20 +44,25 @@ public class ContatoService {
         return new MessageResponse("Contato adicionado");
     }
 
-    public MessageResponse delete(Long idContato) {
-        if(!this.contatoRepository.existsById(idContato)) {
-            throw new IllegalArgumentException("Contato não encontrado ou inexistente");
-        }
+    public MessageResponse delete(Usuario usuario, Long idContato) {
+        // USUARIO PRECISA ESTAR AUTENTICADO
+        if(Objects.isNull(usuario)) {throw new NotAuthorizedException();}
+
+        // VERIFICA SE O ID EXISTE [VALIDAÇÃO JÁ ACONTECE NO PRÓPRIO deleteById()]
         this.contatoRepository.deleteById(idContato);
         return new MessageResponse("Contato deletado com sucesso");
     }
 
-    public MessageResponse edit(Long idContato, ContatoEditRequest editRequest) {
+    public MessageResponse edit(Usuario usuario, Long idContato, ContatoEditRequest editRequest) {
+        // USUARIO PRECISA ESTAR AUTENTICADO
+        if(Objects.isNull(usuario)) {throw new NotAuthorizedException();}
+
         // Buscando contato
         Contato contato = this.contatoRepository.findById(idContato)
         .orElseThrow(()->new ResourceNotFoundException("Contato não encontrado ou inexistente"));
-        contato.setValorContato(editRequest.valorContato());
 
+       // Atribuindo novos valores
+        contato.setValorContato(editRequest.valorContato());
         this.contatoRepository.save(contato);
         return new MessageResponse("Contato alterado com sucesso");
     }

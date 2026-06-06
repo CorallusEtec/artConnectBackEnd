@@ -1,6 +1,10 @@
 package corallus.artConnect.artConnect.service;
 
 import java.util.List;
+
+import corallus.artConnect.artConnect.dto.request.tipoContato.TipoContatoSaveRequest;
+import corallus.artConnect.artConnect.dto.response.util.MessageResponse;
+import corallus.artConnect.artConnect.entity.contato.TipoContato;
 import corallus.artConnect.artConnect.error.errors.ResourceNotFoundException;
 import corallus.artConnect.artConnect.mapper.tipoContato.TipoContatoMapper;
 import org.springframework.stereotype.Service;
@@ -29,5 +33,13 @@ public class TipoContatoService {
         var tipoContato = this.tipoContatoRepository.findById(id)
                 .orElseThrow(()->new ResourceNotFoundException("Tipo de contato não encontrado ou inexistente"));
         return this.tipoContatoMapper.toDTO(tipoContato);
+    }
+
+    public MessageResponse save(TipoContatoSaveRequest saveRequest) {
+        TipoContato tipo = new TipoContato();
+        tipo.setTipoContato(saveRequest.tipoContato());
+
+        this.tipoContatoRepository.save(tipo);
+        return new MessageResponse("Tipo de Contato criado com sucesso");
     }
 }

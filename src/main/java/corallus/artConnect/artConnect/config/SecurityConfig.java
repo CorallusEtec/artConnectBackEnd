@@ -41,7 +41,6 @@ public class SecurityConfig {
             // ROTAS PÚBLICAS
                 .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
                 .requestMatchers(HttpMethod.POST, "/auth/register").permitAll()
-                .requestMatchers(HttpMethod.GET, "/generoArte/**").permitAll()
                 .requestMatchers("/doc.html/**", "/v3/api-docs/**", "/swagger-ui/**").permitAll()
 
                 .requestMatchers("/usuario/**").permitAll()
@@ -49,13 +48,22 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.GET, "/contratante/**").permitAll()
                 .requestMatchers(HttpMethod.GET, "/publicacao/**").permitAll()
                 .requestMatchers(HttpMethod.GET, "/comentario/findByPost/{id}").permitAll()
-            
-
                 .requestMatchers(HttpMethod.GET, "/arte/**").permitAll()
-
+                .requestMatchers(HttpMethod.GET, "/generoArte/**").permitAll()
                 .requestMatchers(HttpMethod.GET, "/contato/**").permitAll()
                 .requestMatchers(HttpMethod.GET, "/tipoContato/**").permitAll()
                 // ROTAS PROTEGIDAS POR ROLES
+                /* ARTISTA */
+                .requestMatchers(HttpMethod.PUT, "/artista/").hasAuthority("ARTISTA")
+                /* CONTRATANTE */
+                .requestMatchers(HttpMethod.PUT, "/contratante/").hasAuthority("CONTRATANTE")
+
+                /* ADMIN */
+                .requestMatchers(HttpMethod.POST, "/arte/**").hasAuthority("ADMIN")
+                .requestMatchers(HttpMethod.PUT, "/arte/**").hasAuthority("ADMIN")
+                .requestMatchers(HttpMethod.DELETE, "/arte/**").hasAuthority("ADMIN")
+                .requestMatchers(HttpMethod.POST, "/generoArte/**").hasAuthority("ADMIN")
+                .requestMatchers(HttpMethod.POST, "/tipoContato/**").hasAuthority("ADMIN")
                 .requestMatchers("/admin/**").hasAuthority("ADMIN")
                 .requestMatchers(HttpMethod.POST, "/arte/save").hasAuthority("ADMIN")
 

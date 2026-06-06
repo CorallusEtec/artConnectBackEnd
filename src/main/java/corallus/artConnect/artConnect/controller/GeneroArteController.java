@@ -1,9 +1,14 @@
 package corallus.artConnect.artConnect.controller;
 
+import corallus.artConnect.artConnect.config.SecurityConfig;
 import corallus.artConnect.artConnect.dto.request.arte.GeneroArteSaveRequest;
 import corallus.artConnect.artConnect.dto.response.util.MessageResponse;
 import corallus.artConnect.artConnect.entity.arte.GeneroArte;
 import corallus.artConnect.artConnect.service.GeneroArteService;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +18,8 @@ import java.util.List;
 
 @RequestMapping("/generoArte")
 @RestController
+@Tag(name = "Gênero de Arte Controller", description = "Controlla os gêneros de arte existentes no sistema.")
+@SecurityRequirement(name = SecurityConfig.SECURITY)
 public class GeneroArteController {
 
     private final GeneroArteService generoArteService;
@@ -21,14 +28,35 @@ public class GeneroArteController {
         this.generoArteService = generoArteService;
     }
 
+    /**
+     * Retorna a lista de gêneros de artes cadastradas no sistema.
+     *
+     * @return Lista com os gêneros de artes cadastradas no sistema.
+     */
     @GetMapping("/findAll")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", useReturnTypeSchema = true),
+    })
     public ResponseEntity<List<GeneroArte>> findAll() {
         List<GeneroArte> lista = this.generoArteService.findAll();
         return new ResponseEntity<>(lista, HttpStatus.OK);
     }
 
+    /**
+     * Cadastra um gênero de arte no sistema.
+     *
+     * @param saveRequest Request com os dados necessários para cadastro do gênero.
+     * @return Mensagem caso o gênero tenha sido salvo com sucesso.
+     */
     @PostMapping("/save")
-    public ResponseEntity<MessageResponse> save(@RequestBody @Valid GeneroArteSaveRequest saveRequest) {
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Genero de Arte alterada com sucesso."),
+            @ApiResponse(responseCode = "400", description = "Erro de requisição"),
+            @ApiResponse(responseCode = "403", description = "Não autenticado")
+    })
+    public ResponseEntity<MessageResponse> save(
+            @RequestBody @Valid GeneroArteSaveRequest saveRequest
+    ) {
         MessageResponse msg = this.generoArteService.save(saveRequest);
         return new ResponseEntity<>(msg, HttpStatus.CREATED);
     }

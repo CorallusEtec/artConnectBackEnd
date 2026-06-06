@@ -1,7 +1,12 @@
 package corallus.artConnect.artConnect.controller;
 
+import corallus.artConnect.artConnect.config.SecurityConfig;
 import corallus.artConnect.artConnect.dto.response.util.MessageResponse;
 import corallus.artConnect.artConnect.entity.atores.Usuario;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +25,8 @@ import corallus.artConnect.artConnect.service.ContatoService;
 
 @RestController
 @RequestMapping("/contato")
+@Tag(name = "Contato Controller", description = "Ações relacionada a contato dos usuarios.")
+@SecurityRequirement(name = SecurityConfig.SECURITY)
 public class ContatoController {
 
     private final ContatoService contatoService;
@@ -29,25 +36,69 @@ public class ContatoController {
         this.contatoService = contatoService;
     }
 
+    /**
+     * Salva um contato do usuário autenticado no sistema.
+     *
+     * @param usuario Referência do usuário autenticado.
+     * @param contato Request com os dados do contato a ser adicionado.
+     * @return Mensagem caso o contato tenha sido adicionado com sucesso.
+     */
     @PostMapping("/save")
-    public ResponseEntity<MessageResponse> save(@AuthenticationPrincipal Usuario usuario, @RequestBody @Valid ContatoSaveRequest contato) {
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Contato salvo com sucesso."),
+            @ApiResponse(responseCode = "400", description = "Erro de requisição"),
+            @ApiResponse(responseCode = "403", description = "Não autenticado"),
+            @ApiResponse(responseCode = "404", description = "Tipo de contato não encontrada.")
+    })
+    public ResponseEntity<MessageResponse> save(
+            @AuthenticationPrincipal Usuario usuario,
+            @RequestBody @Valid ContatoSaveRequest contato
+    ) {
         MessageResponse msg = this.contatoService.save(usuario, contato);
-        
         return new ResponseEntity<>(msg, HttpStatus.CREATED);
     }
-    
+
+    /**
+     * Exclui o contato do usuário autenticado pelo Id.
+     *
+     * @param usuario Referência do usuário autenticado.
+     * @param idContato Id do contato que será excluido.
+     * @return Mensagem caso o contato tenha sido removido com sucesso.
+     */
     @DeleteMapping("/{idContato}")
-    public ResponseEntity<MessageResponse> delete(@PathVariable Long idContato) {
-        MessageResponse msg = this.contatoService.delete(idContato);
-
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Contato excluido com sucesso."),
+            @ApiResponse(responseCode = "400", description = "Erro de requisição"),
+            @ApiResponse(responseCode = "404", description = "Contato não encontrada.")
+    })
+    public ResponseEntity<MessageResponse> delete(
+            @AuthenticationPrincipal Usuario usuario,
+            @PathVariable Long idContato
+    ) {
+        MessageResponse msg = this.contatoService.delete(usuario, idContato);
         return new ResponseEntity<>(msg, HttpStatus.OK);
     }
 
+    /**
+     * Altera o valor de um contato cadastrado no sistema pelo Id.
+     *
+     * @param idContato Id do contato que será editado.
+     * @param editRequest Request com os dados que serão sobrepostos.
+     * @return Mensagem caso o contato tenha sido editado com sucesso.
+     */
     @PutMapping("/{idContato}")
-    public ResponseEntity<MessageResponse> edit(@PathVariable Long idContato, @RequestBody @Valid ContatoEditRequest editRequest) {
-        MessageResponse msg = this.contatoService.edit(idContato, editRequest);
-
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Contato alterado com sucesso."),
+            @ApiResponse(responseCode = "400", description = "Erro de requisição"),
+            @ApiResponse(responseCode = "403", description = "Não autenticado"),
+            @ApiResponse(responseCode = "404", description = "Contato não encontrada.")
+    })
+    public ResponseEntity<MessageResponse> edit(
+            @AuthenticationPrincipal Usuario usuario,
+            @PathVariable Long idContato,
+            @RequestBody @Valid ContatoEditRequest editRequest
+    ) {
+        MessageResponse msg = this.contatoService.edit(usuario, idContato, editRequest);
         return new ResponseEntity<>(msg, HttpStatus.OK);
     }
-    
 }

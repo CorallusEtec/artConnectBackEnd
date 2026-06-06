@@ -1,8 +1,12 @@
 package corallus.artConnect.artConnect.controller;
 
+import corallus.artConnect.artConnect.config.SecurityConfig;
 import corallus.artConnect.artConnect.dto.request.arte.ArteEditRequest;
 import corallus.artConnect.artConnect.dto.request.arte.ArteSaveRequest;
 import corallus.artConnect.artConnect.dto.response.util.MessageResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springdoc.core.annotations.ParameterObject;
@@ -18,7 +22,7 @@ import corallus.artConnect.artConnect.service.ArteService;
 @RequestMapping("/arte")
 @RestController
 @Tag(name = "Arte Controller", description = "Operações e buscas sobre os tipos de arte.")
-
+@SecurityRequirement(name = SecurityConfig.SECURITY)
 public class ArteController {
     private final ArteService arteService;
     // INJEÇÃO DE DEPENDÊNCIA
@@ -27,7 +31,7 @@ public class ArteController {
     }
 
     /**
-     * Busca todas os tipos de arte cadastradas no sistema, com busca paginada.
+     * Busca todos os tipos de artes cadastradas no sistema, com busca paginada.
      *
      * @param pageable Configurações da paginação que podem ser alteradas na requisição.
      * @return Retorna uma lista paginada com os tipos de arte do sistema.
@@ -43,12 +47,16 @@ public class ArteController {
     }
 
     /**
-     * Busca uma arte pelo ID
+     * Busca uma arte pelo Id
      *
-     * @param id ID da arte buscada.
+     * @param id Id da arte buscada.
      * @return O objeto com os dados da arte correnspondente.
      */
     @GetMapping("/{id}")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", useReturnTypeSchema = true),
+            @ApiResponse(responseCode = "404", description = "Arte não encontrada.")
+    })
     public ResponseEntity<Arte> findById(
             @PathVariable Long id
     ) {
@@ -63,6 +71,11 @@ public class ArteController {
      * @return Mensagem caso a arte tenha sido cadastrada com sucesso.
      */
     @PostMapping("/save")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Arte criada."),
+            @ApiResponse(responseCode = "400", description = "Erro de requisição"),
+            @ApiResponse(responseCode = "409", description = "Arte já cadastrada.")
+    })
     public ResponseEntity<MessageResponse> save(
             @RequestBody @Valid
             ArteSaveRequest saveRequest
@@ -72,13 +85,18 @@ public class ArteController {
     }
 
     /**
-     * Altera o nome de um tipo de arte pelo ID.
+     * Altera o nome de um tipo de arte pelo Id.
      *
-     * @param id ID da arte correspondente.
+     * @param id Id da arte correspondente.
      * @param editRequest Request com os novos valores da arte.
      * @return Mensagem caso a arte tenha sido alterada com sucesso.
      */
     @PutMapping("/{id}")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Arte alterada com sucesso."),
+            @ApiResponse(responseCode = "400", description = "Erro de requisição"),
+            @ApiResponse(responseCode = "404", description = "Arte não encontrada.")
+    })
     public ResponseEntity<MessageResponse> edit(
             @PathVariable Long id,
             @RequestBody @Valid
@@ -89,12 +107,16 @@ public class ArteController {
     }
 
     /**
-     * Exclui um tipo de arte do sistema pelo ID.
+     * Exclui um tipo de arte do sistema pelo Id.
      *
      * @param id ID da arte a ser deletada.
      * @return Mensagem caso a arte tenha sido excluida com sucesso.
      */
     @DeleteMapping("/{id}")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Arte deletada com sucesso."),
+            @ApiResponse(responseCode = "404", description = "Arte não encontrada.")
+    })
     public ResponseEntity<MessageResponse> delete(
             @PathVariable Long id
     ) {
