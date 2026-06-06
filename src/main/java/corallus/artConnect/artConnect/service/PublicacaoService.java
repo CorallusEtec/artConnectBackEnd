@@ -5,6 +5,7 @@ import java.util.*;
 import corallus.artConnect.artConnect.dto.response.reacao.ReacaoPublicacaoResponse;
 import corallus.artConnect.artConnect.dto.response.util.MessageResponse;
 import corallus.artConnect.artConnect.entity.Reacao;
+import corallus.artConnect.artConnect.enumeration.ETipoMidia;
 import corallus.artConnect.artConnect.enumeration.ETipoReacao;
 import corallus.artConnect.artConnect.enumeration.ETipoStatus;
 import corallus.artConnect.artConnect.mapper.publicacao.PublicacaoDetailsMapper;
@@ -44,7 +45,7 @@ public class PublicacaoService {
     @Value("${aws.s3.bucket}")
     private String bucketName;
 
-    public MessageResponse save(String legenda, MultipartFile file, Usuario autor) throws IOException {
+    public MessageResponse save(String legenda, MultipartFile file, String tipoMidiaStr, Usuario autor) throws IOException {
             boolean temLegenda = legenda != null && !legenda.isBlank();
             boolean temImagem = file != null && !file.isEmpty();
 
@@ -54,8 +55,14 @@ public class PublicacaoService {
 
             String url = null;
             if (temImagem) {
+                if (tipoMidiaStr == null || tipoMidiaStr.isBlank()) {
+                    throw new IllegalArgumentException("Tipo de midia é obrigatório quando há arquivo");
+                }
 
-                String fileName = UUID.randomUUID() + "-" + file.getOriginalFilename();
+                ETipoMidia tipoMidia = parseTipoMidia(tipoMidiaStr);
+
+                String pasta = tipoMidia.name().toLowerCase() + "/";
+                String fileName = pasta + UUID.randomUUID() + "-" + file.getOriginalFilename();
                 s3Client.putObject(
                         PutObjectRequest.builder()
                                 .bucket(bucketName)
@@ -71,6 +78,7 @@ public class PublicacaoService {
             pub.setLegenda(temLegenda ? legenda : null);
             pub.setUrlMidia(url);
             pub.setAutor(autor);
+            pub.setTipoMidia(temImagem ? parseTipoMidia(tipoMidiaStr) : null);
 
             // STATUS PADRÃO DE CRIAÇÂO: ATIVO
             pub.setStatusPublicacao(this.statusService.generateStatus());
@@ -145,5 +153,15 @@ public class PublicacaoService {
             lista.add(reacaoPublicacao);
         }
         return lista;
+    }
+
+    private ETipoMidia parseTipoMidia(String tipoMidiaStr) {
+        try {
+            return ETipoMidia.valueOf(tipoMidiaStr.toUpperCase());
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException(
+                    "Tipo inválido: '" + tipoMidiaStr + "'. Aceitos: " + Arrays.toString(ETipoMidia.values())
+            );
+        }
     }
 }
