@@ -2,11 +2,13 @@ package corallus.artConnect.artConnect.service;
 
 import java.util.*;
 import corallus.artConnect.artConnect.dto.response.util.MessageResponse;
-import corallus.artConnect.artConnect.mapper.publicacao.PublicacaoMapper;
+import corallus.artConnect.artConnect.mapper.publicacao.PublicacaoDetailsMapper;
 import corallus.artConnect.artConnect.queryFilter.PublicacaoFindAllQF;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+
+import corallus.artConnect.artConnect.dto.response.publicacao.PublicacaoDetailsResponse;
 import corallus.artConnect.artConnect.dto.response.publicacao.PublicacaoResponse;
 import corallus.artConnect.artConnect.entity.Publicacao;
 import corallus.artConnect.artConnect.entity.atores.Usuario;
@@ -24,19 +26,19 @@ public class PublicacaoService {
     private final PublicacaoRepository publicacaoRepository;
     private final UsuarioRepository usuarioRepository;
     private final StatusService statusService;
-    private final PublicacaoMapper publicacaoMapper;
+    private final PublicacaoDetailsMapper publicacaoDetailsMapper;
     private final S3Client s3Client;
 
     // INJEÇÃO DE DEPENDÊNCIA
     public PublicacaoService(PublicacaoRepository publicacaoRepository,
         UsuarioRepository usuarioRepository,
         StatusService statusService,
-        PublicacaoMapper publicacaoMapper,
+        PublicacaoDetailsMapper publicacaoDetailsMapper,
         S3Client s3Client) {
             this.publicacaoRepository = publicacaoRepository;
             this.usuarioRepository = usuarioRepository;
             this.statusService = statusService;
-            this.publicacaoMapper = publicacaoMapper;
+            this.publicacaoDetailsMapper = publicacaoDetailsMapper;
             this.s3Client = s3Client;
         }
 
@@ -98,9 +100,9 @@ public class PublicacaoService {
         }
     }
 
-    public List<PublicacaoResponse> findAll(PublicacaoFindAllQF find) {
+    public List<PublicacaoDetailsResponse> findAll(PublicacaoFindAllQF find) {
         var entityList = this.publicacaoRepository.findAll(find.toSpecifications());
-        return this.publicacaoMapper.toDTOList(entityList);
+        return this.publicacaoDetailsMapper.toDTOList(entityList);
     }
 
     private ETipoMidia parseTipoMidia(String tipoMidiaStr) {

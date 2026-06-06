@@ -37,6 +37,7 @@ public class SecurityConfig {
             // ROTAS PÚBLICAS
                 .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
                 .requestMatchers(HttpMethod.POST, "/auth/register").permitAll()
+                .requestMatchers(HttpMethod.GET, "/generoArte/**").permitAll()
             
                 .requestMatchers("/usuario/**").permitAll()
                 .requestMatchers(HttpMethod.GET, "/artista/**").permitAll()

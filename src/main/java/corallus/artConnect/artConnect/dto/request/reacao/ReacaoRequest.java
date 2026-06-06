@@ -6,7 +6,7 @@ import jakarta.validation.constraints.Pattern;
 
 public record ReacaoRequest(
         @NotBlank(message = "Não foi possível realizar essa ação")
-        @Pattern(regexp = "LIKE|DESLIKE", message = "Tipo de reação inválida")
+        @Pattern(regexp = "LIKE|DISLIKE", message = "Tipo de reação inválida")
         String nomeTipoReacao,
 
         @NotNull(message = "O recurso de reação não pode ser vazio")
