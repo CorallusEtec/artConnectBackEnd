@@ -2,21 +2,33 @@ package corallus.artConnect.artConnect.controller;
 
 import corallus.artConnect.artConnect.config.SecurityConfig;
 import corallus.artConnect.artConnect.queryFilter.UsuarioFindAllQF;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
+
+import java.io.IOException;
+
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+
 import corallus.artConnect.artConnect.dto.response.usuario.UsuarioResponse;
+import corallus.artConnect.artConnect.dto.response.util.MessageResponse;
+import corallus.artConnect.artConnect.entity.atores.Usuario;
 import corallus.artConnect.artConnect.service.UsuarioService;
 
 @RestController
@@ -68,5 +80,27 @@ public class UsuarioController {
     public ResponseEntity<UsuarioResponse> findById(@PathVariable Long id) {
         UsuarioResponse usuario = this.usuarioService.findById(id);
         return new ResponseEntity<>(usuario, HttpStatus.OK);
+    }
+
+    /**
+    * Atualiza a foto de perfil do usuário autenticado.
+    *
+    * @param file Arquivo de imagem do perfil.
+    * @param principal Referência do usuário autenticado.
+    * @return Mensagem de confirmação da atualização.
+    * @throws IOException Exceção caso ocorra um erro no carregamento do arquivo.
+    */
+    @PutMapping("/foto-perfil")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Foto de perfil atualizada com sucesso!", useReturnTypeSchema = true),
+            @ApiResponse(responseCode = "422", description = "Arquivo inválido ou não é uma imagem."),
+            @ApiResponse(responseCode = "403", description = "Não autenticado.")
+    })
+    public ResponseEntity<MessageResponse> updateFotoPerfil(
+            @RequestParam("file") MultipartFile file,
+            @AuthenticationPrincipal Usuario principal
+    ) throws IOException {
+        MessageResponse response = this.usuarioService.updateFotoPerfil(file, principal);
+    return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }
