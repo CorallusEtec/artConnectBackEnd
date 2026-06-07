@@ -56,6 +56,8 @@ public abstract class Usuario implements UserDetails{
     private String uf;
     // Outros atributos
     private String textoBio;
+    @Nullable
+    private String fotoPerfilUrl;
 
     @OneToMany(mappedBy = "seguidor")
     private Set<Seguida> seguidores = new HashSet<>();
