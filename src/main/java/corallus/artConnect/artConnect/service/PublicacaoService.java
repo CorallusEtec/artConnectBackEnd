@@ -1,7 +1,7 @@
 package corallus.artConnect.artConnect.service;
 
-import java.io.IOException;
 import java.util.*;
+import corallus.artConnect.artConnect.dto.request.publicacao.PublicacaoSaveRequest;
 import corallus.artConnect.artConnect.dto.response.reacao.ReacaoPublicacaoResponse;
 import corallus.artConnect.artConnect.dto.response.util.MessageResponse;
 import corallus.artConnect.artConnect.entity.Reacao;
@@ -10,88 +10,65 @@ import corallus.artConnect.artConnect.enumeration.ETipoReacao;
 import corallus.artConnect.artConnect.enumeration.ETipoStatus;
 import corallus.artConnect.artConnect.mapper.publicacao.PublicacaoDetailsMapper;
 import corallus.artConnect.artConnect.queryFilter.PublicacaoFindAllQF;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 import corallus.artConnect.artConnect.dto.response.publicacao.PublicacaoResponse;
 import corallus.artConnect.artConnect.entity.Publicacao;
 import corallus.artConnect.artConnect.entity.atores.Usuario;
 import corallus.artConnect.artConnect.repository.PublicacaoRepository;
-import software.amazon.awssdk.core.sync.RequestBody;
-import software.amazon.awssdk.services.s3.S3Client;
-import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 
 @Service
 public class PublicacaoService {
 
     private final PublicacaoRepository publicacaoRepository;
     private final StatusService statusService;
-    private final S3Client s3Client;
+    private final S3Service s3Service;
     private final PublicacaoDetailsMapper publicacaoDetailsMapper;
 
     // INJEÇÃO DE DEPENDÊNCIA
     public PublicacaoService(
             PublicacaoRepository publicacaoRepository,
             StatusService statusService,
-            S3Client s3Client,
+            S3Service s3Service,
             PublicacaoDetailsMapper publicacaoDetailsMapper
     ){
         this.publicacaoRepository = publicacaoRepository;
         this.statusService = statusService;
-        this.s3Client = s3Client;
+        this.s3Service = s3Service;
         this.publicacaoDetailsMapper = publicacaoDetailsMapper;
     }
 
-    @Value("${aws.s3.bucket}")
-    private String bucketName;
+    public MessageResponse save(PublicacaoSaveRequest saveRequest, Usuario autor) throws Exception {
+        boolean temLegenda = saveRequest.legenda() != null && !saveRequest.legenda().isBlank();
+        boolean temArquivo = saveRequest.arquivo() != null && !saveRequest.arquivo().isEmpty();
 
-    public MessageResponse save(String legenda, MultipartFile file, String tipoMidiaStr, Usuario autor) throws IOException {
-            boolean temLegenda = legenda != null && !legenda.isBlank();
-            boolean temImagem = file != null && !file.isEmpty();
+        // SE NÃO TIVER NEM ARQUIVO, NEM LEGENDA
+        if (!temLegenda && !temArquivo) {
+            throw new IllegalArgumentException("O Post deve ter ao menos imagem ou legenda");
+        }
 
-            if (!temLegenda && !temImagem) {
-                throw new IllegalArgumentException("O Post deve ter ao menos imagem ou legenda");
-            }
-
-            String url = null;
-            if (temImagem) {
-                if (tipoMidiaStr == null || tipoMidiaStr.isBlank()) {
-                    throw new IllegalArgumentException("Tipo de midia é obrigatório quando há arquivo");
-                }
-
-                ETipoMidia tipoMidia = parseTipoMidia(tipoMidiaStr);
-
-                String pasta = tipoMidia.name().toLowerCase() + "/";
-                String fileName = pasta + UUID.randomUUID() + "-" + file.getOriginalFilename();
-                s3Client.putObject(
-                        PutObjectRequest.builder()
-                                .bucket(bucketName)
-                                .key(fileName)
-                                .contentType(file.getContentType())
-                                .build(),
-                        RequestBody.fromBytes(file.getBytes())
-                );
-                url = "https://" + bucketName + ".s3.sa-east-1.amazonaws.com/" + fileName;
-            }
-
+        // VALIDA SE O TIPO DE MIDIA É VALIDO
+        ETipoMidia tipoMidia = this.parseTipoMidia(saveRequest.tipoMidia());
+        String url = null;
+        // SE O TIPO DE MIDIA NÃO FOR NULL
+        if(Objects.nonNull(saveRequest.tipoMidia())) {
+            url = s3Service.uploadArquivoPublicacao(saveRequest.arquivo(), tipoMidia);
+        }
             Publicacao pub = new Publicacao();
-            pub.setLegenda(temLegenda ? legenda : null);
+            pub.setLegenda(saveRequest.legenda());
             pub.setUrlMidia(url);
             pub.setAutor(autor);
-            pub.setTipoMidia(temImagem ? parseTipoMidia(tipoMidiaStr) : null);
+            pub.setTipoMidia(tipoMidia);
 
             // STATUS PADRÃO DE CRIAÇÂO: ATIVO
             pub.setStatusPublicacao(this.statusService.generateStatus());
-
             publicacaoRepository.save(pub);
             return new MessageResponse("Postagem criada com sucesso!");
     }
 
     public Page<PublicacaoResponse> findAll(PublicacaoFindAllQF find, Usuario usuario, Pageable pageable) {
         Page<Publicacao> publicacaoList = this.publicacaoRepository.findAll(find.toSpecifications(), pageable);
-
         // CONVERTE OS DADOS DA PUBLICAÇÃO
         return publicacaoList.map(p->this.getPublicacaoResponse(p, usuario));
     }
@@ -121,7 +98,7 @@ public class PublicacaoService {
      * Metodo que desacopla a busca pela reação do usuario autenticado na publicação
      *
      * @param publicacao Entidade de publicação que o usuário reagiu
-     * @param usuario Referência do usuário auntenticado para busca de sua reação.
+     * @param usuario Referência do usuário auntenticado para busca da sua reação.
      * @return Retorna a reação que o usuário fez nessa publicação.
      * Caso a referência do objeto usuario seja nula (não autênticado) ou não tem reação nessa
      * publicação, o retorno será null.
@@ -157,7 +134,11 @@ public class PublicacaoService {
 
     private ETipoMidia parseTipoMidia(String tipoMidiaStr) {
         try {
-            return ETipoMidia.valueOf(tipoMidiaStr.toUpperCase());
+            if(Objects.isNull(tipoMidiaStr)) {
+                return null;
+            } else {
+                return ETipoMidia.valueOf(tipoMidiaStr.toUpperCase());
+            }
         } catch (IllegalArgumentException e) {
             throw new IllegalArgumentException(
                     "Tipo inválido: '" + tipoMidiaStr + "'. Aceitos: " + Arrays.toString(ETipoMidia.values())

@@ -3,6 +3,7 @@ package corallus.artConnect.artConnect.controller;
 import java.io.IOException;
 
 import corallus.artConnect.artConnect.config.SecurityConfig;
+import corallus.artConnect.artConnect.dto.request.publicacao.PublicacaoSaveRequest;
 import corallus.artConnect.artConnect.dto.response.util.MessageResponse;
 import corallus.artConnect.artConnect.entity.atores.Usuario;
 import corallus.artConnect.artConnect.queryFilter.PublicacaoFindAllQF;
@@ -20,9 +21,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
 import corallus.artConnect.artConnect.dto.response.publicacao.PublicacaoResponse;
 import corallus.artConnect.artConnect.service.PublicacaoService;
 
@@ -41,26 +40,21 @@ public class PublicacaoController {
     /**
      * Realiza uma nova publicação no sistema.
      *
-     * @param legenda Legenda da publicação.
-     * @param arquivo Referência do arquivo da publicação.
-     * @param tipoMidia Tipo de arquivo da publicação.
-     * @param usuario Referência do usuário autênticado, autor da publicação.
-     * @return Mensagem caso a publicaão tenha sido efeutada com sucesso.
+     * @param saveRequest Request com os dados necessários para realizar uma publicação.
+     * @return Mensagem caso a publicação tenha sido efetuada com sucesso.
      * @throws IOException Exceção caso ocorra um erro no carregamento do arquivo.
      */
-    @PostMapping("/save")
+    @PostMapping(value = "/save", consumes = "multipart/form-data")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Publicação feita com sucesso."),
             @ApiResponse(responseCode = "400", description = "Erro de requisição"),
             @ApiResponse(responseCode = "403", description = "Não autenticado")
     })
     public ResponseEntity<MessageResponse> save(
-        @RequestPart(value = "legenda", required = false) String legenda,
-        @RequestPart(value = "file", required = false) MultipartFile arquivo,
-        @RequestPart(value = "tipoMidia", required=false) String tipoMidia,
+        PublicacaoSaveRequest saveRequest,
         @AuthenticationPrincipal Usuario usuario
-    ) throws IOException {
-        MessageResponse msg = this.publicacaoService.save(legenda, arquivo, tipoMidia, usuario);
+    ) throws Exception {
+        MessageResponse msg = this.publicacaoService.save(saveRequest, usuario);
         return new ResponseEntity<>(msg, HttpStatus.CREATED);
     }
 
