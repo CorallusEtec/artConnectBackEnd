@@ -1,11 +1,12 @@
 package corallus.artConnect.artConnect.service;
 
+import java.util.Objects;
 import java.util.UUID;
-
+import corallus.artConnect.artConnect.enumeration.ETipoMidia;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-
+import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 
@@ -20,9 +21,23 @@ public class S3Service {
         this.s3client = s3client;
     }
 
-    public String uploadFile(MultipartFile file) throws Exception {
-        String fileName = UUID.randomUUID() + "-" + file.getOriginalFilename();
+    /**
+     * Faz o upload do arquivo à sua respectiva pasta no S3 e retorna a url.
+     *
+     * @param file Referência do arquivo a ser salvo.
+     * @param tipoMidia Tipo do arquivo (Video, Imagem etc).
+     * @return A url do arquivo.
+     * @throws Exception Erro de I/O ao carregar o arquivo.
+     */
+    public String uploadFile(MultipartFile file, ETipoMidia tipoMidia) throws Exception {
 
+        // SE NÃO TIVER ARQUIVO OU TIPO MIDIA FOR NULL
+        if((Objects.isNull(file) || file.isEmpty()) || Objects.isNull(tipoMidia)) {
+            return null;
+        }
+
+        String pasta = tipoMidia.name().toLowerCase() + "/";
+        String fileName = pasta + UUID.randomUUID() + "-" + file.getOriginalFilename();
         PutObjectRequest request = PutObjectRequest.builder()
             .bucket(bucketName)
             .key(fileName)
@@ -31,7 +46,7 @@ public class S3Service {
 
             s3client.putObject(
                 request,
-                software.amazon.awssdk.core.sync.RequestBody.fromBytes(file.getBytes())
+                RequestBody.fromBytes(file.getBytes())
             );
         return "https://" + bucketName + ".s3.sa-east-1.amazonaws.com/" + fileName;
 
