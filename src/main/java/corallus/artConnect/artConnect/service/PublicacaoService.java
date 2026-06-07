@@ -53,7 +53,7 @@ public class PublicacaoService {
         String url = null;
         // SE O TIPO DE MIDIA NÃO FOR NULL
         if(Objects.nonNull(saveRequest.tipoMidia())) {
-            url = s3Service.uploadFile(saveRequest.arquivo(), tipoMidia);
+            url = s3Service.uploadArquivoPublicacao(saveRequest.arquivo(), tipoMidia);
         }
             Publicacao pub = new Publicacao();
             pub.setLegenda(saveRequest.legenda());
@@ -69,7 +69,6 @@ public class PublicacaoService {
 
     public Page<PublicacaoResponse> findAll(PublicacaoFindAllQF find, Usuario usuario, Pageable pageable) {
         Page<Publicacao> publicacaoList = this.publicacaoRepository.findAll(find.toSpecifications(), pageable);
-
         // CONVERTE OS DADOS DA PUBLICAÇÃO
         return publicacaoList.map(p->this.getPublicacaoResponse(p, usuario));
     }

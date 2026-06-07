@@ -21,9 +21,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
 import corallus.artConnect.artConnect.dto.response.publicacao.PublicacaoResponse;
 import corallus.artConnect.artConnect.service.PublicacaoService;
 
@@ -55,7 +53,7 @@ public class PublicacaoController {
     public ResponseEntity<MessageResponse> save(
         PublicacaoSaveRequest saveRequest,
         @AuthenticationPrincipal Usuario usuario
-    ) throws IOException {
+    ) throws Exception {
         MessageResponse msg = this.publicacaoService.save(saveRequest, usuario);
         return new ResponseEntity<>(msg, HttpStatus.CREATED);
     }

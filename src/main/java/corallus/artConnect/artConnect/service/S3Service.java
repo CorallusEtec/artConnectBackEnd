@@ -25,19 +25,11 @@ public class S3Service {
      * Faz o upload do arquivo à sua respectiva pasta no S3 e retorna a url.
      *
      * @param file Referência do arquivo a ser salvo.
-     * @param tipoMidia Tipo do arquivo (Video, Imagem etc).
+     * @param fileName Nome do arquivo com pasta configurada para salvamento.
      * @return A url do arquivo.
      * @throws Exception Erro de I/O ao carregar o arquivo.
      */
-    public String uploadFile(MultipartFile file, ETipoMidia tipoMidia) throws Exception {
-
-        // SE NÃO TIVER ARQUIVO OU TIPO MIDIA FOR NULL
-        if((Objects.isNull(file) || file.isEmpty()) || Objects.isNull(tipoMidia)) {
-            return null;
-        }
-
-        String pasta = tipoMidia.name().toLowerCase() + "/";
-        String fileName = pasta + UUID.randomUUID() + "-" + file.getOriginalFilename();
+    public String uploadFile(String fileName, MultipartFile file) throws Exception {
         PutObjectRequest request = PutObjectRequest.builder()
             .bucket(bucketName)
             .key(fileName)
@@ -49,6 +41,35 @@ public class S3Service {
                 RequestBody.fromBytes(file.getBytes())
             );
         return "https://" + bucketName + ".s3.sa-east-1.amazonaws.com/" + fileName;
+    }
 
+    /**
+     * Realiza upload da foto de perfil do usuário.
+     *
+     * @param file Referência do arquivo a ser salvo.
+     * @return A url do arquivo.
+     * @throws Exception Erro de I/O ao carregar o arquivo.
+     */
+    public String uploadFotoPerfil(MultipartFile file) throws Exception {
+        String fileName = "perfil/" + UUID.randomUUID() + "-" + file.getOriginalFilename();
+        return this.uploadFile(fileName, file);
+    }
+
+    /**
+     * Realiza upload de arquivo da publicação.
+     *
+     * @param file Referência do arquivo a ser salvo.
+     * @param tipoMidia Tipo de arquivo que será salvo.
+     * @return A url do arquivo.
+     * @throws Exception Erro de I/O ao carregar o arquivo.
+     */
+    public String uploadArquivoPublicacao(MultipartFile file, ETipoMidia tipoMidia) throws Exception {
+        // SE NÃO TIVER ARQUIVO OU TIPO MIDIA FOR NULL
+        if((Objects.isNull(file) || file.isEmpty()) || Objects.isNull(tipoMidia)) {
+            return null;
+        }
+        String pasta = tipoMidia.name().toLowerCase() + "/";
+        String fileName = pasta + UUID.randomUUID() + "-" + file.getOriginalFilename();
+        return this.uploadFile(fileName, file);
     }
 }
