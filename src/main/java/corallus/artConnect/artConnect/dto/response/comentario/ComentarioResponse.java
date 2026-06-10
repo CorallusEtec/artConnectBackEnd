@@ -1,17 +1,18 @@
 package corallus.artConnect.artConnect.dto.response.comentario;
 
 import java.time.LocalDateTime;
-import java.util.Set;
+
+import corallus.artConnect.artConnect.dto.response.publicacao.PublicacaoDetailsResponse;
+import corallus.artConnect.artConnect.dto.response.usuario.AutorResponse;
 import corallus.artConnect.artConnect.dto.response.usuario.UsuarioResponse;
 import corallus.artConnect.artConnect.entity.Status;
-import corallus.artConnect.artConnect.entity.Reacao;
+import corallus.artConnect.artConnect.entity.atores.Usuario;
 
 public record ComentarioResponse(
     Long id,
     Status status,
     LocalDateTime dataComentario,
     String mensagem,
-    UsuarioResponse autor,
-    Long idPublicacao,
-    Set<Reacao> reacoes
+    AutorResponse usuario,
+    PublicacaoDetailsResponse publicacao
 ) {}
