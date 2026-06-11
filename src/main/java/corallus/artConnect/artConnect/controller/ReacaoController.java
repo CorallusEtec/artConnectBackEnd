@@ -1,45 +1,54 @@
 package corallus.artConnect.artConnect.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import corallus.artConnect.artConnect.config.SecurityConfig;
+import corallus.artConnect.artConnect.dto.response.util.MessageResponse;
+import corallus.artConnect.artConnect.entity.atores.Usuario;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
 import corallus.artConnect.artConnect.dto.request.reacao.ReacaoRequest;
-import corallus.artConnect.artConnect.dto.response.reacao.ReacaoResponse;
 import corallus.artConnect.artConnect.service.ReacaoService;
 
 @RestController
-@RequestMapping("/reacoes")
+@RequestMapping("/reacao")
+@Tag(name = "Reação Controller", description = "Controla as ações de reação de recursos (Publicações, comentários etc) no sistema.")
+@SecurityRequirement(name = SecurityConfig.SECURITY)
 public class ReacaoController {
-    @Autowired
-    private ReacaoService reacaoService;
+    private final ReacaoService reacaoService;
 
-    @PostMapping("/post/{postId}/reagir")
-    public ResponseEntity<ReacaoResponse> reagirPublicacao(@PathVariable Long postId, @RequestBody ReacaoRequest reacaoPostDTO) {
-        ReacaoResponse reacao = this.reacaoService.reagirPublicacao(postId, reacaoPostDTO);
-
-        return new ResponseEntity<>(reacao, HttpStatus.OK);
+    // INJEÇÃO DE DEPENDÊNCIA
+    public ReacaoController(ReacaoService reacaoService) {
+        this.reacaoService = reacaoService;
     }
 
-    @GetMapping("/post/{postId}")
-    public ResponseEntity<ReacaoResponse> getReacaoPublicacao(@PathVariable Long postId, @RequestParam Long usuarioId) {
-        ReacaoResponse reacaoDTO = this.reacaoService.getReacaoPublicacao(postId, usuarioId);
-
-        return new ResponseEntity<>(reacaoDTO, HttpStatus.OK);
+    /**
+     * Adiciona uma reação numa publicação ou um comentário.
+     *
+     * @param usuario Referência do usuário autênticado, que fará a reação.
+     * @param reacaoRequest Request com os dados para realizar a reação.
+     * @return Mensagem caso a reação tenha sito feita.
+     *
+     * @apiNote O conteúdo da mensagem poderá ser "Reagido" ou "Desreagido"
+     * de acordo com a ação do usuário.
+     */
+    @PostMapping("/reagir")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = " Reagido | Desreagido"),
+            @ApiResponse(responseCode = "400", description = "Erro de requisição"),
+            @ApiResponse(responseCode = "403", description = "Não autenticado"),
+            @ApiResponse(responseCode = "404", description = "Recurso não encontrada.")
+    })
+    public ResponseEntity<MessageResponse> reagir(@AuthenticationPrincipal Usuario usuario, @RequestBody @Valid ReacaoRequest reacaoRequest) {
+        MessageResponse response = this.reacaoService.reagir(usuario.getId(), reacaoRequest);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
-
-    @PostMapping("/comment/{commentId}/reagir")
-    public ResponseEntity<ReacaoResponse> reagirComentario(@PathVariable Long commentId, @RequestBody ReacaoRequest reacaoPostDTO) {
-        ReacaoResponse reacao = this.reacaoService.reagirComentario(commentId, reacaoPostDTO);
-
-        return new ResponseEntity<>(reacao, HttpStatus.OK);
-    }
-    
 }

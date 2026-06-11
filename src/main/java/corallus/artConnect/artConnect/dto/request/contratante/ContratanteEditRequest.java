@@ -1,15 +1,16 @@
 package corallus.artConnect.artConnect.dto.request.contratante;
 
 import java.time.LocalDate;
-import java.util.List;
 
-import corallus.artConnect.artConnect.entity.contato.Contato;
+import corallus.artConnect.artConnect.dto.request.CommonEdit;
+import jakarta.validation.constraints.NotBlank;
 
 public record ContratanteEditRequest(
     // USUARIO
+
+    @NotBlank(message = "O nome não pode ser vazio")
     String nome,
     String textoBio,
-    List<Contato> contatos,
 
     // CONTRATANTE
     LocalDate dataNasc,
@@ -25,4 +26,4 @@ public record ContratanteEditRequest(
     String complemento,
     String cidade,
     String uf
-) {}
+) implements CommonEdit {}

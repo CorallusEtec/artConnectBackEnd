@@ -4,20 +4,18 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import corallus.artConnect.artConnect.dto.response.contato.ContatoResponse;
-import corallus.artConnect.artConnect.dto.response.tipoContato.TipoContatoResponse;
 import corallus.artConnect.artConnect.entity.Seguida;
-import corallus.artConnect.artConnect.entity.atores.Contratante;
-import corallus.artConnect.artConnect.entity.status.Status;
+import corallus.artConnect.artConnect.entity.Status;
+import corallus.artConnect.artConnect.enumeration.ETipoConta;
 
 public record ContratanteResponse(
     // USUARIO
     Long id,
     String nome,
     String email,
-    String tipoConta,
+    ETipoConta tipoConta,
     Status status,
     LocalDateTime dataCriacao,
 
@@ -30,27 +28,5 @@ public record ContratanteResponse(
     String cnpj,
 
     String textoBio,
-    Set<Seguida> seguidores,
-    Set<Seguida> seguido,
     List<ContatoResponse> contatos
-) {
-    public static ContratanteResponse toDTO(Contratante m) {
-    ContratanteResponse dto = new ContratanteResponse(m.getId(), m.getNome(), m.getEmail(),
-    m.getTipoConta(), m.getStatus(), m.getDataCriacao(), m.getCpf(), m.getSexo(), m.getDataNasc(), m.getRazaoSocial(),
-    m.getCnpj(), m.getTextoBio(), m.getSeguidores(), m.getSeguido(), 
-    m.getContatos().stream().map(c->new ContatoResponse.builder()
-        .setIdContato(c.getId())            
-        .setTipoContatoResponse(new TipoContatoResponse.builder()
-            .setIdTipoContato(c.getTipoContato().getId())
-            .setTipoContato(c.getTipoContato().getTipoContato())
-            .build()    
-        )
-        .setValorContato(c.getValorContato())
-        .build()
-    )
-    .collect(Collectors.toList())
-    );
-    return dto;
-
-    }
-}
+) {}

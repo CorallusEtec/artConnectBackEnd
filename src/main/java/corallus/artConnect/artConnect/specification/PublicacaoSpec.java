@@ -1,6 +1,7 @@
 package corallus.artConnect.artConnect.specification;
 
 import corallus.artConnect.artConnect.entity.Publicacao;
+import corallus.artConnect.artConnect.enumeration.ETipoStatus;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.util.ObjectUtils;
 
@@ -50,6 +51,17 @@ public class PublicacaoSpec {
                 return null;
             } else {
                 return builder.like(root.join("autor").get("nome"), nomeAutor+"%");
+            }
+        };
+    }
+    public static Specification<Publicacao> tipoStatusEquals(String tipoStatus) {
+        return (root, query, criteriaBuilder) -> {
+            if(ObjectUtils.isEmpty(tipoStatus)) {
+                return root.join("statusPublicacao")
+                        .get("tipoStatus").equalTo(ETipoStatus.ATIVO);
+            } else {
+                return root.join("statusPublicacao")
+                        .get("tipoStatus").equalTo(ETipoStatus.valueOf(tipoStatus));
             }
         };
     }

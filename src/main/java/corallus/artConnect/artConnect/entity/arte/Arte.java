@@ -1,16 +1,20 @@
 package corallus.artConnect.artConnect.entity.arte;
 
 import java.util.List;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
-
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import corallus.artConnect.artConnect.entity.atores.Artista;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+@NoArgsConstructor
+@Getter @Setter
 @Entity
 public class Arte {
     @Id
@@ -20,49 +24,9 @@ public class Arte {
 
     @JsonIgnore
     @OneToMany(mappedBy = "arte")
+    private List<GeneroArte> generosArte;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "arte")
     private List<Artista> artistas;
-
-    // CONSTRUTOR
-
-    public Arte() {
-    }
-
-    public Arte(Long id, String nomeArte, List<Artista> artistas) {
-        this.id = id;
-        this.nomeArte = nomeArte;
-        this.artistas = artistas;
-    }
-
-    // GET E SET
-    
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getNomeArte() {
-        return nomeArte;
-    }
-
-    public void setNomeArte(String nomeArte) {
-        this.nomeArte = nomeArte;
-    }
-
-    public List<Artista> getArtistas() {
-        return artistas;
-    }
-
-    public void setArtistas(List<Artista> artistas) {
-        this.artistas = artistas;
-    }
-
-
-
-    
-
-   
-    
 }

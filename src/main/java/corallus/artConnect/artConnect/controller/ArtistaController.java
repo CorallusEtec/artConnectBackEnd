@@ -1,51 +1,92 @@
 package corallus.artConnect.artConnect.controller;
 
-import java.util.List;
-
-import corallus.artConnect.artConnect.dto.response.MessageResponse;
+import corallus.artConnect.artConnect.config.SecurityConfig;
+import corallus.artConnect.artConnect.dto.response.util.MessageResponse;
+import corallus.artConnect.artConnect.entity.atores.Usuario;
 import corallus.artConnect.artConnect.queryFilter.ArtistaFindAllQF;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springdoc.core.annotations.ParameterObject;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-
-import corallus.artConnect.artConnect.dto.request.artista.ArtistaCadastroRequest;
 import corallus.artConnect.artConnect.dto.request.artista.ArtistaEditRequest;
 import corallus.artConnect.artConnect.dto.response.artista.ArtistaResponse;
 import corallus.artConnect.artConnect.service.ArtistaService;
-import software.amazon.eventstream.Message;
 
 @RestController
 @RequestMapping("/artista")
+@SecurityRequirement(name = SecurityConfig.SECURITY)
+@Tag(name = "Artista Controller", description = "Controller com as operações específicas do artista")
 public class ArtistaController {
 
-    @Autowired
-    private ArtistaService artistaService;
-    
+    private final ArtistaService artistaService;
+
+    // INJEÇÃO DE DEPENCÊNCIA
+    public ArtistaController(ArtistaService artistaService) {
+        this.artistaService = artistaService;
+    }
+
+    /**
+     * Busca todos os artistas cadastrados no sistema, com paginaçõa e filtragem.
+     *
+     * @param filter Filtros aplicáveis na busca dos artistas.
+     * @param pageable Opções de paginação.
+     * @return A lista paginada com os artistas.
+     */
     @GetMapping("/findAll")
-    public ResponseEntity<List<ArtistaResponse>> findAll(ArtistaFindAllQF filter) {
-        List<ArtistaResponse> lista = this.artistaService.findAll(filter);
+    public ResponseEntity<Page<ArtistaResponse>> findAll(
+            @ParameterObject ArtistaFindAllQF filter,
+            @ParameterObject @PageableDefault(sort = "id")
+            Pageable pageable
+    ) {
+        Page<ArtistaResponse> lista = this.artistaService.findAll(filter, pageable);
         return new ResponseEntity<>(lista, HttpStatus.OK);
     }
 
-    
-    @PostMapping("/save")
-    public ResponseEntity<MessageResponse> save(@RequestBody ArtistaCadastroRequest artistaDTO) {
-        MessageResponse msg = this.artistaService.save(artistaDTO);
-        return new ResponseEntity<>(msg, HttpStatus.CREATED);
-    }
-    
 
-    @PutMapping("/{id}")
-    public ResponseEntity<MessageResponse> edit(@PathVariable Long id, @RequestBody @Valid ArtistaEditRequest artistaDTO) {
-        MessageResponse msg = this.artistaService.edit(id, artistaDTO);
+    /**
+     * Edição de dados do artista autenticado.
+     *
+     * @param auth Referência do artista, recebido pela autenticação
+     * @param editRequest Request com os dados alterados do artista.
+     * @return Mensagem caso os dados tenha sido alterados com sucesso.
+     */
+    @PutMapping("/edit")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Artista alterada com sucesso."),
+            @ApiResponse(responseCode = "400", description = "Erro de requisição"),
+            @ApiResponse(responseCode = "404", description = "Artista não encontrada.")
+    })
+    public ResponseEntity<MessageResponse> edit(
+            @AuthenticationPrincipal Usuario auth,
+            @RequestBody @Valid ArtistaEditRequest editRequest
+    ) {
+        MessageResponse msg = this.artistaService.edit(auth.getId(), editRequest);
         return new ResponseEntity<>(msg, HttpStatus.OK);
     }
 
-   
+    /**
+     * Busca um artista pelo Id.
+     *
+     * @param id Id do artista a ser buscado.
+     * @return Objeto com dados do artista encontrado.
+     */
     @GetMapping("/{id}")
-    public ResponseEntity<ArtistaResponse> findById(@PathVariable Long id) {
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", useReturnTypeSchema = true),
+            @ApiResponse(responseCode = "404", description = "Artista não encontrada.")
+    })
+    public ResponseEntity<ArtistaResponse> findById(
+            @PathVariable Long id
+    ) {
         ArtistaResponse artista = this.artistaService.findById(id);
         return new ResponseEntity<>(artista, HttpStatus.OK);
     }

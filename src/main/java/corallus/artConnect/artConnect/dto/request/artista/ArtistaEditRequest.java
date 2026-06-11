@@ -3,23 +3,22 @@ package corallus.artConnect.artConnect.dto.request.artista;
 import java.time.LocalDate;
 import java.util.List;
 
+import corallus.artConnect.artConnect.dto.request.CommonEdit;
 import corallus.artConnect.artConnect.entity.arte.Arte;
-import corallus.artConnect.artConnect.entity.Tag;
+import corallus.artConnect.artConnect.entity.arte.GeneroArte;
 import jakarta.validation.constraints.NotBlank;
-
 public record ArtistaEditRequest(
     // USUARIO
 
-    @NotBlank
+    @NotBlank(message = "O nome não pode ser vazio")
     String nome,
     String textoBio,
 
     // ARTISTA
-    List<Tag> listaTags,
     Arte arte,
     String nomeArtistico,
     LocalDate dataNasc,
-
+    List<GeneroArte> generosArte,
     
     // LOGRADOURO
     String nomeLog,
@@ -30,4 +29,4 @@ public record ArtistaEditRequest(
     String cidade,
     String uf
 
-) {}
+) implements CommonEdit {}

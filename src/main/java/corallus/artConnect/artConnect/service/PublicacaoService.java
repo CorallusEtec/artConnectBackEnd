@@ -1,185 +1,148 @@
 package corallus.artConnect.artConnect.service;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
-import java.util.stream.Collectors;
-
-import corallus.artConnect.artConnect.dto.response.MessageResponse;
+import java.util.*;
+import corallus.artConnect.artConnect.dto.request.publicacao.PublicacaoSaveRequest;
+import corallus.artConnect.artConnect.dto.response.reacao.ReacaoPublicacaoResponse;
+import corallus.artConnect.artConnect.dto.response.util.MessageResponse;
+import corallus.artConnect.artConnect.entity.Reacao;
+import corallus.artConnect.artConnect.enumeration.ETipoMidia;
+import corallus.artConnect.artConnect.enumeration.ETipoReacao;
+import corallus.artConnect.artConnect.enumeration.ETipoStatus;
+import corallus.artConnect.artConnect.mapper.publicacao.PublicacaoDetailsMapper;
 import corallus.artConnect.artConnect.queryFilter.PublicacaoFindAllQF;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
-
 import corallus.artConnect.artConnect.dto.response.publicacao.PublicacaoResponse;
-import corallus.artConnect.artConnect.dto.response.reacao.ReacaoDetailsResponse;
-import corallus.artConnect.artConnect.dto.response.reacao.ReacaoResponse;
-import corallus.artConnect.artConnect.dto.response.usuario.UsuarioResponse;
 import corallus.artConnect.artConnect.entity.Publicacao;
 import corallus.artConnect.artConnect.entity.atores.Usuario;
-import corallus.artConnect.artConnect.entity.reacao.Reacao;
-import corallus.artConnect.artConnect.entity.reacao.TipoReacao;
-import corallus.artConnect.artConnect.entity.status.Status;
-
-import corallus.artConnect.artConnect.enums.ListaTipoStatus;
 import corallus.artConnect.artConnect.repository.PublicacaoRepository;
-import corallus.artConnect.artConnect.repository.atores.UsuarioRepository;
-import corallus.artConnect.artConnect.repository.reacao.TipoReacaoRepository;
-import corallus.artConnect.artConnect.repository.status.StatusRepository;
-import corallus.artConnect.artConnect.repository.status.TipoStatusRepository;
-import software.amazon.awssdk.core.sync.RequestBody;
-import software.amazon.awssdk.services.s3.S3Client;
-import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 
 @Service
 public class PublicacaoService {
 
-	@Autowired
-    private PublicacaoRepository publicacaoRepository;
-	@Autowired
-    private UsuarioRepository usuarioRepository;
-    @Autowired
-    private TipoStatusRepository tipoStatusRepository;
-    @Autowired
-    private StatusRepository statusRepository;
-    
-    @Autowired
-    private TipoReacaoRepository tipoReacaoRepository;
+    private final PublicacaoRepository publicacaoRepository;
+    private final StatusService statusService;
+    private final S3Service s3Service;
+    private final PublicacaoDetailsMapper publicacaoDetailsMapper;
 
-    @Autowired
-	private S3Client s3Client;
-    
-    @Value("${aws.s3.bucket}")
-    private String bucketName;
+    // INJEÇÃO DE DEPENDÊNCIA
+    public PublicacaoService(
+            PublicacaoRepository publicacaoRepository,
+            StatusService statusService,
+            S3Service s3Service,
+            PublicacaoDetailsMapper publicacaoDetailsMapper
+    ){
+        this.publicacaoRepository = publicacaoRepository;
+        this.statusService = statusService;
+        this.s3Service = s3Service;
+        this.publicacaoDetailsMapper = publicacaoDetailsMapper;
+    }
 
-    public MessageResponse save(String legenda, MultipartFile file, Long autorId) {
-        try {
+    public MessageResponse save(PublicacaoSaveRequest saveRequest, Usuario autor) throws Exception {
+        boolean temLegenda = saveRequest.legenda() != null && !saveRequest.legenda().isBlank();
+        boolean temArquivo = saveRequest.arquivo() != null && !saveRequest.arquivo().isEmpty();
 
-            boolean temLegenda = legenda != null && !legenda.isBlank();
-            boolean temImagem = file != null && !file.isEmpty();
+        // SE NÃO TIVER NEM ARQUIVO, NEM LEGENDA
+        if (!temLegenda && !temArquivo) {
+            throw new IllegalArgumentException("O Post deve ter ao menos imagem ou legenda");
+        }
 
-            if (!temLegenda && !temImagem) {
-                throw new IllegalArgumentException("O Post deve ter ao menos imagem ou legenda");
-            }
-
-            String url = null;
-
-            if (temImagem) {
-
-                String fileName = UUID.randomUUID() + "-" + file.getOriginalFilename();
-
-                s3Client.putObject(
-                        PutObjectRequest.builder()
-                                .bucket(bucketName)
-                                .key(fileName)
-                                .contentType(file.getContentType())
-                                .build(),
-                        RequestBody.fromBytes(file.getBytes())
-                );
-
-                url = "https://" + bucketName + ".s3.sa-east-1.amazonaws.com/" + fileName;
-            }
-
-            // STATUS PADRÃO DE CRIAÇÂO: ATIVO
-            Status statusInicial = new Status();
-            statusInicial.setTipoStatus(
-                this.tipoStatusRepository
-                    .findByNomeTipoStatus(ListaTipoStatus.ATIVO.name())
-                    .get()
-            );
-            statusInicial.setDataModificacao(LocalDateTime.now());
-
-            this.statusRepository.save(statusInicial);
-
-            Usuario autor = usuarioRepository.findById(autorId)
-                    .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
-
+        // VALIDA SE O TIPO DE MIDIA É VALIDO
+        ETipoMidia tipoMidia = this.parseTipoMidia(saveRequest.tipoMidia());
+        String url = null;
+        // SE O TIPO DE MIDIA NÃO FOR NULL
+        if(Objects.nonNull(saveRequest.tipoMidia())) {
+            url = s3Service.uploadArquivoPublicacao(saveRequest.arquivo(), tipoMidia);
+        }
             Publicacao pub = new Publicacao();
-            pub.setLegenda(temLegenda ? legenda : null);
+            pub.setLegenda(saveRequest.legenda());
             pub.setUrlMidia(url);
             pub.setAutor(autor);
-            pub.setStatusPublicacao(statusInicial);
-            
+            pub.setTipoMidia(tipoMidia);
 
-
+            // STATUS PADRÃO DE CRIAÇÂO: ATIVO
+            pub.setStatusPublicacao(this.statusService.generateStatus());
             publicacaoRepository.save(pub);
-
             return new MessageResponse("Postagem criada com sucesso!");
+    }
 
-        } catch (RuntimeException e) {
-            throw e;
-        } catch (Exception e) {
-            throw new RuntimeException("Erro ao criar publicação", e);
+    public Page<PublicacaoResponse> findAll(PublicacaoFindAllQF find, Usuario usuario, Pageable pageable) {
+        Page<Publicacao> publicacaoList = this.publicacaoRepository.findAll(find.toSpecifications(), pageable);
+        // CONVERTE OS DADOS DA PUBLICAÇÃO
+        return publicacaoList.map(p->this.getPublicacaoResponse(p, usuario));
+    }
+
+    /**
+     * Metodo que desacopla a instância da DTO, e busca os outros dados para response completa.
+     *
+     * @param publicacao Entidade de Publicação que serve de base para a response.
+     * @param usuario Entidade do usuário autenticado que fez a requisição.
+     * Caso o usuário faça a requisição sem se autenticar (referência nula),
+     * a reação do usuario sobre a publicação será null.
+     * @return Retorna a DTO criada com dados da publicação,
+     * total de comentários, reação do usuário (se estiver autenticado),
+     * e dados das reações em geral.
+     */
+    private PublicacaoResponse getPublicacaoResponse(Publicacao publicacao, Usuario usuario) {
+        return PublicacaoResponse.builder()
+                .totalComentarios(Math.toIntExact(publicacao.getComentarios().stream().filter(c->c.getStatus()
+                        .getTipoStatus() == ETipoStatus.ATIVO).count()))
+                .publicacao(this.publicacaoDetailsMapper.toDTO(publicacao))
+                .reacoes(this.getReacaoPublicacao(publicacao.getReacoes()))
+                .reacaoUsuario(getReacaoUsuario(publicacao, usuario))
+                .build();
+    }
+
+    /**
+     * Metodo que desacopla a busca pela reação do usuario autenticado na publicação
+     *
+     * @param publicacao Entidade de publicação que o usuário reagiu
+     * @param usuario Referência do usuário auntenticado para busca da sua reação.
+     * @return Retorna a reação que o usuário fez nessa publicação.
+     * Caso a referência do objeto usuario seja nula (não autênticado) ou não tem reação nessa
+     * publicação, o retorno será null.
+     */
+    private ETipoReacao getReacaoUsuario(Publicacao publicacao, Usuario usuario) {
+        if(Objects.isNull(usuario)) return null;
+        Optional<Reacao> reacao =  publicacao.getReacoes()
+                .stream()
+                .filter(r->r.getUsuario()
+                        .getId()
+                        .equals(usuario.getId()))
+                .findFirst();
+        return reacao.map(Reacao::getTipoReacao).orElse(null);
+    }
+
+    /**
+     * Metodo que retorna uma lista com as totalidades de cada reação de uma publicação.
+     * @param reacoes Set de Reações, oriundas da publicação.
+     * @return Retorna uma lista com o total de cada reação.
+     */
+    private List<ReacaoPublicacaoResponse> getReacaoPublicacao(Set<Reacao> reacoes) {
+        List<ReacaoPublicacaoResponse> lista = new ArrayList<>();
+        for (ETipoReacao t : ETipoReacao.values()) {
+            var reacaoPublicacao = ReacaoPublicacaoResponse.builder()
+                    .tipoReacao(t)
+                    .total(Math.toIntExact(reacoes.stream()
+                            .filter(r->r.getTipoReacao()==t).count()))
+                    .build();
+            lista.add(reacaoPublicacao);
+        }
+        return lista;
+    }
+
+    private ETipoMidia parseTipoMidia(String tipoMidiaStr) {
+        try {
+            if(Objects.isNull(tipoMidiaStr)) {
+                return null;
+            } else {
+                return ETipoMidia.valueOf(tipoMidiaStr.toUpperCase());
+            }
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException(
+                    "Tipo inválido: '" + tipoMidiaStr + "'. Aceitos: " + Arrays.toString(ETipoMidia.values())
+            );
         }
     }
-
-    public List<PublicacaoResponse> findAll(PublicacaoFindAllQF find) {
-        List<Publicacao> listaPubli = this.publicacaoRepository.findAll(find.toSpecifications());
-
-        // Se não for Ativo, remove da lista
-        listaPubli.removeIf(e -> !e.getStatusPublicacao()
-        .getTipoStatus()
-        .getNomeTipoStatus()
-        .equalsIgnoreCase(ListaTipoStatus.ATIVO.name()));
-
-        // Transformação em DTO
-        List<PublicacaoResponse> dto = listaPubli.stream()
-        .map(
-            (e)->new PublicacaoResponse.builder()
-            .id(e.getId())
-            .legenda(e.getLegenda())
-            .urlMidia(e.getUrlMidia())
-            .dataPublicacao(e.getDataPublicacao())
-            .autor(UsuarioResponse.toDTO(e.getAutor()))
-            .totalComentarios(e.getComentarios().size())
-            // As reações são separadas por tipo e quantidade
-            .reacoes(this.filterReacaoDetails(e.getReacoes()))
-            .build())
-        .collect(Collectors.toList());
-
-
-        return dto;
-    }
-
-    // Método que separa todas as reações por tipo e suas quantidades
-    private List<ReacaoDetailsResponse> filterReacaoDetails(Set<Reacao> reacoes) {
-        // Transforma as reações (Set) em DTOS (List)
-        var lista = new ArrayList<ReacaoResponse>(
-            reacoes.stream()
-            .map(ReacaoResponse::toDTO)
-            .collect(Collectors.toSet())
-        );
-        
-        // Carrega os tipos de reação existentes
-        List<TipoReacao> tiposReacao = this.tipoReacaoRepository.findAll();
-        
-        // Lista de Reações agrupadas por tipo
-        var listDetails = new ArrayList<ReacaoDetailsResponse>();
-        
-        // Pra cada tipo de reação um Detail é criado e adicionado na lista
-        for(int i=0; i<tiposReacao.size(); i++) {
-            final int iFinal = i;
-            
-            var detail = new ReacaoDetailsResponse.builder()
-            .tipoReacao(tiposReacao.get(i))
-            .totalReacoes(
-                lista.stream()
-                .filter(e->e.tipoReacao()
-                    .getNomeTipo()
-                    .equalsIgnoreCase(tiposReacao.get(iFinal).getNomeTipo()))
-                .collect(Collectors.toList()).size())
-            .build();
-
-            listDetails.add(detail);
-            
-        }
-
-        // Retorna a lista de reações e seus insights
-        return listDetails;
-    }
-
-
 }
