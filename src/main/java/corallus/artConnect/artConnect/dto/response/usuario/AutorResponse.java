@@ -12,6 +12,7 @@ import corallus.artConnect.artConnect.enumeration.ETipoConta;
 public record AutorResponse(
         Long id,
         String nome,
-        ETipoConta tipoConta
+        ETipoConta tipoConta,
+        String fotoPerfilUrl
 ) {
 }
