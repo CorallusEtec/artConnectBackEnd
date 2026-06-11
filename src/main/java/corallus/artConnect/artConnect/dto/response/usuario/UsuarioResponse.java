@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
 import corallus.artConnect.artConnect.dto.response.contato.ContatoResponse;
+import corallus.artConnect.artConnect.dto.response.publicacao.PublicacaoDetailsResponse;
 import corallus.artConnect.artConnect.entity.Seguida;
 import corallus.artConnect.artConnect.entity.Status;
 import corallus.artConnect.artConnect.entity.atores.Usuario;
@@ -18,6 +19,7 @@ public record UsuarioResponse(
     Status status,
     LocalDateTime dataCriacao,
 
+    String fotoPerfilUrl,
     String nomeLog,
     Short numLog,
     String cep,
@@ -25,6 +27,8 @@ public record UsuarioResponse(
     String complemento,
     String cidade,
     String uf,
+
+    List<PublicacaoDetailsResponse> publicacoes,
 
     String textoBio,
     List<ContatoResponse> contatos

@@ -46,6 +46,7 @@ public class UsuarioService {
     public static void fillCommonEdits(Usuario u, CommonEdit dto) {
         u.setNomeLog(dto.nomeLog());
         u.setNumLog(dto.numLog());
+        u.setTextoBio(dto.textoBio());
         u.setCep(dto.cep());
         u.setBairro(dto.bairro());
         u.setComplemento(dto.complemento());
