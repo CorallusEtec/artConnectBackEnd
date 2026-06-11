@@ -28,7 +28,5 @@ public record ContratanteResponse(
     String cnpj,
 
     String textoBio,
-    Set<Seguida> seguidores,
-    Set<Seguida> seguido,
     List<ContatoResponse> contatos
 ) {}

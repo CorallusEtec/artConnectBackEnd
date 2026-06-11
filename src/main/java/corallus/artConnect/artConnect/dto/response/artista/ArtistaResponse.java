@@ -34,8 +34,6 @@ public record ArtistaResponse(
     String uf,
 
     String textoBio,
-    Set<Seguida> seguidores,
-    Set<Seguida> seguido,
     List<ContatoResponse> contatos
     
     /*

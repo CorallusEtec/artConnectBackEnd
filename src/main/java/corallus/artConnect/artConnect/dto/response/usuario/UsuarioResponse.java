@@ -27,32 +27,5 @@ public record UsuarioResponse(
     String uf,
 
     String textoBio,
-    Set<Seguida> seguidores,
-    Set<Seguida> seguido,
     List<ContatoResponse> contatos
-) {
-
-    public static UsuarioResponse toDTO(Usuario u, ContatoMapper contatoMapper) {
-        return new UsuarioResponse(
-                u.getId(),
-                u.getNome(),
-                u.getEmail(),
-                u.getTipoConta(),
-                u.getStatus(),
-                u.getDataCriacao(),
-
-                u.getNomeLog(),
-                u.getNumLog(),
-                u.getCep(),
-                u.getBairro(),
-                u.getComplemento(),
-                u.getCidade(),
-                u.getUf(),
-
-                u.getTextoBio(),
-                u.getSeguidores(),
-                u.getSeguido(),
-                contatoMapper.toDTOList(u.getContatos())
-        );
-    }
-}
+) {}
