@@ -3,11 +3,10 @@ package corallus.artConnect.artConnect.dto.response.artista;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Set;
 import corallus.artConnect.artConnect.dto.response.contato.ContatoResponse;
 import corallus.artConnect.artConnect.entity.Status;
 import corallus.artConnect.artConnect.entity.arte.Arte;
-import corallus.artConnect.artConnect.entity.Seguida;
+import corallus.artConnect.artConnect.entity.arte.GeneroArte;
 import corallus.artConnect.artConnect.enumeration.ETipoConta;
 
 public record ArtistaResponse(
@@ -34,12 +33,8 @@ public record ArtistaResponse(
     String uf,
 
     String textoBio,
-    List<ContatoResponse> contatos
-    
-    /*
-     * 
-     * SEM PUBLICACOES E REACOES POR MOTIVOS DE ABSTRAÇÃO
-     * 
-     */
+    List<ContatoResponse> contatos,
+    List<GeneroArte> generosArte
+
 ) { }
 

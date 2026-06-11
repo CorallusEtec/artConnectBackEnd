@@ -1,9 +1,11 @@
 package corallus.artConnect.artConnect.dto.request.artista;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import corallus.artConnect.artConnect.dto.request.CommonEdit;
 import corallus.artConnect.artConnect.entity.arte.Arte;
+import corallus.artConnect.artConnect.entity.arte.GeneroArte;
 import jakarta.validation.constraints.NotBlank;
 public record ArtistaEditRequest(
     // USUARIO
@@ -16,7 +18,7 @@ public record ArtistaEditRequest(
     Arte arte,
     String nomeArtistico,
     LocalDate dataNasc,
-
+    List<GeneroArte> generosArte,
     
     // LOGRADOURO
     String nomeLog,
