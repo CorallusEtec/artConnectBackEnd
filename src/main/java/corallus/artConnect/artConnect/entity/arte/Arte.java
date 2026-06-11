@@ -2,6 +2,7 @@ package corallus.artConnect.artConnect.entity.arte;
 
 import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import corallus.artConnect.artConnect.entity.atores.Artista;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

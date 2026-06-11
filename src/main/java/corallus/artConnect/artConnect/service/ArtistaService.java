@@ -49,6 +49,9 @@ public class ArtistaService {
         artista.setDataNasc(editRequest.dataNasc());
         artista.setArte(editRequest.arte());
 
+
+
+        artista.setGenerosArte(editRequest.generosArte());
         // Logradouro
         UsuarioService.fillCommonEdits(artista, editRequest);
 
