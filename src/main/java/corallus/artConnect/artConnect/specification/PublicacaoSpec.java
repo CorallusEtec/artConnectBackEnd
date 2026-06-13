@@ -65,4 +65,14 @@ public class PublicacaoSpec {
             }
         };
     }
+
+    public static Specification<Publicacao> idUsuarioEquals(Long idUsuario) {
+        return (root, query, criteriaBuilder) -> {
+            if(ObjectUtils.isEmpty(idUsuario)) {
+                return null;
+            } else {
+                return criteriaBuilder.equal(root.join("autor").get("id"), idUsuario);
+            }
+        };
+    }
 }
