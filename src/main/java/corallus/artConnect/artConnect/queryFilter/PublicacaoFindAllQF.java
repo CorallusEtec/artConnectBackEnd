@@ -20,11 +20,14 @@ public class PublicacaoFindAllQF {
     private String nomeAutor;
     private String tipoStatus;
 
+    private Long idUsuario;
+
     public Specification<Publicacao> toSpecifications() {
         return legendaContains(legenda)
                 .and(dataInicioEquals(dataInicio))
                 .and(dataFimEquals(dataFim))
                 .and(nomeAutorContains(nomeAutor))
-                .and(tipoStatusEquals(tipoStatus));
+                .and(tipoStatusEquals(tipoStatus))
+                .and(idUsuarioEquals(idUsuario));
     }
 }
