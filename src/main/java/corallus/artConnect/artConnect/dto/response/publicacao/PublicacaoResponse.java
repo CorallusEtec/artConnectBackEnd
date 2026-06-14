@@ -10,7 +10,6 @@ import java.util.List;
  * Response que engloba outras responses relacionadas à publicação.
  *
  * @param publicacao Detalhes específicos da publicacao.
- * @param reacoes Dados das reações da publicação.
  * @param reacaoUsuario Reação que o usuário autenticado fez nessa publicação.
  * Caso não tenha feito nenhuma, o valor é null.
  * @param totalComentarios Número total de comentários da publicação.
@@ -19,7 +18,8 @@ import java.util.List;
 @Builder
 public record PublicacaoResponse(
         PublicacaoDetailsResponse publicacao,
-        List<ReacaoPublicacaoResponse> reacoes,
+        Long likes,
+        Long dislikes,
         ETipoReacao reacaoUsuario,
         Integer totalComentarios
 ) {

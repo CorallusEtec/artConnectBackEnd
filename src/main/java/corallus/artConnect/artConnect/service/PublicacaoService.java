@@ -89,7 +89,8 @@ public class PublicacaoService {
                 .totalComentarios(Math.toIntExact(publicacao.getComentarios().stream().filter(c->c.getStatus()
                         .getTipoStatus() == ETipoStatus.ATIVO).count()))
                 .publicacao(this.publicacaoDetailsMapper.toDTO(publicacao))
-                .reacoes(this.getReacaoPublicacao(publicacao.getReacoes()))
+                .likes(publicacao.getReacoes().stream().filter(r->r.getTipoReacao() == ETipoReacao.LIKE).count())
+                .dislikes(publicacao.getReacoes().stream().filter(r->r.getTipoReacao()==ETipoReacao.DISLIKE).count())
                 .reacaoUsuario(getReacaoUsuario(publicacao, usuario))
                 .build();
     }
@@ -112,24 +113,6 @@ public class PublicacaoService {
                         .equals(usuario.getId()))
                 .findFirst();
         return reacao.map(Reacao::getTipoReacao).orElse(null);
-    }
-
-    /**
-     * Metodo que retorna uma lista com as totalidades de cada reação de uma publicação.
-     * @param reacoes Set de Reações, oriundas da publicação.
-     * @return Retorna uma lista com o total de cada reação.
-     */
-    private List<ReacaoPublicacaoResponse> getReacaoPublicacao(Set<Reacao> reacoes) {
-        List<ReacaoPublicacaoResponse> lista = new ArrayList<>();
-        for (ETipoReacao t : ETipoReacao.values()) {
-            var reacaoPublicacao = ReacaoPublicacaoResponse.builder()
-                    .tipoReacao(t)
-                    .total(Math.toIntExact(reacoes.stream()
-                            .filter(r->r.getTipoReacao()==t).count()))
-                    .build();
-            lista.add(reacaoPublicacao);
-        }
-        return lista;
     }
 
     private ETipoMidia parseTipoMidia(String tipoMidiaStr) {
