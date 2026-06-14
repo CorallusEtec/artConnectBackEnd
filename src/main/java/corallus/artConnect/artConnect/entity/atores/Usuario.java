@@ -23,7 +23,7 @@ import corallus.artConnect.artConnect.entity.Reacao;
 @Entity
 @NoArgsConstructor
 @Inheritance(strategy = InheritanceType.JOINED)
-
+@DiscriminatorColumn(name = "tipoConta", discriminatorType = DiscriminatorType.STRING)
 public abstract class Usuario implements UserDetails{
 
     @Id
@@ -41,6 +41,7 @@ public abstract class Usuario implements UserDetails{
     private String senha;
 
     @Enumerated(EnumType.STRING)
+    @Column(insertable = false, updatable = false)
     private ETipoConta tipoConta;
 
     @OneToOne

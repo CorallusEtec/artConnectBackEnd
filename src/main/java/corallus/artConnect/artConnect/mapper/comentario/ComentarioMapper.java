@@ -4,7 +4,7 @@ import corallus.artConnect.artConnect.dto.response.comentario.ComentarioResponse
 import corallus.artConnect.artConnect.entity.Comentario;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-
+import corallus.artConnect.artConnect.entity.Reacao;
 import java.util.List;
 
 @Mapper(componentModel = "spring")
@@ -23,16 +23,9 @@ public interface ComentarioMapper {
             ".count())")
     @Mapping(target = "reacaoUsuario", expression = "java(entity.getReacoes().stream()" +
             ".filter(r->r.getUsuario().getId()" +
-            "   .equals(entity.getUsuario()" +
-            "       .getId()))" +
-            "   .findFirst().isPresent()?" +
-            "   entity.getReacoes()" +
-            "       .stream()"+
-            "       .filter(r->r.getUsuario()"+
-            "           .getId()" +
-            "           .equals(usuarioId))" +
-            "       .findFirst().get().getTipoReacao()" +
-            "   :null)")
+            ".equals(usuarioId))" +
+            ".map(corallus.artConnect.artConnect.entity.Reacao::getTipoReacao)" +
+            ".findFirst().orElse(null))")
     ComentarioResponse toDTO(Comentario entity, Long usuarioId);
 
     List<ComentarioResponse> toDTOList(List<Comentario> entityList);
