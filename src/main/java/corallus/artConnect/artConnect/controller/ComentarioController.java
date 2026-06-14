@@ -58,7 +58,7 @@ public class ComentarioController {
             @AuthenticationPrincipal Usuario usuario,
             @RequestBody @Valid ComentarioRequest comentario
     ) {
-        MessageResponse msg = this.comentarioService.comentar(usuario.getId(), comentario);
+        MessageResponse msg = this.comentarioService.comentar(usuario, comentario);
         return new ResponseEntity<>(msg, HttpStatus.CREATED);
     }
 
@@ -68,6 +68,7 @@ public class ComentarioController {
      * @param id Id da publicação de onde serão buscados os comentários
      * @param pageable Configurações de Paginação
      * @param queryFilter Configuração de filtros da busca
+     * @param usuario Referência do usuario autenticado.
      * @return Lista paginada com os comentários encontrados da publicação correspondente.
      */
     @GetMapping("/findByPost/{id}")
@@ -77,8 +78,9 @@ public class ComentarioController {
     public ResponseEntity<Page<ComentarioResponse>> findComments(
             @PathVariable Long id,
             @ParameterObject @PageableDefault(sort = "id") Pageable pageable,
-            @ParameterObject ComentarioFindByPostQF queryFilter) {
-        Page<ComentarioResponse> listaComentario = this.comentarioService.findByPost(id, pageable, queryFilter);
+            @ParameterObject ComentarioFindByPostQF queryFilter,
+            @AuthenticationPrincipal Usuario usuario) {
+        Page<ComentarioResponse> listaComentario = this.comentarioService.findByPost(id, pageable, queryFilter, usuario);
         return new ResponseEntity<>(listaComentario, HttpStatus.OK);
     }
 }
