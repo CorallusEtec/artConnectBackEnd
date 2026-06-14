@@ -2,6 +2,7 @@ package corallus.artConnect.artConnect.entity.atores;
 
 import java.time.LocalDate;
 import jakarta.persistence.Column;
+import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,6 +11,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter @Setter
 @Entity
+@DiscriminatorValue("CONTRATANTE")
 public class Contratante extends Usuario {
     
     @Column(unique = true)

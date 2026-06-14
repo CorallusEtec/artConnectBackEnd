@@ -2,6 +2,8 @@ package corallus.artConnect.artConnect.service;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
+import java.util.Objects;
+
 import corallus.artConnect.artConnect.dto.response.util.MessageResponse;
 import corallus.artConnect.artConnect.entity.atores.Usuario;
 import corallus.artConnect.artConnect.error.errors.NotAuthorizedException;
@@ -50,8 +52,9 @@ public class ComentarioService {
      * @return Lista paginada com os detalhes do comentário.
      */
     public Page<ComentarioResponse> findByPost(Long postId, Pageable pageable, ComentarioFindByPostQF queryFilter, Usuario usuario) {
+        System.out.println(usuario);
         Page<Comentario> comentarios = this.comentarioRepository.findAllByPublicacao_Id(postId, pageable, queryFilter.getSpecification());
-        return comentarios.map(c->this.comentarioMapper.toDTO(c, usuario.getId()));
+        return comentarios.map(c->this.comentarioMapper.toDTO(c, Objects.isNull(usuario)?null:usuario.getId()));
     }
 
     /** Endpoint para comentar em uma publicação

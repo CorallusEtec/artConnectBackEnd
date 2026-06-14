@@ -79,7 +79,7 @@ public class ComentarioController {
             @PathVariable Long id,
             @ParameterObject @PageableDefault(sort = "id") Pageable pageable,
             @ParameterObject ComentarioFindByPostQF queryFilter,
-            @AuthenticationPrincipal Usuario usuario) {
+            @AuthenticationPrincipal() Usuario usuario) {
         Page<ComentarioResponse> listaComentario = this.comentarioService.findByPost(id, pageable, queryFilter, usuario);
         return new ResponseEntity<>(listaComentario, HttpStatus.OK);
     }

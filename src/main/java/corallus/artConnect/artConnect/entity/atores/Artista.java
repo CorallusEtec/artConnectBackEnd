@@ -13,6 +13,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Setter @Getter
 @Entity
+@DiscriminatorValue("ARTISTA")
 public class Artista extends Usuario {
 
     private String nomeArtistico;
