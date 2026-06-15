@@ -2,12 +2,12 @@ package corallus.artConnect.artConnect.service;
 
 import java.util.*;
 import corallus.artConnect.artConnect.dto.request.publicacao.PublicacaoSaveRequest;
-import corallus.artConnect.artConnect.dto.response.reacao.ReacaoPublicacaoResponse;
 import corallus.artConnect.artConnect.dto.response.util.MessageResponse;
 import corallus.artConnect.artConnect.entity.Reacao;
 import corallus.artConnect.artConnect.enumeration.ETipoMidia;
 import corallus.artConnect.artConnect.enumeration.ETipoReacao;
 import corallus.artConnect.artConnect.enumeration.ETipoStatus;
+import corallus.artConnect.artConnect.error.errors.ResourceNotFoundException;
 import corallus.artConnect.artConnect.mapper.publicacao.PublicacaoDetailsMapper;
 import corallus.artConnect.artConnect.queryFilter.PublicacaoFindAllQF;
 import org.springframework.data.domain.Page;
@@ -72,6 +72,12 @@ public class PublicacaoService {
         // CONVERTE OS DADOS DA PUBLICAÇÃO
         return publicacaoList.map(p->this.getPublicacaoResponse(p, usuario));
     }
+
+    public PublicacaoResponse findById(Long id, Usuario usuario) {
+        Publicacao publicacao = this.publicacaoRepository.findById(id).orElseThrow(ResourceNotFoundException::new);
+        return this.getPublicacaoResponse(publicacao, usuario);
+    }
+
 
     /**
      * Metodo que desacopla a instância da DTO, e busca os outros dados para response completa.
