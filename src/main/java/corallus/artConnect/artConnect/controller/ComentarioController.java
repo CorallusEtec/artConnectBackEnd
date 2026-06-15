@@ -75,12 +75,32 @@ public class ComentarioController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", useReturnTypeSchema = true)
     })
-    public ResponseEntity<Page<ComentarioResponse>> findComments(
+    public ResponseEntity<Page<ComentarioResponse>> findByPostId(
             @PathVariable Long id,
             @ParameterObject @PageableDefault(sort = "id") Pageable pageable,
             @ParameterObject ComentarioFindByPostQF queryFilter,
             @AuthenticationPrincipal() Usuario usuario) {
         Page<ComentarioResponse> listaComentario = this.comentarioService.findByPost(id, pageable, queryFilter, usuario);
         return new ResponseEntity<>(listaComentario, HttpStatus.OK);
+    }
+
+
+    /** Retorna um comentário especíofico pelo Id.
+     *
+     * @param id Id do comentário.
+     * @param usuario Referência do usuário autenticado.
+     * @return Objeto do comentário buscado pelo Id.
+     */
+    @GetMapping("/{id}")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", useReturnTypeSchema = true),
+            @ApiResponse(responseCode = "404", description = "Comentário não encontrado")
+    })
+    public ResponseEntity<ComentarioResponse> findById(
+            @PathVariable Long id,
+            @AuthenticationPrincipal Usuario usuario
+    ) {
+        ComentarioResponse comentario = this.comentarioService.findById(id, usuario);
+        return new ResponseEntity<>(comentario, HttpStatus.OK);
     }
 }
