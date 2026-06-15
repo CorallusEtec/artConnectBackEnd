@@ -81,4 +81,9 @@ public class ComentarioService {
         return new MessageResponse("Comentario publicado com sucesso");
     }
 
+
+    public ComentarioResponse findById(Long idComentario, Usuario usuario) {
+        Comentario comentario = this.comentarioRepository.findById(idComentario).orElseThrow(()->new ResourceNotFoundException("Comentário não encontrado"));
+        return this.comentarioMapper.toDTO(comentario, Objects.isNull(usuario)?null:usuario.getId());
+    }
 }

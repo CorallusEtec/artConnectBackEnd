@@ -74,7 +74,7 @@ public class PublicacaoService {
     }
 
     public PublicacaoResponse findById(Long id, Usuario usuario) {
-        Publicacao publicacao = this.publicacaoRepository.findById(id).orElseThrow(ResourceNotFoundException::new);
+        Publicacao publicacao = this.publicacaoRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("Publicacao não encontrada"));
         return this.getPublicacaoResponse(publicacao, usuario);
     }
 

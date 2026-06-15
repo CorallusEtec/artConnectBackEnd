@@ -9,4 +9,6 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
 public interface ComentarioRepository extends JpaRepository<Comentario, Long>, JpaSpecificationExecutor<Comentario> {
     Page<Comentario> findAllByPublicacao_Id(Long publicacaoId, Pageable pageable, Specification<Comentario> specification);
+
+    Long id(Long id);
 }
