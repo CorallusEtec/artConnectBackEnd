@@ -1,8 +1,11 @@
 package corallus.artConnect.artConnect.dto.request.contratante;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import corallus.artConnect.artConnect.dto.request.CommonEdit;
+import corallus.artConnect.artConnect.entity.arte.Arte;
+import corallus.artConnect.artConnect.entity.arte.GeneroArte;
 import jakarta.validation.constraints.NotBlank;
 
 public record ContratanteEditRequest(
@@ -17,6 +20,8 @@ public record ContratanteEditRequest(
     String razaoSocial,
     Character sexo,
 
+    List<GeneroArte> generosArte,
+    Arte arte,
     
     // LOGRADOURO
     String nomeLog,

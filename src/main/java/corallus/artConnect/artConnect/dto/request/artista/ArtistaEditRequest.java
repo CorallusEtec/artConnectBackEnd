@@ -15,10 +15,11 @@ public record ArtistaEditRequest(
     String textoBio,
 
     // ARTISTA
+    List<GeneroArte> generosArte,
     Arte arte,
     String nomeArtistico,
     LocalDate dataNasc,
-    List<GeneroArte> generosArte,
+
     
     // LOGRADOURO
     String nomeLog,

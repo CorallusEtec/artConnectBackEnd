@@ -1,6 +1,7 @@
 package corallus.artConnect.artConnect.service;
 
 import corallus.artConnect.artConnect.dto.response.util.MessageResponse;
+import corallus.artConnect.artConnect.enumeration.ETipoConta;
 import corallus.artConnect.artConnect.factory.usuario.UsuarioFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -45,9 +46,10 @@ public class AuthService implements UserDetailsService {
         var auth = this.authenticationManager.authenticate(usernamePassword);
         
         Long idUsuario = ((Usuario) Objects.requireNonNull(auth.getPrincipal())).getId();
-        var token = this.tokenService.generateToken((Usuario) auth.getPrincipal());
+        ETipoConta tipoConta = ((Usuario) auth.getPrincipal()).getTipoConta();
+        String token = this.tokenService.generateToken((Usuario) auth.getPrincipal());
 
-        return new UsuarioLoginResponse(idUsuario, token);
+        return new UsuarioLoginResponse(idUsuario, token, tipoConta);
     }
 
     public MessageResponse register(UserRegisterRequest registerRequest) {
