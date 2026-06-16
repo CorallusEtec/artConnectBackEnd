@@ -74,16 +74,6 @@ public abstract class Usuario implements UserDetails{
     @OneToMany(mappedBy = "usuario")
     private Set<Reacao> reacoes = new HashSet<>();
 
-    @ManyToOne
-    private Arte arte;
-    @ManyToMany
-    @JoinTable(
-            name = "usuario_genero_arte",
-            joinColumns = @JoinColumn(name = "usuario_id"),
-            inverseJoinColumns = @JoinColumn(name = "genero_arte_id")
-    )
-    private List<GeneroArte> generosArte;
-
     @JsonIgnore
     @ManyToMany(mappedBy = "usuarios")
     private Set<ChatRoom> chatRooms = new HashSet<>();

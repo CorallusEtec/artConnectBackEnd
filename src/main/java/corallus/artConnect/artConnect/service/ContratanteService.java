@@ -54,8 +54,6 @@ public class ContratanteService {
         contratante.setDataNasc(editRequest.dataNasc());
         contratante.setSexo(editRequest.sexo());
 
-        contratante.setArte(editRequest.arte());
-        contratante.setGenerosArte(editRequest.generosArte());
 
         this.contratanteRepository.save(contratante);
         return new MessageApiResponse("Contratante atualizado com sucesso!");
