@@ -6,8 +6,11 @@ import java.util.List;
 import java.util.Set;
 
 import corallus.artConnect.artConnect.dto.response.contato.ContatoResponse;
+import corallus.artConnect.artConnect.dto.response.publicacao.PublicacaoDetailsResponse;
 import corallus.artConnect.artConnect.entity.Seguida;
 import corallus.artConnect.artConnect.entity.Status;
+import corallus.artConnect.artConnect.entity.arte.Arte;
+import corallus.artConnect.artConnect.entity.arte.GeneroArte;
 import corallus.artConnect.artConnect.enumeration.ETipoConta;
 
 public record ContratanteResponse(
@@ -27,6 +30,9 @@ public record ContratanteResponse(
     String razaoSocial,
     String cnpj,
 
+    List<PublicacaoDetailsResponse> publicacoes,
     String textoBio,
-    List<ContatoResponse> contatos
+    List<ContatoResponse> contatos,
+    Arte arte,
+    List<GeneroArte> generosArte
 ) {}

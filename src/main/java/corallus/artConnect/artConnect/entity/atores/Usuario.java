@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 import java.util.*;
 
 import corallus.artConnect.artConnect.entity.Status;
+import corallus.artConnect.artConnect.entity.arte.Arte;
+import corallus.artConnect.artConnect.entity.arte.GeneroArte;
 import corallus.artConnect.artConnect.enumeration.ETipoConta;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -73,6 +75,16 @@ public abstract class Usuario implements UserDetails{
 
     @OneToMany(mappedBy = "usuario")
     private Set<Reacao> reacoes = new HashSet<>();
+
+    @ManyToOne
+    private Arte arte;
+    @ManyToMany
+    @JoinTable(
+            name = "usuario_genero_arte",
+            joinColumns = @JoinColumn(name = "usuario_id"),
+            inverseJoinColumns = @JoinColumn(name = "genero_arte_id")
+    )
+    private List<GeneroArte> generosArte;
     
     // Metodos UserDetails
     @Override
