@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import corallus.artConnect.artConnect.dto.response.usuario.UsuarioResponse;
-import corallus.artConnect.artConnect.dto.response.util.MessageResponse;
+import corallus.artConnect.artConnect.dto.response.util.MessageApiResponse;
 import corallus.artConnect.artConnect.entity.atores.Usuario;
 import corallus.artConnect.artConnect.service.UsuarioService;
 
@@ -92,11 +92,11 @@ public class UsuarioController {
             @ApiResponse(responseCode = "422", description = "Arquivo inválido ou não é uma imagem."),
             @ApiResponse(responseCode = "403", description = "Não autenticado.")
     })
-    public ResponseEntity<MessageResponse> updateFotoPerfil(
+    public ResponseEntity<MessageApiResponse> updateFotoPerfil(
             @RequestParam("file") MultipartFile file,
             @AuthenticationPrincipal Usuario principal
     ) throws Exception {
-        MessageResponse response = this.usuarioService.updateFotoPerfil(file, principal);
+        MessageApiResponse response = this.usuarioService.updateFotoPerfil(file, principal);
     return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }

@@ -1,7 +1,7 @@
 package corallus.artConnect.artConnect.controller;
 
 import corallus.artConnect.artConnect.config.SecurityConfig;
-import corallus.artConnect.artConnect.dto.response.util.MessageResponse;
+import corallus.artConnect.artConnect.dto.response.util.MessageApiResponse;
 import corallus.artConnect.artConnect.entity.atores.Usuario;
 import corallus.artConnect.artConnect.queryFilter.ComentarioFindByPostQF;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -54,11 +54,11 @@ public class ComentarioController {
             @ApiResponse(responseCode = "403", description = "Não autenticado"),
             @ApiResponse(responseCode = "404", description = "Publicação não encontrada.")
     })
-    public ResponseEntity<MessageResponse> comment(
+    public ResponseEntity<MessageApiResponse> comment(
             @AuthenticationPrincipal Usuario usuario,
             @RequestBody @Valid ComentarioRequest comentario
     ) {
-        MessageResponse msg = this.comentarioService.comentar(usuario, comentario);
+        MessageApiResponse msg = this.comentarioService.comentar(usuario, comentario);
         return new ResponseEntity<>(msg, HttpStatus.CREATED);
     }
 

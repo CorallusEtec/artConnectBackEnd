@@ -11,7 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 import corallus.artConnect.artConnect.entity.atores.Usuario;
 import corallus.artConnect.artConnect.error.errors.UserNotFoundException;
 import corallus.artConnect.artConnect.dto.response.usuario.UsuarioResponse;
-import corallus.artConnect.artConnect.dto.response.util.MessageResponse;
+import corallus.artConnect.artConnect.dto.response.util.MessageApiResponse;
 import corallus.artConnect.artConnect.repository.atores.UsuarioRepository;
 
 
@@ -62,7 +62,7 @@ public class UsuarioService {
      * @return Mensagem caso a foto tenha sido atualizada
      * @throws Exception Erro de I/O ao carregar o arquivo.
      */
-    public MessageResponse updateFotoPerfil(MultipartFile file, Usuario usuario) throws Exception {
+    public MessageApiResponse updateFotoPerfil(MultipartFile file, Usuario usuario) throws Exception {
         if(file==null || file.isEmpty()) {
             throw new IllegalArgumentException("Campo de foto não pode ser vazio");
         }
@@ -75,6 +75,6 @@ public class UsuarioService {
         usuario.setFotoPerfilUrl(url);
 
         this.usuarioRepository.save(usuario);
-         return new MessageResponse("Foto de perfil atualizada com sucesso!");
+         return new MessageApiResponse("Foto de perfil atualizada com sucesso!");
     }
 }

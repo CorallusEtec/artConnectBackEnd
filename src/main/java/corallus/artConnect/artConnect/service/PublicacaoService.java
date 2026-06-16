@@ -2,7 +2,7 @@ package corallus.artConnect.artConnect.service;
 
 import java.util.*;
 import corallus.artConnect.artConnect.dto.request.publicacao.PublicacaoSaveRequest;
-import corallus.artConnect.artConnect.dto.response.util.MessageResponse;
+import corallus.artConnect.artConnect.dto.response.util.MessageApiResponse;
 import corallus.artConnect.artConnect.entity.Reacao;
 import corallus.artConnect.artConnect.enumeration.ETipoMidia;
 import corallus.artConnect.artConnect.enumeration.ETipoReacao;
@@ -39,7 +39,7 @@ public class PublicacaoService {
         this.publicacaoDetailsMapper = publicacaoDetailsMapper;
     }
 
-    public MessageResponse save(PublicacaoSaveRequest saveRequest, Usuario autor) throws Exception {
+    public MessageApiResponse save(PublicacaoSaveRequest saveRequest, Usuario autor) throws Exception {
         boolean temLegenda = saveRequest.legenda() != null && !saveRequest.legenda().isBlank();
         boolean temArquivo = saveRequest.arquivo() != null && !saveRequest.arquivo().isEmpty();
 
@@ -64,7 +64,7 @@ public class PublicacaoService {
             // STATUS PADRÃO DE CRIAÇÂO: ATIVO
             pub.setStatusPublicacao(this.statusService.generateStatus());
             publicacaoRepository.save(pub);
-            return new MessageResponse("Postagem criada com sucesso!");
+            return new MessageApiResponse("Postagem criada com sucesso!");
     }
 
     public Page<PublicacaoResponse> findAll(PublicacaoFindAllQF find, Usuario usuario, Pageable pageable) {

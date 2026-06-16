@@ -3,7 +3,7 @@ package corallus.artConnect.artConnect.service;
 import java.util.List;
 
 import corallus.artConnect.artConnect.dto.request.tipoContato.TipoContatoSaveRequest;
-import corallus.artConnect.artConnect.dto.response.util.MessageResponse;
+import corallus.artConnect.artConnect.dto.response.util.MessageApiResponse;
 import corallus.artConnect.artConnect.entity.contato.TipoContato;
 import corallus.artConnect.artConnect.error.errors.ResourceNotFoundException;
 import corallus.artConnect.artConnect.mapper.tipoContato.TipoContatoMapper;
@@ -35,11 +35,11 @@ public class TipoContatoService {
         return this.tipoContatoMapper.toDTO(tipoContato);
     }
 
-    public MessageResponse save(TipoContatoSaveRequest saveRequest) {
+    public MessageApiResponse save(TipoContatoSaveRequest saveRequest) {
         TipoContato tipo = new TipoContato();
         tipo.setTipoContato(saveRequest.tipoContato());
 
         this.tipoContatoRepository.save(tipo);
-        return new MessageResponse("Tipo de Contato criado com sucesso");
+        return new MessageApiResponse("Tipo de Contato criado com sucesso");
     }
 }

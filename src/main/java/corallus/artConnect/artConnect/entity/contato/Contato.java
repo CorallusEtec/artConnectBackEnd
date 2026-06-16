@@ -1,5 +1,6 @@
 package corallus.artConnect.artConnect.entity.contato;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import corallus.artConnect.artConnect.entity.atores.Usuario;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -14,7 +15,8 @@ public class Contato {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    
+
+    @JsonIgnore
     @ManyToOne
     private Usuario usuario;
 

@@ -1,6 +1,6 @@
 package corallus.artConnect.artConnect.service;
 
-import corallus.artConnect.artConnect.dto.response.util.MessageResponse;
+import corallus.artConnect.artConnect.dto.response.util.MessageApiResponse;
 import corallus.artConnect.artConnect.error.errors.NotAuthorizedException;
 import org.springframework.stereotype.Service;
 import corallus.artConnect.artConnect.dto.request.contato.ContatoEditRequest;
@@ -29,7 +29,7 @@ public class ContatoService {
         this.contatoRepository = contatoRepository;
     }
 
-    public MessageResponse save(Usuario usuario, ContatoSaveRequest saveRequest) {
+    public MessageApiResponse save(Usuario usuario, ContatoSaveRequest saveRequest) {
         // Buscando tipo de contato
         TipoContato tipoContato = this.tipoContatoRepository.findById(saveRequest.idTipoContato())
         .orElseThrow(()->new ResourceNotFoundException("Tipo de contato não encontrado ou inexistente"));
@@ -41,19 +41,19 @@ public class ContatoService {
         contato.setValorContato(saveRequest.valorContato());
 
         this.contatoRepository.save(contato);
-        return new MessageResponse("Contato adicionado");
+        return new MessageApiResponse("Contato adicionado");
     }
 
-    public MessageResponse delete(Usuario usuario, Long idContato) {
+    public MessageApiResponse delete(Usuario usuario, Long idContato) {
         // USUARIO PRECISA ESTAR AUTENTICADO
         if(Objects.isNull(usuario)) {throw new NotAuthorizedException();}
 
         // VERIFICA SE O ID EXISTE [VALIDAÇÃO JÁ ACONTECE NO PRÓPRIO deleteById()]
         this.contatoRepository.deleteById(idContato);
-        return new MessageResponse("Contato deletado com sucesso");
+        return new MessageApiResponse("Contato deletado com sucesso");
     }
 
-    public MessageResponse edit(Usuario usuario, Long idContato, ContatoEditRequest editRequest) {
+    public MessageApiResponse edit(Usuario usuario, Long idContato, ContatoEditRequest editRequest) {
         // USUARIO PRECISA ESTAR AUTENTICADO
         if(Objects.isNull(usuario)) {throw new NotAuthorizedException();}
 
@@ -64,6 +64,6 @@ public class ContatoService {
        // Atribuindo novos valores
         contato.setValorContato(editRequest.valorContato());
         this.contatoRepository.save(contato);
-        return new MessageResponse("Contato alterado com sucesso");
+        return new MessageApiResponse("Contato alterado com sucesso");
     }
 }
