@@ -1,6 +1,7 @@
 package corallus.artConnect.artConnect.entity.arte;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import corallus.artConnect.artConnect.entity.atores.Artista;
 import corallus.artConnect.artConnect.entity.atores.Usuario;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -21,7 +22,7 @@ public class GeneroArte {
 
     @JsonIgnore
     @ManyToMany
-    private List<Usuario> usuarios;
+    private List<Artista> artistas;
 
     @ManyToOne
     private Arte arte;

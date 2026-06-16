@@ -40,7 +40,7 @@ public class ArteService {
 
         Arte arte = new Arte();
         arte.setNomeArte(saveRequest.nomeArte());
-        arte.setUsuarios(new ArrayList<>());
+        arte.setArtistas(new ArrayList<>());
 
         this.arteRepository.save(arte);
         return new MessageApiResponse("Arte criada.");

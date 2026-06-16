@@ -2,10 +2,13 @@ package corallus.artConnect.artConnect.specification;
 
 import corallus.artConnect.artConnect.entity.atores.Usuario;
 import corallus.artConnect.artConnect.enumeration.ETipoConta;
+import jakarta.persistence.criteria.Root;
+import jakarta.persistence.criteria.Subquery;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.util.ObjectUtils;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class UsuarioSpec {
 
@@ -70,4 +73,31 @@ public class UsuarioSpec {
         };
     }
 
+    public static Specification<Usuario> nomeArteContains(String nomeArte) {
+        return (root, query, criteriaBuilder) -> {
+            if(ObjectUtils.isEmpty(nomeArte)) {
+                return null;
+            } else {
+                return criteriaBuilder.like(root.join("arte").get("nomeArte"), nomeArte);
+            }
+        };
+    }
+
+    public static Specification<Usuario> generosArteContains(List<String> generosArte) {
+        return (root, query, cb) -> {
+            if(ObjectUtils.isEmpty(generosArte)) {
+                return null;
+            } else {
+                query.distinct(true);
+                // Cria a subquery para contar as categorias
+                Subquery<Long> sub = query.subquery(Long.class);
+                Root<Usuario> subRoot = sub.from(Usuario.class);
+
+                sub.select(cb.count(subRoot) )
+                        .where(cb.equal(subRoot.get("id"), root.get("id")), subRoot.join("generosArte").get("id").in(generosArte));
+
+                return cb.equal(sub, (long) generosArte.size());
+            }
+        };
+    }
 }
