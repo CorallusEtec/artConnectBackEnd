@@ -1,7 +1,7 @@
 package corallus.artConnect.artConnect.controller;
 
 import corallus.artConnect.artConnect.config.SecurityConfig;
-import corallus.artConnect.artConnect.dto.response.util.MessageResponse;
+import corallus.artConnect.artConnect.dto.response.util.MessageApiResponse;
 import corallus.artConnect.artConnect.entity.atores.Usuario;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -47,8 +47,8 @@ public class ReacaoController {
             @ApiResponse(responseCode = "403", description = "Não autenticado"),
             @ApiResponse(responseCode = "404", description = "Recurso não encontrada.")
     })
-    public ResponseEntity<MessageResponse> reagir(@AuthenticationPrincipal Usuario usuario, @RequestBody @Valid ReacaoRequest reacaoRequest) {
-        MessageResponse response = this.reacaoService.reagir(usuario.getId(), reacaoRequest);
+    public ResponseEntity<MessageApiResponse> reagir(@AuthenticationPrincipal Usuario usuario, @RequestBody @Valid ReacaoRequest reacaoRequest) {
+        MessageApiResponse response = this.reacaoService.reagir(usuario.getId(), reacaoRequest);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }

@@ -3,7 +3,7 @@ package corallus.artConnect.artConnect.controller;
 import corallus.artConnect.artConnect.config.SecurityConfig;
 import corallus.artConnect.artConnect.dto.request.arte.ArteEditRequest;
 import corallus.artConnect.artConnect.dto.request.arte.ArteSaveRequest;
-import corallus.artConnect.artConnect.dto.response.util.MessageResponse;
+import corallus.artConnect.artConnect.dto.response.util.MessageApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -76,11 +76,11 @@ public class ArteController {
             @ApiResponse(responseCode = "400", description = "Erro de requisição"),
             @ApiResponse(responseCode = "409", description = "Arte já cadastrada.")
     })
-    public ResponseEntity<MessageResponse> save(
+    public ResponseEntity<MessageApiResponse> save(
             @RequestBody @Valid
             ArteSaveRequest saveRequest
     ) {
-        MessageResponse msg = this.arteService.save(saveRequest);
+        MessageApiResponse msg = this.arteService.save(saveRequest);
         return new ResponseEntity<>(msg, HttpStatus.CREATED);
     }
 
@@ -97,12 +97,12 @@ public class ArteController {
             @ApiResponse(responseCode = "400", description = "Erro de requisição"),
             @ApiResponse(responseCode = "404", description = "Arte não encontrada.")
     })
-    public ResponseEntity<MessageResponse> edit(
+    public ResponseEntity<MessageApiResponse> edit(
             @PathVariable Long id,
             @RequestBody @Valid
             ArteEditRequest editRequest
     ) {
-        MessageResponse msg = this.arteService.edit(id, editRequest);
+        MessageApiResponse msg = this.arteService.edit(id, editRequest);
         return new ResponseEntity<>(msg, HttpStatus.OK);
     }
 
@@ -117,10 +117,10 @@ public class ArteController {
             @ApiResponse(responseCode = "200", description = "Arte deletada com sucesso."),
             @ApiResponse(responseCode = "404", description = "Arte não encontrada.")
     })
-    public ResponseEntity<MessageResponse> delete(
+    public ResponseEntity<MessageApiResponse> delete(
             @PathVariable Long id
     ) {
-        MessageResponse msg = this.arteService.delete(id);
+        MessageApiResponse msg = this.arteService.delete(id);
         return new ResponseEntity<>(msg, HttpStatus.OK);
     }
 }

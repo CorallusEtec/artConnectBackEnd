@@ -1,6 +1,6 @@
 package corallus.artConnect.artConnect.service;
 
-import corallus.artConnect.artConnect.dto.response.util.MessageResponse;
+import corallus.artConnect.artConnect.dto.response.util.MessageApiResponse;
 import corallus.artConnect.artConnect.error.errors.NotAuthorizedException;
 import corallus.artConnect.artConnect.mapper.contratante.ContratanteMapper;
 import corallus.artConnect.artConnect.queryFilter.ContratanteFindAllQF;
@@ -39,7 +39,7 @@ public class ContratanteService {
         return this.contratanteMapper.toDTO(contratante);
     }
 
-    public MessageResponse edit(Long id, ContratanteEditRequest editRequest) {
+    public MessageApiResponse edit(Long id, ContratanteEditRequest editRequest) {
         // VERIFICA SE NÃO EXISTIR
         Contratante contratante = this.contratanteRepository.findById(id)
         .orElseThrow(NotAuthorizedException::new);
@@ -58,6 +58,6 @@ public class ContratanteService {
         contratante.setGenerosArte(editRequest.generosArte());
 
         this.contratanteRepository.save(contratante);
-        return new MessageResponse("Contratante atualizado com sucesso!");
+        return new MessageApiResponse("Contratante atualizado com sucesso!");
     }
 }

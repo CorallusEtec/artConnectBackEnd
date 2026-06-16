@@ -4,7 +4,7 @@ import java.io.IOException;
 
 import corallus.artConnect.artConnect.config.SecurityConfig;
 import corallus.artConnect.artConnect.dto.request.publicacao.PublicacaoSaveRequest;
-import corallus.artConnect.artConnect.dto.response.util.MessageResponse;
+import corallus.artConnect.artConnect.dto.response.util.MessageApiResponse;
 import corallus.artConnect.artConnect.entity.atores.Usuario;
 import corallus.artConnect.artConnect.queryFilter.PublicacaoFindAllQF;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -47,11 +47,11 @@ public class PublicacaoController {
             @ApiResponse(responseCode = "400", description = "Erro de requisição"),
             @ApiResponse(responseCode = "403", description = "Não autenticado")
     })
-    public ResponseEntity<MessageResponse> save(
+    public ResponseEntity<MessageApiResponse> save(
         PublicacaoSaveRequest saveRequest,
         @AuthenticationPrincipal Usuario usuario
     ) throws Exception {
-        MessageResponse msg = this.publicacaoService.save(saveRequest, usuario);
+        MessageApiResponse msg = this.publicacaoService.save(saveRequest, usuario);
         return new ResponseEntity<>(msg, HttpStatus.CREATED);
     }
 

@@ -1,7 +1,7 @@
 package corallus.artConnect.artConnect.controller;
 
 import corallus.artConnect.artConnect.config.SecurityConfig;
-import corallus.artConnect.artConnect.dto.response.util.MessageResponse;
+import corallus.artConnect.artConnect.dto.response.util.MessageApiResponse;
 import corallus.artConnect.artConnect.entity.atores.Usuario;
 import corallus.artConnect.artConnect.queryFilter.ArtistaFindAllQF;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -65,11 +65,11 @@ public class ArtistaController {
             @ApiResponse(responseCode = "400", description = "Erro de requisição"),
             @ApiResponse(responseCode = "404", description = "Artista não encontrada.")
     })
-    public ResponseEntity<MessageResponse> edit(
+    public ResponseEntity<MessageApiResponse> edit(
             @AuthenticationPrincipal Usuario auth,
             @RequestBody @Valid ArtistaEditRequest editRequest
     ) {
-        MessageResponse msg = this.artistaService.edit(auth.getId(), editRequest);
+        MessageApiResponse msg = this.artistaService.edit(auth.getId(), editRequest);
         return new ResponseEntity<>(msg, HttpStatus.OK);
     }
 

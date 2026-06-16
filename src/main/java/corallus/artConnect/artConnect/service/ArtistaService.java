@@ -1,6 +1,6 @@
 package corallus.artConnect.artConnect.service;
 
-import corallus.artConnect.artConnect.dto.response.util.MessageResponse;
+import corallus.artConnect.artConnect.dto.response.util.MessageApiResponse;
 import corallus.artConnect.artConnect.error.errors.NotAuthorizedException;
 import corallus.artConnect.artConnect.mapper.artista.ArtistaMapper;
 import corallus.artConnect.artConnect.queryFilter.ArtistaFindAllQF;
@@ -39,7 +39,7 @@ public class ArtistaService {
         return this.artistaMapper.toDTO(artista);
     }
 
-    public MessageResponse edit(Long id, ArtistaEditRequest editRequest) {
+    public MessageApiResponse edit(Long id, ArtistaEditRequest editRequest) {
         // VERIFICA SE O ARTISTA EXSITE NO BANCO
         Artista artista = this.artistaRepository.findById(id)
                 .orElseThrow(NotAuthorizedException::new);
@@ -56,6 +56,6 @@ public class ArtistaService {
         UsuarioService.fillCommonEdits(artista, editRequest);
 
         this.artistaRepository.save(artista);
-        return new MessageResponse("Artista atualizado com sucesso!");
+        return new MessageApiResponse("Artista atualizado com sucesso!");
     }
 }

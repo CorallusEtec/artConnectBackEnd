@@ -8,6 +8,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -52,6 +53,9 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.GET, "/generoArte/**").permitAll()
                 .requestMatchers(HttpMethod.GET, "/contato/**").permitAll()
                 .requestMatchers(HttpMethod.GET, "/tipoContato/**").permitAll()
+
+                .requestMatchers("/ws/**").permitAll()
+
                 // ROTAS PROTEGIDAS POR ROLES
                 /* ARTISTA */
                 .requestMatchers(HttpMethod.PUT, "/artista/").hasAuthority("ARTISTA")
@@ -66,6 +70,8 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.POST, "/tipoContato/**").hasAuthority("ADMIN")
                 .requestMatchers("/admin/**").hasAuthority("ADMIN")
                 .requestMatchers(HttpMethod.POST, "/arte/save").hasAuthority("ADMIN")
+                // WEB SOCKET
+
 
                 // OUTRAS (AUTENTICAÇÃO)
                 .anyRequest().authenticated()

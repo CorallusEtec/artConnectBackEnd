@@ -1,7 +1,7 @@
 package corallus.artConnect.artConnect.controller;
 
 import corallus.artConnect.artConnect.config.SecurityConfig;
-import corallus.artConnect.artConnect.dto.response.util.MessageResponse;
+import corallus.artConnect.artConnect.dto.response.util.MessageApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -66,10 +66,10 @@ public class AuthController {
             @ApiResponse(responseCode = "400", description = "Erro de requisição"),
             @ApiResponse(responseCode = "409", description = "Usuário já cadastrado | Email já cadastrado.")
     })
-	public ResponseEntity<MessageResponse> registrar(
+	public ResponseEntity<MessageApiResponse> registrar(
         @RequestBody @Valid UserRegisterRequest registerRequest
     ) {
-        MessageResponse msg = this.authService.register(registerRequest);
+        MessageApiResponse msg = this.authService.register(registerRequest);
         return new ResponseEntity<>(msg, HttpStatus.CREATED);
 	}
 }

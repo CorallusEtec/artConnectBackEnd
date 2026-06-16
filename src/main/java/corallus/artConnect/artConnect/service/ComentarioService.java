@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Objects;
 
-import corallus.artConnect.artConnect.dto.response.util.MessageResponse;
+import corallus.artConnect.artConnect.dto.response.util.MessageApiResponse;
 import corallus.artConnect.artConnect.entity.atores.Usuario;
 import corallus.artConnect.artConnect.error.errors.NotAuthorizedException;
 import corallus.artConnect.artConnect.mapper.comentario.ComentarioMapper;
@@ -63,7 +63,7 @@ public class ComentarioService {
      * @param request Request com os dados do comentário.
      * @return Mensagem informando caso o comentario tenha sido publicado com sucesso.
      */
-    public MessageResponse comentar(Usuario usuario, ComentarioRequest request) {
+    public MessageApiResponse comentar(Usuario usuario, ComentarioRequest request) {
 
         Publicacao publicacao = this.publicacaoRepository.findById(request.idPublicacao())
         .orElseThrow(()->new ResourceNotFoundException("Publicação não encontrada"));
@@ -78,7 +78,7 @@ public class ComentarioService {
         comentario.setPublicacao(publicacao);
 
         this.comentarioRepository.save(comentario);
-        return new MessageResponse("Comentario publicado com sucesso");
+        return new MessageApiResponse("Comentario publicado com sucesso");
     }
 
 

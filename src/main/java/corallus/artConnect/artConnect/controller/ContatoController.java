@@ -1,7 +1,7 @@
 package corallus.artConnect.artConnect.controller;
 
 import corallus.artConnect.artConnect.config.SecurityConfig;
-import corallus.artConnect.artConnect.dto.response.util.MessageResponse;
+import corallus.artConnect.artConnect.dto.response.util.MessageApiResponse;
 import corallus.artConnect.artConnect.entity.atores.Usuario;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -50,11 +50,11 @@ public class ContatoController {
             @ApiResponse(responseCode = "403", description = "Não autenticado"),
             @ApiResponse(responseCode = "404", description = "Tipo de contato não encontrada.")
     })
-    public ResponseEntity<MessageResponse> save(
+    public ResponseEntity<MessageApiResponse> save(
             @AuthenticationPrincipal Usuario usuario,
             @RequestBody @Valid ContatoSaveRequest contato
     ) {
-        MessageResponse msg = this.contatoService.save(usuario, contato);
+        MessageApiResponse msg = this.contatoService.save(usuario, contato);
         return new ResponseEntity<>(msg, HttpStatus.CREATED);
     }
 
@@ -71,11 +71,11 @@ public class ContatoController {
             @ApiResponse(responseCode = "400", description = "Erro de requisição"),
             @ApiResponse(responseCode = "404", description = "Contato não encontrada.")
     })
-    public ResponseEntity<MessageResponse> delete(
+    public ResponseEntity<MessageApiResponse> delete(
             @AuthenticationPrincipal Usuario usuario,
             @PathVariable Long idContato
     ) {
-        MessageResponse msg = this.contatoService.delete(usuario, idContato);
+        MessageApiResponse msg = this.contatoService.delete(usuario, idContato);
         return new ResponseEntity<>(msg, HttpStatus.OK);
     }
 
@@ -93,12 +93,12 @@ public class ContatoController {
             @ApiResponse(responseCode = "403", description = "Não autenticado"),
             @ApiResponse(responseCode = "404", description = "Contato não encontrada.")
     })
-    public ResponseEntity<MessageResponse> edit(
+    public ResponseEntity<MessageApiResponse> edit(
             @AuthenticationPrincipal Usuario usuario,
             @PathVariable Long idContato,
             @RequestBody @Valid ContatoEditRequest editRequest
     ) {
-        MessageResponse msg = this.contatoService.edit(usuario, idContato, editRequest);
+        MessageApiResponse msg = this.contatoService.edit(usuario, idContato, editRequest);
         return new ResponseEntity<>(msg, HttpStatus.OK);
     }
 }
