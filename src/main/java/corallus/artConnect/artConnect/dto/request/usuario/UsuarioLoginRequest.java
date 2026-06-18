@@ -9,7 +9,7 @@ import jakarta.validation.constraints.Size;
  * USAR ESSE RECORD PARA AUTENTICAÇÃO
  *
  */  
-public record UserLoginRequest(
+public record UsuarioLoginRequest(
     @NotBlank(message = "O email é obrigatório")
     @Email(message = "O e-mail deve ser válido")
     String email,

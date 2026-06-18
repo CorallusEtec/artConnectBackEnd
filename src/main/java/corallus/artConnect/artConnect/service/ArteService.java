@@ -5,6 +5,7 @@ import corallus.artConnect.artConnect.dto.request.arte.ArteEditRequest;
 import corallus.artConnect.artConnect.dto.request.arte.ArteSaveRequest;
 import corallus.artConnect.artConnect.dto.response.util.MessageApiResponse;
 import corallus.artConnect.artConnect.error.errors.ArteAlreadyExistsException;
+import corallus.artConnect.artConnect.queryFilter.ArteFindAllQF;
 import corallus.artConnect.artConnect.repository.arte.ArteRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -24,8 +25,8 @@ public class ArteService {
 
     // MÉTODOS LÓGICOS
 
-    public Page<Arte> findAll(Pageable pageable) {
-        return this.arteRepository.findAll(pageable);
+    public Page<Arte> findAll(Pageable pageable, ArteFindAllQF queryFilter) {
+        return this.arteRepository.findAll(queryFilter.getSpecification(), pageable);
     } 
 
     public Arte findById(Long id) {

@@ -42,6 +42,20 @@ public class GeneroArteController {
         return new ResponseEntity<>(lista, HttpStatus.OK);
     }
 
+    /** Busca lista de generos de arte pelo id da arte.
+     *
+     * @param id Id da arte.
+     * @return Retorna lista de generos relacionados com uma arte.
+     */
+    @GetMapping("/findByArte/{id}")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", useReturnTypeSchema = true),
+    })
+    public ResponseEntity<List<GeneroArte>> findByArteId(@PathVariable Long id) {
+        var lista = this.generoArteService.findByArteId(id);
+        return new ResponseEntity<>(lista, HttpStatus.OK);
+    }
+
     /**
      * Cadastra um gênero de arte no sistema.
      *
