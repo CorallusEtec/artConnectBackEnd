@@ -4,7 +4,7 @@ import java.util.List;
 
 import corallus.artConnect.artConnect.config.SecurityConfig;
 import corallus.artConnect.artConnect.dto.request.tipoContato.TipoContatoSaveRequest;
-import corallus.artConnect.artConnect.dto.response.util.MessageResponse;
+import corallus.artConnect.artConnect.dto.response.util.MessageApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -71,7 +71,7 @@ public class TipoContatoController {
             @ApiResponse(responseCode = "400", description = "Erro de requisição"),
             @ApiResponse(responseCode = "403", description = "Não autenticado"),
     })
-    public ResponseEntity<MessageResponse> save(@RequestBody @Valid TipoContatoSaveRequest saveRequest) {
+    public ResponseEntity<MessageApiResponse> save(@RequestBody @Valid TipoContatoSaveRequest saveRequest) {
         var msg = this.tipoContatoService.save(saveRequest);
         return new ResponseEntity<>(msg, HttpStatus.CREATED);
     }

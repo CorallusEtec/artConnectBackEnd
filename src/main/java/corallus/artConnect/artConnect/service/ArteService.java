@@ -3,8 +3,9 @@ package corallus.artConnect.artConnect.service;
 import java.util.ArrayList;
 import corallus.artConnect.artConnect.dto.request.arte.ArteEditRequest;
 import corallus.artConnect.artConnect.dto.request.arte.ArteSaveRequest;
-import corallus.artConnect.artConnect.dto.response.util.MessageResponse;
+import corallus.artConnect.artConnect.dto.response.util.MessageApiResponse;
 import corallus.artConnect.artConnect.error.errors.ArteAlreadyExistsException;
+import corallus.artConnect.artConnect.queryFilter.ArteFindAllQF;
 import corallus.artConnect.artConnect.repository.arte.ArteRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -24,8 +25,8 @@ public class ArteService {
 
     // MÉTODOS LÓGICOS
 
-    public Page<Arte> findAll(Pageable pageable) {
-        return this.arteRepository.findAll(pageable);
+    public Page<Arte> findAll(Pageable pageable, ArteFindAllQF queryFilter) {
+        return this.arteRepository.findAll(queryFilter.getSpecification(), pageable);
     } 
 
     public Arte findById(Long id) {
@@ -33,7 +34,7 @@ public class ArteService {
                 .orElseThrow(ArteNotFoundException::new);
     }
 
-    public MessageResponse save(ArteSaveRequest saveRequest) {
+    public MessageApiResponse save(ArteSaveRequest saveRequest) {
         if(this.arteRepository.existsByNomeArte(saveRequest.nomeArte())) {
             throw new ArteAlreadyExistsException();
         }
@@ -43,10 +44,10 @@ public class ArteService {
         arte.setArtistas(new ArrayList<>());
 
         this.arteRepository.save(arte);
-        return new MessageResponse("Arte criada.");
+        return new MessageApiResponse("Arte criada.");
     }
 
-    public MessageResponse edit(Long id, ArteEditRequest editRequest) {
+    public MessageApiResponse edit(Long id, ArteEditRequest editRequest) {
         Arte arte = this.arteRepository.findById(id)
                 .orElseThrow(ArteNotFoundException::new);
 
@@ -54,15 +55,15 @@ public class ArteService {
         arte.setNomeArte(editRequest.nomeArte());
 
         this.arteRepository.save(arte);
-        return new MessageResponse("Arte alterada com sucesso.");
+        return new MessageApiResponse("Arte alterada com sucesso.");
     }
 
-    public MessageResponse delete(Long id) {
+    public MessageApiResponse delete(Long id) {
         if(!this.arteRepository.existsById(id)) {
             throw new ArteNotFoundException();
         }
 
         this.arteRepository.deleteById(id);
-        return new MessageResponse("Arte deletada com sucesso.");
+        return new MessageApiResponse("Arte deletada com sucesso.");
     }
 }

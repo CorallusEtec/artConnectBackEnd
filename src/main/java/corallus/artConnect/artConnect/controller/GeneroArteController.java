@@ -2,7 +2,7 @@ package corallus.artConnect.artConnect.controller;
 
 import corallus.artConnect.artConnect.config.SecurityConfig;
 import corallus.artConnect.artConnect.dto.request.arte.GeneroArteSaveRequest;
-import corallus.artConnect.artConnect.dto.response.util.MessageResponse;
+import corallus.artConnect.artConnect.dto.response.util.MessageApiResponse;
 import corallus.artConnect.artConnect.entity.arte.GeneroArte;
 import corallus.artConnect.artConnect.service.GeneroArteService;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -42,6 +42,20 @@ public class GeneroArteController {
         return new ResponseEntity<>(lista, HttpStatus.OK);
     }
 
+    /** Busca lista de generos de arte pelo id da arte.
+     *
+     * @param id Id da arte.
+     * @return Retorna lista de generos relacionados com uma arte.
+     */
+    @GetMapping("/findByArte/{id}")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", useReturnTypeSchema = true),
+    })
+    public ResponseEntity<List<GeneroArte>> findByArteId(@PathVariable Long id) {
+        var lista = this.generoArteService.findByArteId(id);
+        return new ResponseEntity<>(lista, HttpStatus.OK);
+    }
+
     /**
      * Cadastra um gênero de arte no sistema.
      *
@@ -54,10 +68,10 @@ public class GeneroArteController {
             @ApiResponse(responseCode = "400", description = "Erro de requisição"),
             @ApiResponse(responseCode = "403", description = "Não autenticado")
     })
-    public ResponseEntity<MessageResponse> save(
+    public ResponseEntity<MessageApiResponse> save(
             @RequestBody @Valid GeneroArteSaveRequest saveRequest
     ) {
-        MessageResponse msg = this.generoArteService.save(saveRequest);
+        MessageApiResponse msg = this.generoArteService.save(saveRequest);
         return new ResponseEntity<>(msg, HttpStatus.CREATED);
     }
 }

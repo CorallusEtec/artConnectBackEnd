@@ -5,4 +5,6 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import corallus.artConnect.artConnect.entity.Publicacao;
 
 public interface PublicacaoRepository extends JpaRepository<Publicacao, Long>, JpaSpecificationExecutor<Publicacao> {
+
 }
+

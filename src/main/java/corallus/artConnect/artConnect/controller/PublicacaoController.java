@@ -4,7 +4,7 @@ import java.io.IOException;
 
 import corallus.artConnect.artConnect.config.SecurityConfig;
 import corallus.artConnect.artConnect.dto.request.publicacao.PublicacaoSaveRequest;
-import corallus.artConnect.artConnect.dto.response.util.MessageResponse;
+import corallus.artConnect.artConnect.dto.response.util.MessageApiResponse;
 import corallus.artConnect.artConnect.entity.atores.Usuario;
 import corallus.artConnect.artConnect.queryFilter.PublicacaoFindAllQF;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -18,10 +18,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import corallus.artConnect.artConnect.dto.response.publicacao.PublicacaoResponse;
 import corallus.artConnect.artConnect.service.PublicacaoService;
 
@@ -50,11 +47,11 @@ public class PublicacaoController {
             @ApiResponse(responseCode = "400", description = "Erro de requisição"),
             @ApiResponse(responseCode = "403", description = "Não autenticado")
     })
-    public ResponseEntity<MessageResponse> save(
+    public ResponseEntity<MessageApiResponse> save(
         PublicacaoSaveRequest saveRequest,
         @AuthenticationPrincipal Usuario usuario
     ) throws Exception {
-        MessageResponse msg = this.publicacaoService.save(saveRequest, usuario);
+        MessageApiResponse msg = this.publicacaoService.save(saveRequest, usuario);
         return new ResponseEntity<>(msg, HttpStatus.CREATED);
     }
 
@@ -67,7 +64,7 @@ public class PublicacaoController {
      * @param pageable Configurações de paginação.
      * @return Lista paginada com as publicações do sistema.
      *
-     * @apiNote Caso o usuaário não esteja autenticado,todos os campos de reação do
+     * @apiNote Caso o usuário não esteja autenticado,todos os campos de reação do
      * usuário autênticado estarão {@code null}
      */
     @GetMapping("/findAll")
@@ -81,6 +78,28 @@ public class PublicacaoController {
     ) {
         var lista = this.publicacaoService.findAll(queryFilter, usuario, pageable);
         return new ResponseEntity<>(lista, HttpStatus.OK);
+    }
+
+
+    /** Retorna os dados de uma publicação pelo Id.
+     *
+     * @param id Id da publicação alvo.
+     * @param usuario Referência do usuário autenticado, usado para mostrar a reação
+     * desse usuário nas publicações.
+     * @apiNote Caso o usuário não esteja autenticado,todos os campos de reação do
+     * @return Retorna um objeto com os dados da publicação solicitada pelo Id.
+     */
+    @GetMapping("/{id}")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", useReturnTypeSchema = true),
+            @ApiResponse(responseCode = "404", description = "Publicação não encontrada"),
+    })
+    public ResponseEntity<PublicacaoResponse> findById(
+            @PathVariable Long id,
+            @AuthenticationPrincipal Usuario usuario
+    ){
+        var publicacao = this.publicacaoService.findById(id, usuario);
+        return new ResponseEntity<>(publicacao, HttpStatus.OK);
     }
 }
 

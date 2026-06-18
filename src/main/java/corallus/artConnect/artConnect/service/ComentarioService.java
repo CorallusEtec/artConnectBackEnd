@@ -2,7 +2,10 @@ package corallus.artConnect.artConnect.service;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
-import corallus.artConnect.artConnect.dto.response.util.MessageResponse;
+import java.util.Objects;
+
+import corallus.artConnect.artConnect.dto.response.util.MessageApiResponse;
+import corallus.artConnect.artConnect.entity.atores.Usuario;
 import corallus.artConnect.artConnect.error.errors.NotAuthorizedException;
 import corallus.artConnect.artConnect.mapper.comentario.ComentarioMapper;
 import corallus.artConnect.artConnect.queryFilter.ComentarioFindByPostQF;
@@ -40,15 +43,27 @@ public class ComentarioService {
         this.comentarioMapper = comentarioMapper;
     }
 
-    // Buscar Comentários de uma postagem
-    public Page<ComentarioResponse> findByPost(Long postId, Pageable pageable, ComentarioFindByPostQF queryFilter) {
+    /** Busca os comentários a partir de um Id de publicação
+     *
+     * @param postId Id da publicação alvo.
+     * @param pageable Configurações de busca da paginação.
+     * @param queryFilter Configurações de filtros de busca.
+     * @param usuario Referência do usuário autenticado.
+     * @return Lista paginada com os detalhes do comentário.
+     */
+    public Page<ComentarioResponse> findByPost(Long postId, Pageable pageable, ComentarioFindByPostQF queryFilter, Usuario usuario) {
+        System.out.println(usuario);
         Page<Comentario> comentarios = this.comentarioRepository.findAllByPublicacao_Id(postId, pageable, queryFilter.getSpecification());
-
-        return comentarios.map(comentarioMapper::toDTO);
-
+        return comentarios.map(c->this.comentarioMapper.toDTO(c, Objects.isNull(usuario)?null:usuario.getId()));
     }
-    // Comentar em uma publicação
-    public MessageResponse comentar(Long idUsuario, ComentarioRequest request) {
+
+    /** Endpoint para comentar em uma publicação
+     *
+     * @param usuario Referência do usuário autenticado.
+     * @param request Request com os dados do comentário.
+     * @return Mensagem informando caso o comentario tenha sido publicado com sucesso.
+     */
+    public MessageApiResponse comentar(Usuario usuario, ComentarioRequest request) {
 
         Publicacao publicacao = this.publicacaoRepository.findById(request.idPublicacao())
         .orElseThrow(()->new ResourceNotFoundException("Publicação não encontrada"));
@@ -58,12 +73,17 @@ public class ComentarioService {
         comentario.setStatus(this.statusService.generateStatus());
         comentario.setDataComentario(LocalDateTime.now());
         comentario.setReacoes(new HashSet<>());
-        comentario.setUsuario(this.usuarioRepository.findById(idUsuario)
+        comentario.setUsuario(this.usuarioRepository.findById(usuario.getId())
                 .orElseThrow(NotAuthorizedException::new));
         comentario.setPublicacao(publicacao);
 
         this.comentarioRepository.save(comentario);
-        return new MessageResponse("Comentario publicado com sucesso");
+        return new MessageApiResponse("Comentario publicado com sucesso");
     }
 
+
+    public ComentarioResponse findById(Long idComentario, Usuario usuario) {
+        Comentario comentario = this.comentarioRepository.findById(idComentario).orElseThrow(()->new ResourceNotFoundException("Comentário não encontrado"));
+        return this.comentarioMapper.toDTO(comentario, Objects.isNull(usuario)?null:usuario.getId());
+    }
 }

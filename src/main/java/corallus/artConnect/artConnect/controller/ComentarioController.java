@@ -1,7 +1,7 @@
 package corallus.artConnect.artConnect.controller;
 
 import corallus.artConnect.artConnect.config.SecurityConfig;
-import corallus.artConnect.artConnect.dto.response.util.MessageResponse;
+import corallus.artConnect.artConnect.dto.response.util.MessageApiResponse;
 import corallus.artConnect.artConnect.entity.atores.Usuario;
 import corallus.artConnect.artConnect.queryFilter.ComentarioFindByPostQF;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -54,11 +54,11 @@ public class ComentarioController {
             @ApiResponse(responseCode = "403", description = "Não autenticado"),
             @ApiResponse(responseCode = "404", description = "Publicação não encontrada.")
     })
-    public ResponseEntity<MessageResponse> comment(
+    public ResponseEntity<MessageApiResponse> comment(
             @AuthenticationPrincipal Usuario usuario,
             @RequestBody @Valid ComentarioRequest comentario
     ) {
-        MessageResponse msg = this.comentarioService.comentar(usuario.getId(), comentario);
+        MessageApiResponse msg = this.comentarioService.comentar(usuario, comentario);
         return new ResponseEntity<>(msg, HttpStatus.CREATED);
     }
 
@@ -68,17 +68,39 @@ public class ComentarioController {
      * @param id Id da publicação de onde serão buscados os comentários
      * @param pageable Configurações de Paginação
      * @param queryFilter Configuração de filtros da busca
+     * @param usuario Referência do usuario autenticado.
      * @return Lista paginada com os comentários encontrados da publicação correspondente.
      */
     @GetMapping("/findByPost/{id}")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", useReturnTypeSchema = true)
     })
-    public ResponseEntity<Page<ComentarioResponse>> findComments(
+    public ResponseEntity<Page<ComentarioResponse>> findByPostId(
             @PathVariable Long id,
             @ParameterObject @PageableDefault(sort = "id") Pageable pageable,
-            @ParameterObject ComentarioFindByPostQF queryFilter) {
-        Page<ComentarioResponse> listaComentario = this.comentarioService.findByPost(id, pageable, queryFilter);
+            @ParameterObject ComentarioFindByPostQF queryFilter,
+            @AuthenticationPrincipal() Usuario usuario) {
+        Page<ComentarioResponse> listaComentario = this.comentarioService.findByPost(id, pageable, queryFilter, usuario);
         return new ResponseEntity<>(listaComentario, HttpStatus.OK);
+    }
+
+
+    /** Retorna um comentário especíofico pelo Id.
+     *
+     * @param id Id do comentário.
+     * @param usuario Referência do usuário autenticado.
+     * @return Objeto do comentário buscado pelo Id.
+     */
+    @GetMapping("/{id}")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", useReturnTypeSchema = true),
+            @ApiResponse(responseCode = "404", description = "Comentário não encontrado")
+    })
+    public ResponseEntity<ComentarioResponse> findById(
+            @PathVariable Long id,
+            @AuthenticationPrincipal Usuario usuario
+    ) {
+        ComentarioResponse comentario = this.comentarioService.findById(id, usuario);
+        return new ResponseEntity<>(comentario, HttpStatus.OK);
     }
 }

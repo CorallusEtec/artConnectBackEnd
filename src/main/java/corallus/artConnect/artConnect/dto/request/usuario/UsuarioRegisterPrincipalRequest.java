@@ -6,7 +6,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
-public record UserRegisterRequest(
+public record UsuarioRegisterPrincipalRequest(
     @NotBlank(message = "O nome não pode estar vazio")
     String nome,
     
@@ -20,5 +20,8 @@ public record UserRegisterRequest(
 
     @NotBlank(message = "Erro ao cadastrar usuário")
     @Pattern(regexp = ETipoConta.tipoContaRegExp, message = "Tipo de usuario inválido")
-    String tipoConta
+    String tipoConta,
+
+    UsuarioRegisterDetailsRequest details
+
 ) {}

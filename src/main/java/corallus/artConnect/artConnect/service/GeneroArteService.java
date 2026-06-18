@@ -1,7 +1,7 @@
 package corallus.artConnect.artConnect.service;
 
 import corallus.artConnect.artConnect.dto.request.arte.GeneroArteSaveRequest;
-import corallus.artConnect.artConnect.dto.response.util.MessageResponse;
+import corallus.artConnect.artConnect.dto.response.util.MessageApiResponse;
 import corallus.artConnect.artConnect.entity.arte.Arte;
 import corallus.artConnect.artConnect.entity.arte.GeneroArte;
 import corallus.artConnect.artConnect.error.errors.ArteNotFoundException;
@@ -27,7 +27,11 @@ public class GeneroArteService {
         return this.generoArteRepository.findAll();
     }
 
-    public MessageResponse save(GeneroArteSaveRequest saveRequest) {
+    public List<GeneroArte> findByArteId(Long idArte) {
+        return this.generoArteRepository.findAllByArte_Id(idArte);
+    }
+
+    public MessageApiResponse save(GeneroArteSaveRequest saveRequest) {
         if(this.generoArteRepository.existsByNomeGeneroArte(saveRequest.nomeGeneroArte())) {
             throw new GeneroArteAlreadyExistsException();
         }
@@ -40,6 +44,6 @@ public class GeneroArteService {
         generoArte.setArte(arte);
 
         this.generoArteRepository.save(generoArte);
-        return new MessageResponse("Gênero de arte criado.");
+        return new MessageApiResponse("Gênero de arte criado.");
     }
 }

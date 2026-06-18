@@ -3,7 +3,10 @@ package corallus.artConnect.artConnect.entity.atores;
 import java.time.LocalDateTime;
 import java.util.*;
 
-import corallus.artConnect.artConnect.entity.Status;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import corallus.artConnect.artConnect.entity.*;
+import corallus.artConnect.artConnect.entity.arte.Arte;
+import corallus.artConnect.artConnect.entity.arte.GeneroArte;
 import corallus.artConnect.artConnect.enumeration.ETipoConta;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -13,17 +16,14 @@ import org.jspecify.annotations.Nullable;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import corallus.artConnect.artConnect.entity.Publicacao;
-import corallus.artConnect.artConnect.entity.Seguida;
 import corallus.artConnect.artConnect.entity.contato.Contato;
-import corallus.artConnect.artConnect.entity.Reacao;
 
 @Setter
 @Getter
 @Entity
 @NoArgsConstructor
 @Inheritance(strategy = InheritanceType.JOINED)
-
+@DiscriminatorColumn(name = "tipoConta", discriminatorType = DiscriminatorType.STRING)
 public abstract class Usuario implements UserDetails{
 
     @Id
@@ -41,6 +41,7 @@ public abstract class Usuario implements UserDetails{
     private String senha;
 
     @Enumerated(EnumType.STRING)
+    @Column(insertable = false, updatable = false)
     private ETipoConta tipoConta;
 
     @OneToOne
@@ -72,7 +73,11 @@ public abstract class Usuario implements UserDetails{
 
     @OneToMany(mappedBy = "usuario")
     private Set<Reacao> reacoes = new HashSet<>();
-    
+
+    @JsonIgnore
+    @ManyToMany(mappedBy = "usuarios")
+    private Set<ChatRoom> chatRooms = new HashSet<>();
+
     // Metodos UserDetails
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

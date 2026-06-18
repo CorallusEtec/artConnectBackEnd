@@ -13,6 +13,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Setter @Getter
 @Entity
+@DiscriminatorValue("ARTISTA")
 public class Artista extends Usuario {
 
     private String nomeArtistico;
@@ -20,12 +21,13 @@ public class Artista extends Usuario {
 
     @ManyToOne
     private Arte arte;
-    @ManyToMany()
+    @ManyToMany
     @JoinTable(
             name = "artista_genero_arte",
             joinColumns = @JoinColumn(name = "artista_id"),
             inverseJoinColumns = @JoinColumn(name = "genero_arte_id")
     )
     private List<GeneroArte> generosArte;
+
     private Character sexo;
 }

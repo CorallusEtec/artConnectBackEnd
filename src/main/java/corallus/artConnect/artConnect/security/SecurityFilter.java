@@ -1,6 +1,9 @@
 package corallus.artConnect.artConnect.security;
 
 import java.io.IOException;
+import java.util.Optional;
+
+import corallus.artConnect.artConnect.entity.atores.Usuario;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -31,14 +34,18 @@ public class SecurityFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
         String token = this.recoverToken(request);
+
         if(token != null) {
             var login = tokenService.validateToken(token);
             if(!login.isEmpty()) {
-                UserDetails user = this.usuarioRepository.findByEmail(login)
-                .orElseThrow(UserNotFoundException::new);
+                Optional<Usuario> userOpt = this.usuarioRepository.findByEmail(login);
+                if(userOpt.isPresent()) {
+                    var user = userOpt.get();
+                    var authentication = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
+                    SecurityContextHolder.getContext().setAuthentication(authentication);
 
-                var authentication = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
-                SecurityContextHolder.getContext().setAuthentication(authentication);
+                }
+
             }
         }
         filterChain.doFilter(request, response);

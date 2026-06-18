@@ -2,12 +2,12 @@ package corallus.artConnect.artConnect.service;
 
 import java.util.*;
 import corallus.artConnect.artConnect.dto.request.publicacao.PublicacaoSaveRequest;
-import corallus.artConnect.artConnect.dto.response.reacao.ReacaoPublicacaoResponse;
-import corallus.artConnect.artConnect.dto.response.util.MessageResponse;
+import corallus.artConnect.artConnect.dto.response.util.MessageApiResponse;
 import corallus.artConnect.artConnect.entity.Reacao;
 import corallus.artConnect.artConnect.enumeration.ETipoMidia;
 import corallus.artConnect.artConnect.enumeration.ETipoReacao;
 import corallus.artConnect.artConnect.enumeration.ETipoStatus;
+import corallus.artConnect.artConnect.error.errors.ResourceNotFoundException;
 import corallus.artConnect.artConnect.mapper.publicacao.PublicacaoDetailsMapper;
 import corallus.artConnect.artConnect.queryFilter.PublicacaoFindAllQF;
 import org.springframework.data.domain.Page;
@@ -39,7 +39,7 @@ public class PublicacaoService {
         this.publicacaoDetailsMapper = publicacaoDetailsMapper;
     }
 
-    public MessageResponse save(PublicacaoSaveRequest saveRequest, Usuario autor) throws Exception {
+    public MessageApiResponse save(PublicacaoSaveRequest saveRequest, Usuario autor) throws Exception {
         boolean temLegenda = saveRequest.legenda() != null && !saveRequest.legenda().isBlank();
         boolean temArquivo = saveRequest.arquivo() != null && !saveRequest.arquivo().isEmpty();
 
@@ -64,7 +64,7 @@ public class PublicacaoService {
             // STATUS PADRÃO DE CRIAÇÂO: ATIVO
             pub.setStatusPublicacao(this.statusService.generateStatus());
             publicacaoRepository.save(pub);
-            return new MessageResponse("Postagem criada com sucesso!");
+            return new MessageApiResponse("Postagem criada com sucesso!");
     }
 
     public Page<PublicacaoResponse> findAll(PublicacaoFindAllQF find, Usuario usuario, Pageable pageable) {
@@ -72,6 +72,12 @@ public class PublicacaoService {
         // CONVERTE OS DADOS DA PUBLICAÇÃO
         return publicacaoList.map(p->this.getPublicacaoResponse(p, usuario));
     }
+
+    public PublicacaoResponse findById(Long id, Usuario usuario) {
+        Publicacao publicacao = this.publicacaoRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("Publicacao não encontrada"));
+        return this.getPublicacaoResponse(publicacao, usuario);
+    }
+
 
     /**
      * Metodo que desacopla a instância da DTO, e busca os outros dados para response completa.
@@ -89,7 +95,8 @@ public class PublicacaoService {
                 .totalComentarios(Math.toIntExact(publicacao.getComentarios().stream().filter(c->c.getStatus()
                         .getTipoStatus() == ETipoStatus.ATIVO).count()))
                 .publicacao(this.publicacaoDetailsMapper.toDTO(publicacao))
-                .reacoes(this.getReacaoPublicacao(publicacao.getReacoes()))
+                .likes(publicacao.getReacoes().stream().filter(r->r.getTipoReacao() == ETipoReacao.LIKE).count())
+                .dislikes(publicacao.getReacoes().stream().filter(r->r.getTipoReacao()==ETipoReacao.DISLIKE).count())
                 .reacaoUsuario(getReacaoUsuario(publicacao, usuario))
                 .build();
     }
@@ -112,24 +119,6 @@ public class PublicacaoService {
                         .equals(usuario.getId()))
                 .findFirst();
         return reacao.map(Reacao::getTipoReacao).orElse(null);
-    }
-
-    /**
-     * Metodo que retorna uma lista com as totalidades de cada reação de uma publicação.
-     * @param reacoes Set de Reações, oriundas da publicação.
-     * @return Retorna uma lista com o total de cada reação.
-     */
-    private List<ReacaoPublicacaoResponse> getReacaoPublicacao(Set<Reacao> reacoes) {
-        List<ReacaoPublicacaoResponse> lista = new ArrayList<>();
-        for (ETipoReacao t : ETipoReacao.values()) {
-            var reacaoPublicacao = ReacaoPublicacaoResponse.builder()
-                    .tipoReacao(t)
-                    .total(Math.toIntExact(reacoes.stream()
-                            .filter(r->r.getTipoReacao()==t).count()))
-                    .build();
-            lista.add(reacaoPublicacao);
-        }
-        return lista;
     }
 
     private ETipoMidia parseTipoMidia(String tipoMidiaStr) {

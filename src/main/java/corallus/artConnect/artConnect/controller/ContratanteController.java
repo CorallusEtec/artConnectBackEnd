@@ -1,7 +1,7 @@
 package corallus.artConnect.artConnect.controller;
 
 import corallus.artConnect.artConnect.config.SecurityConfig;
-import corallus.artConnect.artConnect.dto.response.util.MessageResponse;
+import corallus.artConnect.artConnect.dto.response.util.MessageApiResponse;
 import corallus.artConnect.artConnect.entity.atores.Usuario;
 import corallus.artConnect.artConnect.queryFilter.ContratanteFindAllQF;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -66,11 +66,11 @@ public class ContratanteController {
             @ApiResponse(responseCode = "400", description = "Erro de requisição"),
             @ApiResponse(responseCode = "403", description = "Não autenticado.")
     })
-    public ResponseEntity<MessageResponse> edit(
+    public ResponseEntity<MessageApiResponse> edit(
             @AuthenticationPrincipal Usuario contratante,
             @RequestBody @Valid ContratanteEditRequest editRequest
     ) {
-        MessageResponse msg = this.contratanteService.edit(contratante.getId(), editRequest);
+        MessageApiResponse msg = this.contratanteService.edit(contratante.getId(), editRequest);
         return new ResponseEntity<>(msg, HttpStatus.OK);
     }
 
