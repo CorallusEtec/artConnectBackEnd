@@ -7,6 +7,7 @@ import corallus.artConnect.artConnect.entity.atores.Usuario;
 import corallus.artConnect.artConnect.enumeration.ETipoConta;
 import corallus.artConnect.artConnect.repository.atores.ArtistaRepository;
 import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Objects;
 
@@ -20,13 +21,13 @@ public class ArtistaFactory implements UsuarioFactoryCreator {
     }
 
     @Override
-    public <U extends Usuario> Usuario composeUsuario(U usuario, UsuarioRegisterRequest registerRequest) {
+    public <U extends Usuario> Usuario composeUsuario(U usuario, UsuarioRegisterPrincipalRequest principal, MultipartFile fotoPerfil) {
         Artista artista = (Artista) usuario;
 
         artista.setTipoConta(ETipoConta.ARTISTA);
-        if(!Objects.isNull(registerRequest.principal().details())) {
-            artista.setArte(registerRequest.principal().details().arte());
-            artista.setGenerosArte(registerRequest.principal().details().generosArte());
+        if(!Objects.isNull(principal.details())) {
+            artista.setArte(principal.details().arte());
+            artista.setGenerosArte(principal.details().generosArte());
         }
 
         return this.artistaRepository.save(artista);

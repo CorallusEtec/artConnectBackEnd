@@ -1,6 +1,6 @@
 package corallus.artConnect.artConnect.factory.usuario;
 
-import corallus.artConnect.artConnect.dto.request.usuario.UsuarioRegisterRequest;
+import corallus.artConnect.artConnect.dto.request.usuario.UsuarioRegisterPrincipalRequest;
 import corallus.artConnect.artConnect.entity.atores.Admin;
 import corallus.artConnect.artConnect.entity.atores.Artista;
 import corallus.artConnect.artConnect.entity.atores.Contratante;
@@ -45,51 +45,51 @@ public class UsuarioFactory implements UsuarioFactoryCreator {
     /**
      * Factory que instancia e perssiste um novo usuario baseado no tipo de conta desejada.
      *
-     * @param registerRequest DTO com os dados do cadastro
+     * @param principal DTO com os dados do cadastro
      * @return Retorna o objeto do tipo usuario da generalização escolida
      */
 
 
-    public Usuario createUsuario(UsuarioRegisterRequest registerRequest) {
-        switch (registerRequest.principal().tipoConta()) {
+    public Usuario createUsuario(MultipartFile fotoPerfil, UsuarioRegisterPrincipalRequest principal) {
+        switch (principal.tipoConta()) {
             case "ARTISTA" -> {
-                var a = this.composeUsuario(new Artista(), registerRequest);
-                return this.artistaFactory.composeUsuario(a, registerRequest);
+                var a = this.composeUsuario(new Artista(), principal, fotoPerfil);
+                return this.artistaFactory.composeUsuario(a, principal, fotoPerfil);
             } case "CONTRATANTE" -> {
-                var c = this.composeUsuario(new Contratante(), registerRequest);
-                return this.contratanteFactory.composeUsuario(c, registerRequest);
+                var c = this.composeUsuario(new Contratante(), principal, fotoPerfil);
+                return this.contratanteFactory.composeUsuario(c, principal, fotoPerfil);
             } case "ADMIN" -> {
-                var admin = this.composeUsuario(new Admin(), registerRequest);
-                return this.adminFactory.composeUsuario(admin, registerRequest);
+                var admin = this.composeUsuario(new Admin(), principal, fotoPerfil);
+                return this.adminFactory.composeUsuario(admin, principal, fotoPerfil);
             } default -> throw new IllegalArgumentException("Tipo de conta inválido");
         }
     }
 
 
-    public <U extends Usuario> Usuario composeUsuario(U usuario, UsuarioRegisterRequest registerRequest) {
-        usuario.setEmail(registerRequest.principal().email());
+    public <U extends Usuario> Usuario composeUsuario(U usuario, UsuarioRegisterPrincipalRequest principal, MultipartFile fotoPerfil) {
+        usuario.setEmail(principal.email());
         usuario.setId(null); // Garantir que criará um novo
-        usuario.setNome(registerRequest.principal().nome());
+        usuario.setNome(principal.nome());
         usuario.setDataCriacao(LocalDateTime.now());
-        usuario.setSenha(this.passwordEncoder.encode(registerRequest.principal().senha()));
+        usuario.setSenha(this.passwordEncoder.encode(principal.senha()));
 
         // Adição da foto de perfil se fornecida
-        if(!Objects.isNull(registerRequest.fotoPerfil())) {
+        if(!Objects.isNull(fotoPerfil)) {
             try {
-                usuario.setFotoPerfilUrl(this.getFotoPerfilUrl(registerRequest.fotoPerfil()));
+                usuario.setFotoPerfilUrl(this.getFotoPerfilUrl(fotoPerfil));
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
         }
         // Adição de logradouro se fornecido
-        if(!Objects.isNull(registerRequest.principal().details())) {
-            usuario.setNomeLog(registerRequest.principal().details().nomeLog());
-            usuario.setNumLog(registerRequest.principal().details().numLog());
-            usuario.setCep(registerRequest.principal().details().cep());
-            usuario.setBairro(registerRequest.principal().details().bairro());
-            usuario.setComplemento(registerRequest.principal().details().complemento());
-            usuario.setCidade(registerRequest.principal().details().cidade());
-            usuario.setUf(registerRequest.principal().details().uf());
+        if(!Objects.isNull(principal.details())) {
+            usuario.setNomeLog(principal.details().nomeLog());
+            usuario.setNumLog(principal.details().numLog());
+            usuario.setCep(principal.details().cep());
+            usuario.setBairro(principal.details().bairro());
+            usuario.setComplemento(principal.details().complemento());
+            usuario.setCidade(principal.details().cidade());
+            usuario.setUf(principal.details().uf());
         }
 
         usuario.setStatus(this.statusService.generateStatus());

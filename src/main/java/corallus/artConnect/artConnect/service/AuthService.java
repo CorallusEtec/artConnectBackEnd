@@ -1,6 +1,6 @@
 package corallus.artConnect.artConnect.service;
 
-import corallus.artConnect.artConnect.dto.request.usuario.UsuarioRegisterRequest;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import corallus.artConnect.artConnect.dto.response.util.MessageApiResponse;
 import corallus.artConnect.artConnect.enumeration.ETipoConta;
 import corallus.artConnect.artConnect.factory.usuario.UsuarioFactory;
@@ -19,6 +19,9 @@ import corallus.artConnect.artConnect.entity.atores.Usuario;
 import corallus.artConnect.artConnect.error.errors.UserAlreadyExistsException;
 import corallus.artConnect.artConnect.error.errors.UserNotFoundException;
 import corallus.artConnect.artConnect.repository.atores.UsuarioRepository;
+import org.springframework.web.multipart.MultipartFile;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import java.util.Objects;
 
 @Service
@@ -53,16 +56,22 @@ public class AuthService implements UserDetailsService {
         return new UsuarioLoginResponse(idUsuario, token, tipoConta);
     }
 
-    public MessageApiResponse register(UsuarioRegisterRequest registerRequest) {
+    public MessageApiResponse register(MultipartFile fotoPerfil, String principalJson) throws JsonProcessingException {
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        UsuarioRegisterPrincipalRequest principal = objectMapper.readValue(
+                principalJson,
+                UsuarioRegisterPrincipalRequest.class
+        );
 
         // VERIFICA SE JÁ EXISTE PELO EMAIL
-        if(this.usuarioRepository.existsByEmail(registerRequest.principal().email())) {
+        if(this.usuarioRepository.existsByEmail(principal.email())) {
             throw new UserAlreadyExistsException();
         }
 
         // CRIA E REGISTRA UM NOVO USUARIO
-        this.usuarioFactory.createUsuario(registerRequest);
-        return new MessageApiResponse(registerRequest.principal().tipoConta()+" cadastrado com sucesso");
+        this.usuarioFactory.createUsuario(fotoPerfil, principal);
+        return new MessageApiResponse(principal.tipoConta()+" cadastrado com sucesso");
     }
 
     @Override
