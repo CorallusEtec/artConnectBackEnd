@@ -27,6 +27,10 @@ public class GeneroArteService {
         return this.generoArteRepository.findAll();
     }
 
+    public List<GeneroArte> findByArteId(Long idArte) {
+        return this.generoArteRepository.findAllByArte_Id(idArte);
+    }
+
     public MessageApiResponse save(GeneroArteSaveRequest saveRequest) {
         if(this.generoArteRepository.existsByNomeGeneroArte(saveRequest.nomeGeneroArte())) {
             throw new GeneroArteAlreadyExistsException();

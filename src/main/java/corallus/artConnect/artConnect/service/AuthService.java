@@ -1,5 +1,6 @@
 package corallus.artConnect.artConnect.service;
 
+import corallus.artConnect.artConnect.dto.request.usuario.UsuarioRegisterRequest;
 import corallus.artConnect.artConnect.dto.response.util.MessageApiResponse;
 import corallus.artConnect.artConnect.enumeration.ETipoConta;
 import corallus.artConnect.artConnect.factory.usuario.UsuarioFactory;
@@ -11,8 +12,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import corallus.artConnect.artConnect.dto.request.usuario.UserLoginRequest;
-import corallus.artConnect.artConnect.dto.request.usuario.UserRegisterRequest;
+import corallus.artConnect.artConnect.dto.request.usuario.UsuarioLoginRequest;
+import corallus.artConnect.artConnect.dto.request.usuario.UsuarioRegisterPrincipalRequest;
 import corallus.artConnect.artConnect.dto.response.usuario.UsuarioLoginResponse;
 import corallus.artConnect.artConnect.entity.atores.Usuario;
 import corallus.artConnect.artConnect.error.errors.UserAlreadyExistsException;
@@ -41,7 +42,7 @@ public class AuthService implements UserDetailsService {
         this.usuarioFactory = usuarioFactory;
     }
 
-    public UsuarioLoginResponse login(UserLoginRequest loginRequest) {
+    public UsuarioLoginResponse login(UsuarioLoginRequest loginRequest) {
         var usernamePassword = new UsernamePasswordAuthenticationToken(loginRequest.email(), loginRequest.senha());
         var auth = this.authenticationManager.authenticate(usernamePassword);
         
@@ -52,16 +53,16 @@ public class AuthService implements UserDetailsService {
         return new UsuarioLoginResponse(idUsuario, token, tipoConta);
     }
 
-    public MessageApiResponse register(UserRegisterRequest registerRequest) {
+    public MessageApiResponse register(UsuarioRegisterRequest registerRequest) {
 
         // VERIFICA SE JÁ EXISTE PELO EMAIL
-        if(this.usuarioRepository.existsByEmail(registerRequest.email())) {
+        if(this.usuarioRepository.existsByEmail(registerRequest.principal().email())) {
             throw new UserAlreadyExistsException();
         }
 
         // CRIA E REGISTRA UM NOVO USUARIO
         this.usuarioFactory.createUsuario(registerRequest);
-        return new MessageApiResponse(registerRequest.tipoConta()+" cadastrado com sucesso");
+        return new MessageApiResponse(registerRequest.principal().tipoConta()+" cadastrado com sucesso");
     }
 
     @Override

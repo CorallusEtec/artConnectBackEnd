@@ -1,20 +1,20 @@
 package corallus.artConnect.artConnect.controller;
 
-import corallus.artConnect.artConnect.config.SecurityConfig;
-import corallus.artConnect.artConnect.dto.response.util.MessageApiResponse;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import corallus.artConnect.artConnect.config.SecurityConfig;
+import corallus.artConnect.artConnect.dto.request.usuario.UsuarioRegisterRequest;
+import corallus.artConnect.artConnect.dto.response.util.MessageApiResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import corallus.artConnect.artConnect.dto.request.usuario.UserLoginRequest;
-import corallus.artConnect.artConnect.dto.request.usuario.UserRegisterRequest;
+import corallus.artConnect.artConnect.dto.request.usuario.UsuarioLoginRequest;
 import corallus.artConnect.artConnect.dto.response.usuario.UsuarioLoginResponse;
 import corallus.artConnect.artConnect.service.AuthService;
 import jakarta.validation.Valid;
@@ -48,26 +48,27 @@ public class AuthController {
     })
     public ResponseEntity<UsuarioLoginResponse> login(
             @RequestBody @Valid
-            UserLoginRequest loginRequest
+            UsuarioLoginRequest loginRequest
     ) {
         var response = this.authService.login(loginRequest);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    /**
-     * Cadastra um novo usuario no sistema.
+    /** Cadastra um novo usuario no sistema (NOTA: O campo principal deve ser um objeto
+     *  de cadastro do tipo UsuarioRegisterRequest)
      *
-     * @param registerRequest Request com os dados de cadastro de um usuário.
+     * @param registerRequest Objeto que deve ser mandado como Texto com os dados de cadastro e adicionais
      * @return Mensagem caso o cadastro tenha sido efetuado.
      */
-    @PostMapping("/register")
+    @PostMapping(value = "/register", consumes = "multipart/form-data")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Usuário cadastrado com sucesso."),
             @ApiResponse(responseCode = "400", description = "Erro de requisição"),
             @ApiResponse(responseCode = "409", description = "Usuário já cadastrado | Email já cadastrado.")
     })
+
 	public ResponseEntity<MessageApiResponse> registrar(
-        @RequestBody @Valid UserRegisterRequest registerRequest
+            @Valid UsuarioRegisterRequest registerRequest
     ) {
         MessageApiResponse msg = this.authService.register(registerRequest);
         return new ResponseEntity<>(msg, HttpStatus.CREATED);

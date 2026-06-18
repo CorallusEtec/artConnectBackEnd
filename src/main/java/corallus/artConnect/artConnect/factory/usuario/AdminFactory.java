@@ -1,6 +1,7 @@
 package corallus.artConnect.artConnect.factory.usuario;
 
-import corallus.artConnect.artConnect.dto.request.usuario.UserRegisterRequest;
+import corallus.artConnect.artConnect.dto.request.usuario.UsuarioRegisterPrincipalRequest;
+import corallus.artConnect.artConnect.dto.request.usuario.UsuarioRegisterRequest;
 import corallus.artConnect.artConnect.entity.atores.Admin;
 import corallus.artConnect.artConnect.entity.atores.Usuario;
 import corallus.artConnect.artConnect.enumeration.ETipoConta;
@@ -18,7 +19,7 @@ public class AdminFactory implements UsuarioFactoryCreator{
     }
 
     @Override
-    public <U extends Usuario> Usuario composeUsuario(U usuario, UserRegisterRequest registerRequest) {
+    public <U extends Usuario> Usuario composeUsuario(U usuario, UsuarioRegisterRequest registerRequest) {
         usuario.setTipoConta(ETipoConta.ADMIN);
         if(this.adminRepository.count() > 0) {
             throw new IllegalArgumentException("Esse tipo de conta não pode ser criado.");

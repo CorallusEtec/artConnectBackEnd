@@ -1,6 +1,7 @@
 package corallus.artConnect.artConnect.factory.usuario;
 
-import corallus.artConnect.artConnect.dto.request.usuario.UserRegisterRequest;
+import corallus.artConnect.artConnect.dto.request.usuario.UsuarioRegisterPrincipalRequest;
+import corallus.artConnect.artConnect.dto.request.usuario.UsuarioRegisterRequest;
 import corallus.artConnect.artConnect.entity.atores.Usuario;
 
 /**
@@ -19,5 +20,6 @@ public interface UsuarioFactoryCreator {
      * @param <U> Tipo que representa as generalizações de Usuario.
      */
 
-    <U extends Usuario> Usuario  composeUsuario (U usuario, UserRegisterRequest registerRequest);
+
+    <U extends Usuario> Usuario composeUsuario(U usuario, UsuarioRegisterRequest registerRequest);
 }

@@ -4,6 +4,7 @@ import corallus.artConnect.artConnect.config.SecurityConfig;
 import corallus.artConnect.artConnect.dto.request.arte.ArteEditRequest;
 import corallus.artConnect.artConnect.dto.request.arte.ArteSaveRequest;
 import corallus.artConnect.artConnect.dto.response.util.MessageApiResponse;
+import corallus.artConnect.artConnect.queryFilter.ArteFindAllQF;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -31,18 +32,18 @@ public class ArteController {
     }
 
     /**
-     * Busca todos os tipos de artes cadastradas no sistema, com busca paginada.
+     * Busca todos os tipos de artes cadastradas no sistema, com busca paginada e filtros de busca.
      *
+     * @param queryFilter Filtros de busca;
      * @param pageable Configurações da paginação que podem ser alteradas na requisição.
      * @return Retorna uma lista paginada com os tipos de arte do sistema.
      */
     @GetMapping("/findAll")
     public ResponseEntity<Page<Arte>> findAll(
-            @ParameterObject
-            @PageableDefault(size = 5, sort = "id")
-            Pageable pageable
+            @ParameterObject ArteFindAllQF queryFilter,
+            @ParameterObject @PageableDefault(size = 5, sort = "id") Pageable pageable
     ) {
-        Page<Arte> lista = this.arteService.findAll(pageable);
+        Page<Arte> lista = this.arteService.findAll(pageable, queryFilter);
         return new ResponseEntity<>(lista, HttpStatus.OK);
     }
 
