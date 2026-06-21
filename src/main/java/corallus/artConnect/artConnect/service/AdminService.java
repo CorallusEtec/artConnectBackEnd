@@ -44,7 +44,7 @@ public class AdminService {
 
 
         usuario.setNome(editRequest.nome());
-        usuario.setNome(editRequest.email());
+        usuario.setEmail(editRequest.email());
         editRequest.status().setDataModificacao(LocalDateTime.now());
         usuario.setStatus(this.statusRepository.save(editRequest.status()));
 
