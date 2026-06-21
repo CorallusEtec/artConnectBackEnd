@@ -53,7 +53,7 @@ public class UsuarioController {
             @ApiResponse(responseCode = "200", useReturnTypeSchema = true),
     })
     public ResponseEntity<Page<UsuarioResponse>> findAll(
-            @ParameterObject  UsuarioFindAllQF queryFilter,
+            @ParameterObject UsuarioFindAllQF queryFilter,
             @ParameterObject @PageableDefault(sort = "id")
             Pageable pageable
     ) {

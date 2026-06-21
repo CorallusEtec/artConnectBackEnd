@@ -2,6 +2,7 @@ package corallus.artConnect.artConnect.specification;
 
 import corallus.artConnect.artConnect.entity.atores.Usuario;
 import corallus.artConnect.artConnect.enumeration.ETipoConta;
+import corallus.artConnect.artConnect.enumeration.ETipoStatus;
 import jakarta.persistence.criteria.Root;
 import jakarta.persistence.criteria.Subquery;
 import org.springframework.data.jpa.domain.Specification;
@@ -39,6 +40,24 @@ public class UsuarioSpec {
                 return null;
             } else {
                 return build.like(root.get("cidade"), "%"+cidade+"%");
+            }
+        };
+    }
+
+    public static Specification<Usuario> notAdmin() {
+        return (root, query, criteriaBuilder) -> criteriaBuilder
+                .notEqual(root.get("tipoConta"), ETipoConta.ADMIN);
+
+    }
+
+    public static Specification<Usuario> tipoStatusContains(String tipoStatus) {
+        return (root, query, criteriaBuilder) -> {
+            if(ObjectUtils.isEmpty(tipoStatus)) {
+                return criteriaBuilder
+                        .equal(root.join("status").get("tipoStatus"), ETipoStatus.ATIVO);
+            } else {
+                ETipoStatus tipoEnum = ETipoStatus.valueOf(tipoStatus);
+                return criteriaBuilder.equal(root.join("status").get("tipoStatus"), tipoEnum);
             }
         };
     }
