@@ -1,11 +1,13 @@
 package corallus.artConnect.artConnect.service;
 
+import corallus.artConnect.artConnect.dto.request.arte.GeneroArteEditRequest;
 import corallus.artConnect.artConnect.dto.request.arte.GeneroArteSaveRequest;
 import corallus.artConnect.artConnect.dto.response.util.MessageApiResponse;
 import corallus.artConnect.artConnect.entity.arte.Arte;
 import corallus.artConnect.artConnect.entity.arte.GeneroArte;
 import corallus.artConnect.artConnect.error.errors.ArteNotFoundException;
 import corallus.artConnect.artConnect.error.errors.GeneroArteAlreadyExistsException;
+import corallus.artConnect.artConnect.error.errors.ResourceNotFoundException;
 import corallus.artConnect.artConnect.repository.arte.ArteRepository;
 import corallus.artConnect.artConnect.repository.arte.GeneroArteRepository;
 import org.springframework.stereotype.Service;
@@ -45,5 +47,31 @@ public class GeneroArteService {
 
         this.generoArteRepository.save(generoArte);
         return new MessageApiResponse("Gênero de arte criado.");
+    }
+
+    public MessageApiResponse deleteById(Long id) {
+        if(generoArteRepository.existsById(id)) {
+            this.generoArteRepository.deleteById(id);
+        } else {
+            throw new ResourceNotFoundException("Genero de arte não encontradp");
+        }
+        return new MessageApiResponse("Genero deletado com sucesso");
+    }
+
+    public MessageApiResponse editById(GeneroArteEditRequest editRequest, Long id) {
+
+        GeneroArte generoArte = this.generoArteRepository.findById(id)
+                .orElseThrow(()->new ResourceNotFoundException("Genero de arte não encontrado"));
+
+
+        generoArte.setNomeGeneroArte(editRequest.nomeGeneroArte());
+        this.generoArteRepository.save(generoArte);
+
+        return new MessageApiResponse("Genero de arte alterado com sucesso");
+    }
+
+    public GeneroArte findById(Long id) {
+        return this.generoArteRepository.findById(id)
+                .orElseThrow(()->new ResourceNotFoundException("Genero de arte não encontrado"));
     }
 }
