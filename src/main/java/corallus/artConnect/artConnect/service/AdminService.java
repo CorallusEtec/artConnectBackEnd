@@ -7,11 +7,13 @@ import corallus.artConnect.artConnect.entity.atores.Usuario;
 import corallus.artConnect.artConnect.enumeration.ETipoConta;
 import corallus.artConnect.artConnect.enumeration.ETipoStatus;
 import corallus.artConnect.artConnect.error.errors.UserNotFoundException;
+import corallus.artConnect.artConnect.repository.PublicacaoRepository;
 import corallus.artConnect.artConnect.repository.arte.ArteRepository;
 import corallus.artConnect.artConnect.repository.atores.UsuarioRepository;
 import corallus.artConnect.artConnect.repository.status.StatusRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 /**
@@ -22,11 +24,13 @@ import java.time.LocalDateTime;
 public class AdminService {
     private final UsuarioRepository usuarioRepository;
     private final ArteRepository arteRepository;
+    private final PublicacaoRepository publicacaoRepository;
     private final StatusRepository statusRepository;
     // INJEÇÃO DE DEPENDÊNCIA
-    public AdminService(UsuarioRepository usuarioRepository, ArteRepository arteRepository, StatusRepository statusRepository) {
+    public AdminService(UsuarioRepository usuarioRepository, ArteRepository arteRepository, PublicacaoRepository publicacaoRepository, StatusRepository statusRepository) {
         this.usuarioRepository = usuarioRepository;
         this.arteRepository = arteRepository;
+        this.publicacaoRepository = publicacaoRepository;
         this.statusRepository = statusRepository;
     }
 
@@ -36,6 +40,8 @@ public class AdminService {
                 .artistasCadastrados(this.usuarioRepository.countUsuarioByStatus_TipoStatusAndTipoConta(ETipoStatus.ATIVO, ETipoConta.ARTISTA))
                 .contratantesCadastrados(this.usuarioRepository.countUsuarioByStatus_TipoStatusAndTipoConta(ETipoStatus.ATIVO, ETipoConta.CONTRATANTE))
                 .artes(this.arteRepository.arteRelatorio())
+                .publicacaoSemana(this.publicacaoRepository.relatorioPublicacoes(LocalDate.now().minusDays(7).atTime(0,0,0), LocalDateTime.now()))
+                .publicacoesRealizadas(this.publicacaoRepository.countAllByStatusPublicacao_TipoStatus(ETipoStatus.ATIVO))
                 .build();
     }
 
