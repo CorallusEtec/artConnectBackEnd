@@ -67,6 +67,8 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.PUT, "/arte/**").hasAuthority("ADMIN")
                 .requestMatchers(HttpMethod.DELETE, "/arte/**").hasAuthority("ADMIN")
                 .requestMatchers(HttpMethod.POST, "/generoArte/**").hasAuthority("ADMIN")
+                .requestMatchers(HttpMethod.PUT, "/generoArte/**").hasAuthority("ADMIN")
+                .requestMatchers(HttpMethod.DELETE, "/generoArte/**").hasAuthority("ADMIN")
                 .requestMatchers(HttpMethod.POST, "/tipoContato/**").hasAuthority("ADMIN")
                 .requestMatchers("/admin/**").hasAuthority("ADMIN")
                 .requestMatchers(HttpMethod.POST, "/arte/save").hasAuthority("ADMIN")

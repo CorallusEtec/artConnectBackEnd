@@ -8,8 +8,8 @@ import java.util.List;
 public record RelatorioResponse(
        Integer artistasCadastrados,
        Integer contratantesCadastrados,
-       Integer publicacoesCompartilhadas,
+       Integer publicacoesRealizadas,
 
-       List<ArteRelatorio> artes
-
+       List<ArteRelatorio> artes,
+        List<Object[]> publicacaoSemana
 ) {}

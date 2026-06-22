@@ -12,8 +12,8 @@ public interface ArteRepository extends JpaRepository<Arte, Long>, JpaSpecificat
     boolean existsByNomeArte(String nomeArte);
 
     @Query("SELECT new corallus.artConnect.artConnect.dto.response.admin.ArteRelatorio(count(art), a)" +
-            " FROM Arte a JOIN a.artistas art " +
-            "WHERE art.status.tipoStatus = ATIVO " +
+            " FROM Arte a LEFT JOIN a.artistas art " +
+            " " +
             "GROUP BY a ORDER BY count(art) DESC")
     List<ArteRelatorio> arteRelatorio();
 }

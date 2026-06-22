@@ -9,6 +9,4 @@ public interface GeneroArteRepository extends JpaRepository<GeneroArte, Long> {
     boolean existsByNomeGeneroArte(String nomeGeneroArte);
 
     List<GeneroArte> findAllByArte_Id(Long arteId);
-
-    Long id(Long id);
 }
