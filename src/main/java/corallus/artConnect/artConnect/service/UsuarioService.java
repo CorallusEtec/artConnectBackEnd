@@ -8,6 +8,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+
+import corallus.artConnect.artConnect.entity.atores.Artista;
 import corallus.artConnect.artConnect.entity.atores.Usuario;
 import corallus.artConnect.artConnect.error.errors.UserNotFoundException;
 import corallus.artConnect.artConnect.dto.response.usuario.UsuarioResponse;
@@ -33,14 +35,46 @@ public class UsuarioService {
 
     public Page<UsuarioResponse> findAll(UsuarioFindAllQF filter, Pageable pageable) {
         Page<Usuario> lista = this.usuarioRepository.findAll(filter.toSpecifications(), pageable);
-        return lista.map(usuarioMapper::toDTO);
+        
+        return lista.map(usuario -> {
+            UsuarioResponse base = usuarioMapper.toDTO(usuario);
+            
+            if (usuario instanceof Artista artista) {
+                return new UsuarioResponse(
+                    base.id(), base.nome(), base.email(), 
+                    base.tipoConta(), base.status(), base.dataCriacao(), 
+                    base.fotoPerfilUrl(), base.nomeLog(), base.numLog(), 
+                    base.cep(), base.bairro(), base.complemento(), 
+                    base.cidade(), base.uf(), base.textoBio(), 
+                    base.contatos(), artista.getArte(), artista.getGenerosArte(),
+                    base.totalSeguidores(), base.totalSeguindo()
+                );
+            }
+            
+            return base;
+        });
     }
 
     public UsuarioResponse findById(Long id) {
         Usuario entity = this.usuarioRepository.findById(id)
-                .filter(u->u.getTipoConta() != ETipoConta.ADMIN)
-            .orElseThrow(UserNotFoundException::new);
-        return this.usuarioMapper.toDTO(entity);
+                .filter(u -> u.getTipoConta() != ETipoConta.ADMIN)
+                .orElseThrow(UserNotFoundException::new);
+
+        UsuarioResponse base = this.usuarioMapper.toDTO(entity);
+
+        if (entity instanceof Artista artista) {
+            return new UsuarioResponse(
+                base.id(), base.nome(), base.email(), base.tipoConta(),
+                base.status(), base.dataCriacao(), base.fotoPerfilUrl(),
+                base.nomeLog(), base.numLog(), base.cep(), base.bairro(),
+                base.complemento(), base.cidade(), base.uf(),
+                base.textoBio(), base.contatos(),
+                artista.getArte(), artista.getGenerosArte(),
+                base.totalSeguidores(), base.totalSeguindo()
+            );
+        }
+
+        return base;
     }
 
     public static void fillCommonEdits(Usuario u, CommonEdit dto) {

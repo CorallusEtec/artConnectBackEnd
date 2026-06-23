@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 import corallus.artConnect.artConnect.dto.response.contato.ContatoResponse;
 import corallus.artConnect.artConnect.entity.Status;
+import corallus.artConnect.artConnect.entity.arte.Arte;
+import corallus.artConnect.artConnect.entity.arte.GeneroArte;
 import corallus.artConnect.artConnect.enumeration.ETipoConta;
 
 public record UsuarioResponse(
@@ -24,5 +26,11 @@ public record UsuarioResponse(
     String uf,
 
     String textoBio,
-    List<ContatoResponse> contatos
+    List<ContatoResponse> contatos,
+
+    Arte arte,
+    List<GeneroArte> generosArte,
+
+    long totalSeguidores,
+    long totalSeguindo
 ) {}
