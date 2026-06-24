@@ -3,7 +3,6 @@ package corallus.artConnect.artConnect.dto.response.usuario;
 import java.time.LocalDateTime;
 import java.util.List;
 import corallus.artConnect.artConnect.dto.response.contato.ContatoResponse;
-import corallus.artConnect.artConnect.dto.response.publicacao.PublicacaoDetailsResponse;
 import corallus.artConnect.artConnect.entity.Status;
 import corallus.artConnect.artConnect.entity.arte.Arte;
 import corallus.artConnect.artConnect.entity.arte.GeneroArte;
@@ -26,11 +25,12 @@ public record UsuarioResponse(
     String cidade,
     String uf,
 
-    List<PublicacaoDetailsResponse> publicacoes,
+    String textoBio,
+    List<ContatoResponse> contatos,
 
     Arte arte,
     List<GeneroArte> generosArte,
 
-    String textoBio,
-    List<ContatoResponse> contatos
+    long totalSeguidores,
+    long totalSeguindo
 ) {}
