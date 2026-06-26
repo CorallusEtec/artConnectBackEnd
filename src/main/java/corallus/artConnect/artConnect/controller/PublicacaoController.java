@@ -14,6 +14,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -74,7 +75,7 @@ public class PublicacaoController {
     public ResponseEntity<Page<PublicacaoResponse>> findAll(
             @ParameterObject  PublicacaoFindAllQF queryFilter,
             @AuthenticationPrincipal Usuario usuario,
-            @ParameterObject @PageableDefault(size = 7, sort = "id") Pageable pageable
+            @ParameterObject @PageableDefault(size = 7, sort = "dataPublicacao", direction = Sort.Direction.DESC) Pageable pageable
     ) {
         var lista = this.publicacaoService.findAll(queryFilter, usuario, pageable);
         return new ResponseEntity<>(lista, HttpStatus.OK);
