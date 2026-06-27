@@ -2,6 +2,7 @@ package corallus.artConnect.artConnect.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import corallus.artConnect.artConnect.dto.response.util.MessageApiResponse;
+import corallus.artConnect.artConnect.entity.Status;
 import corallus.artConnect.artConnect.enumeration.ETipoConta;
 import corallus.artConnect.artConnect.factory.usuario.UsuarioFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,20 +27,15 @@ import java.util.Objects;
 
 @Service
 public class AuthService implements UserDetailsService {
-    @Lazy
-    @Autowired
-    private AuthenticationManager authenticationManager;
 
+    private final AuthenticationManager authenticationManager;
     private final TokenService tokenService;
     private final UsuarioRepository usuarioRepository;
     private final UsuarioFactory usuarioFactory;
 
     // INJEÇÃO DE DEPENDÊNCIA
-    public AuthService(
-            TokenService tokenService,
-            UsuarioRepository usuarioRepository,
-            UsuarioFactory usuarioFactory
-    ) {
+    public AuthService(@Lazy AuthenticationManager authenticationManager, TokenService tokenService, UsuarioRepository usuarioRepository, UsuarioFactory usuarioFactory) {
+        this.authenticationManager = authenticationManager;
         this.tokenService = tokenService;
         this.usuarioRepository = usuarioRepository;
         this.usuarioFactory = usuarioFactory;
@@ -48,12 +44,13 @@ public class AuthService implements UserDetailsService {
     public UsuarioLoginResponse login(UsuarioLoginRequest loginRequest) {
         var usernamePassword = new UsernamePasswordAuthenticationToken(loginRequest.email(), loginRequest.senha());
         var auth = this.authenticationManager.authenticate(usernamePassword);
-        
+
+        Status status = ((Usuario) Objects.requireNonNull(auth.getPrincipal())).getStatus();
         Long idUsuario = ((Usuario) Objects.requireNonNull(auth.getPrincipal())).getId();
         ETipoConta tipoConta = ((Usuario) auth.getPrincipal()).getTipoConta();
         String token = this.tokenService.generateToken((Usuario) auth.getPrincipal());
 
-        return new UsuarioLoginResponse(idUsuario, token, tipoConta);
+        return new UsuarioLoginResponse(idUsuario, token, tipoConta, status);
     }
 
     public MessageApiResponse register(MultipartFile fotoPerfil, String principalJson) throws JsonProcessingException {
