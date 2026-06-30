@@ -2,6 +2,7 @@ package corallus.artConnect.artConnect.service;
 
 import corallus.artConnect.artConnect.entity.Status;
 import corallus.artConnect.artConnect.enumeration.ETipoStatus;
+import corallus.artConnect.artConnect.error.errors.ResourceNotFoundException;
 import corallus.artConnect.artConnect.repository.status.StatusRepository;
 import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
@@ -76,4 +77,14 @@ public class StatusService {
 
         return this.statusRepository.save(status);
     }
+
+    public Status modifyStatus(Long idStatus, Status newStatus) {
+        if(!this.statusRepository.existsById(idStatus)) {
+            throw new ResourceNotFoundException("Status não encontrado");
+        }
+        newStatus.setDataModificacao(LocalDateTime.now());
+        newStatus.setId(idStatus);
+        return this.statusRepository.save(newStatus);
+    }
+
 }
