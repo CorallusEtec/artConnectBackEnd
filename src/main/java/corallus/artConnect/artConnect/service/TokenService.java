@@ -22,7 +22,7 @@ public class TokenService {
         .withIssuer("art-connect")
                 .withClaim("roles", usuario.getTipoConta().name())
         .withSubject(usuario.getEmail())
-        .withExpiresAt(Instant.now().plus(Duration.ofHours(3))) // Tokn expira em 3 horas
+        .withExpiresAt(Instant.now().plus(Duration.ofHours(12))) // Tokn expira em 12 horas
         .sign(algorithm);
     }
 
