@@ -17,12 +17,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import corallus.artConnect.artConnect.dto.request.comentario.ComentarioRequest;
 import corallus.artConnect.artConnect.dto.response.comentario.ComentarioResponse;
@@ -103,5 +98,21 @@ public class ComentarioController {
     ) {
         ComentarioResponse comentario = this.comentarioService.findById(id, usuario);
         return new ResponseEntity<>(comentario, HttpStatus.OK);
+    }
+
+
+    /** Exclui comentario de autoria do usuario autenticado.
+     *
+     * @param id Id do comentario.
+     * @param usuario Referência do usuário autenticado.
+     * @return Mensagem caso o comentario tenha sido excluido.
+     */
+    @DeleteMapping("/{id}")
+    public ResponseEntity<MessageApiResponse> deleteById(
+            @PathVariable Long id,
+            @AuthenticationPrincipal Usuario usuario
+    ) {
+        var msg = this.comentarioService.deleteById(id, usuario);
+        return ResponseEntity.ok(msg);
     }
 }
