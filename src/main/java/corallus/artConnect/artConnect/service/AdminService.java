@@ -26,6 +26,8 @@ public class AdminService {
     private final ArteRepository arteRepository;
     private final PublicacaoRepository publicacaoRepository;
     private final StatusRepository statusRepository;
+
+
     // INJEÇÃO DE DEPENDÊNCIA
     public AdminService(UsuarioRepository usuarioRepository, ArteRepository arteRepository, PublicacaoRepository publicacaoRepository, StatusRepository statusRepository) {
         this.usuarioRepository = usuarioRepository;
@@ -56,4 +58,6 @@ public class AdminService {
 
         return new MessageApiResponse("Usuario alterado com sucesso");
     }
+
+
 }
