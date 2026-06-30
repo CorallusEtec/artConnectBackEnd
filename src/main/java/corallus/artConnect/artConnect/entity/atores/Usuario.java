@@ -74,10 +74,6 @@ public abstract class Usuario implements UserDetails{
     @OneToMany(mappedBy = "usuario")
     private Set<Reacao> reacoes = new HashSet<>();
 
-    @JsonIgnore
-    @ManyToMany(mappedBy = "usuarios")
-    private Set<ChatRoom> chatRooms = new HashSet<>();
-
     // Metodos UserDetails
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

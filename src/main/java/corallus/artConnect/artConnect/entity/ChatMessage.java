@@ -1,6 +1,5 @@
 package corallus.artConnect.artConnect.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import corallus.artConnect.artConnect.entity.atores.Usuario;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -17,23 +16,23 @@ import java.time.LocalDateTime;
  *
  * @since 16/06/2026
  */
-public class Mensagem {
+public class ChatMessage {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    private Usuario sender;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    private Usuario recipient;
+
     @Column(nullable = false)
-    private String conteudo;
+    private String mensagem;
 
     private LocalDateTime dataEnvio = LocalDateTime.now();
 
-    @ManyToOne
-    @JsonIgnoreProperties({"contatos", "chatRooms"})
-    private Usuario autor;
-
-    @ManyToOne
-    private ChatRoom chatRoom;
 
     @OneToOne
     private Status status;
