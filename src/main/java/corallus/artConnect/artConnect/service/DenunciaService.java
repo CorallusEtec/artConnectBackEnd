@@ -12,6 +12,7 @@ import corallus.artConnect.artConnect.enumeration.ETipoStatus;
 import corallus.artConnect.artConnect.error.errors.NotAuthorizedException;
 import corallus.artConnect.artConnect.error.errors.ResourceNotFoundException;
 import corallus.artConnect.artConnect.mapper.denuncia.DenunciaMapper;
+import corallus.artConnect.artConnect.queryFilter.DenunciaFindAllQF;
 import corallus.artConnect.artConnect.repository.DenunciaRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -44,7 +45,7 @@ public class DenunciaService {
         denuncia.setAutor(usuario);
         denuncia.setIdRecurso(request.idRecurso());
         denuncia.setTitulo(request.titulo());
-        denuncia.setStatus(this.statusService.generateStatus());
+        denuncia.setStatus(this.statusService.generateStatus(ETipoStatus.PENDENTE));
 
 
         this.denunciaRepository.save(denuncia);
@@ -53,8 +54,8 @@ public class DenunciaService {
     }
 
 
-    public Page<DenunciaResponse> findAll(Pageable pageable) {
-        Page<Denuncia> denuncias = this.denunciaRepository.findAll(pageable);
+    public Page<DenunciaResponse> findAll(Pageable pageable, DenunciaFindAllQF queryFilter) {
+        Page<Denuncia> denuncias = this.denunciaRepository.findAll(queryFilter.getSpecification(), pageable);
         return denuncias.map(this.denunciaMapper::toDTO);
     }
 
