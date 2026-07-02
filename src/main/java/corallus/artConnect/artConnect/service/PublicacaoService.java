@@ -4,9 +4,11 @@ import java.util.*;
 import corallus.artConnect.artConnect.dto.request.publicacao.PublicacaoSaveRequest;
 import corallus.artConnect.artConnect.dto.response.util.MessageApiResponse;
 import corallus.artConnect.artConnect.entity.Reacao;
+import corallus.artConnect.artConnect.entity.Status;
 import corallus.artConnect.artConnect.enumeration.ETipoMidia;
 import corallus.artConnect.artConnect.enumeration.ETipoReacao;
 import corallus.artConnect.artConnect.enumeration.ETipoStatus;
+import corallus.artConnect.artConnect.error.errors.NotAuthorizedException;
 import corallus.artConnect.artConnect.error.errors.ResourceNotFoundException;
 import corallus.artConnect.artConnect.mapper.publicacao.PublicacaoDetailsMapper;
 import corallus.artConnect.artConnect.queryFilter.PublicacaoFindAllQF;
@@ -78,6 +80,25 @@ public class PublicacaoService {
         return this.getPublicacaoResponse(publicacao, usuario);
     }
 
+
+    public MessageApiResponse deleteById(Long idPublicacao, Usuario usuario) {
+
+        if(Objects.isNull(usuario)) {
+            throw new NotAuthorizedException();
+        }
+
+        Publicacao publicacao = this.publicacaoRepository.findById(idPublicacao)
+                .orElseThrow(ResourceNotFoundException::new);
+        if(!publicacao.getAutor().getId().equals(usuario.getId())) {
+            throw new NotAuthorizedException();
+        }
+
+        Status status = publicacao.getStatusPublicacao();
+        status.setTipoStatus(ETipoStatus.EXCLUIDO);
+        publicacao.setStatusPublicacao(this.statusService.modifyStatus(status.getId(), status));
+        this.publicacaoRepository.save(publicacao);
+        return new MessageApiResponse("Publicação excluida com sucesso");
+    }
 
     /**
      * Metodo que desacopla a instância da DTO, e busca os outros dados para response completa.

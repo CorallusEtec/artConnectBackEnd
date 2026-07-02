@@ -5,7 +5,9 @@ import java.util.HashSet;
 import java.util.Objects;
 
 import corallus.artConnect.artConnect.dto.response.util.MessageApiResponse;
+import corallus.artConnect.artConnect.entity.Status;
 import corallus.artConnect.artConnect.entity.atores.Usuario;
+import corallus.artConnect.artConnect.enumeration.ETipoStatus;
 import corallus.artConnect.artConnect.error.errors.NotAuthorizedException;
 import corallus.artConnect.artConnect.mapper.comentario.ComentarioMapper;
 import corallus.artConnect.artConnect.queryFilter.ComentarioFindByPostQF;
@@ -52,7 +54,6 @@ public class ComentarioService {
      * @return Lista paginada com os detalhes do comentário.
      */
     public Page<ComentarioResponse> findByPost(Long postId, Pageable pageable, ComentarioFindByPostQF queryFilter, Usuario usuario) {
-        System.out.println(usuario);
         Page<Comentario> comentarios = this.comentarioRepository.findAllByPublicacao_Id(postId, pageable, queryFilter.getSpecification());
         return comentarios.map(c->this.comentarioMapper.toDTO(c, Objects.isNull(usuario)?null:usuario.getId()));
     }
@@ -81,9 +82,28 @@ public class ComentarioService {
         return new MessageApiResponse("Comentario publicado com sucesso");
     }
 
-
     public ComentarioResponse findById(Long idComentario, Usuario usuario) {
         Comentario comentario = this.comentarioRepository.findById(idComentario).orElseThrow(()->new ResourceNotFoundException("Comentário não encontrado"));
         return this.comentarioMapper.toDTO(comentario, Objects.isNull(usuario)?null:usuario.getId());
+    }
+
+    public MessageApiResponse deleteById(Long idComentario, Usuario usuario) {
+        Comentario comentario = this.comentarioRepository.findById(idComentario)
+            .orElseThrow(ResourceNotFoundException::new);
+
+        if(Objects.isNull(usuario)) {
+            throw new NotAuthorizedException();
+        }
+
+        if (!comentario.getUsuario().getId().equals(usuario.getId())) {
+            throw new NotAuthorizedException();
+        }
+
+        Status status = comentario.getStatus();
+        status.setTipoStatus(ETipoStatus.EXCLUIDO);
+        comentario.setStatus(this.statusService.modifyStatus(status.getId(), status));
+        this.comentarioRepository.save(comentario);
+
+        return new MessageApiResponse("Comentário excluído");
     }
 }

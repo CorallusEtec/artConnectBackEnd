@@ -74,6 +74,9 @@ public abstract class Usuario implements UserDetails{
     @OneToMany(mappedBy = "usuario")
     private Set<Reacao> reacoes = new HashSet<>();
 
+    @OneToMany(mappedBy = "autor")
+    private List<Denuncia> denuncias;
+
     // Metodos UserDetails
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

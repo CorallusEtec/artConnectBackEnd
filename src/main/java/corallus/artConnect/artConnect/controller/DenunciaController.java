@@ -5,9 +5,11 @@ import corallus.artConnect.artConnect.dto.request.denuncia.DenunciaSaveRequest;
 import corallus.artConnect.artConnect.dto.response.denuncia.DenunciaResponse;
 import corallus.artConnect.artConnect.dto.response.util.MessageApiResponse;
 import corallus.artConnect.artConnect.entity.atores.Usuario;
+import corallus.artConnect.artConnect.queryFilter.DenunciaFindAllQF;
 import corallus.artConnect.artConnect.service.DenunciaService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -49,8 +51,11 @@ public final class DenunciaController {
      * @return Lista paginada de denúncias.
      */
     @GetMapping("/findAll")
-    public ResponseEntity<Page<DenunciaResponse>> findAll (@PageableDefault Pageable pageable) {
-        Page<DenunciaResponse> denuncias = this.denunciaService.findAll(pageable);
+    public ResponseEntity<Page<DenunciaResponse>> findAll (
+            @PageableDefault Pageable pageable,
+            @ParameterObject DenunciaFindAllQF queryFilter
+            ) {
+        Page<DenunciaResponse> denuncias = this.denunciaService.findAll(pageable, queryFilter);
         return ResponseEntity.ok(denuncias);
     }
 

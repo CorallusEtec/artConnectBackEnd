@@ -102,5 +102,20 @@ public class PublicacaoController {
         var publicacao = this.publicacaoService.findById(id, usuario);
         return new ResponseEntity<>(publicacao, HttpStatus.OK);
     }
+
+    /** Exclui publicacao de autoria do usuario autenticado.
+     *
+     * @param id Id da publicacao.
+     * @param usuario Referência do usuário autenticado.
+     * @return Mensagem caso a publicacao tenha sido excluida.
+     */
+    @DeleteMapping("/{id}")
+    public ResponseEntity<MessageApiResponse> deleteById(
+            @PathVariable Long id,
+            @AuthenticationPrincipal Usuario usuario
+    ) {
+        var msg = this.publicacaoService.deleteById(id, usuario);
+        return ResponseEntity.ok(msg);
+    }
 }
 
