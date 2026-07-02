@@ -8,10 +8,6 @@ import jakarta.validation.constraints.NotNull;
 
 
 public record UsuarioAdminEditRequest(
-        @NotBlank(message = "O nome está vazio")
-        String nome,
-        @Email(message = "O email não é valido")
-        String email,
 
         @NotNull
         Status status
