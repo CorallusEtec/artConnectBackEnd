@@ -83,6 +83,22 @@ public class AdminController {
         return ResponseEntity.ok(msg);
     }
 
+    @PatchMapping("/comentario/{id}")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", useReturnTypeSchema = true),
+            @ApiResponse(responseCode = "403", description = "Não Autorizado (apenas admin)"),
+            @ApiResponse(responseCode = "404", description = "Publicação não encontrada")
+    })
+    public ResponseEntity<MessageApiResponse> alterStatusComentario(
+            @PathVariable Long id,
+            @RequestBody @Valid PublicacaoAdminPatchStatusRequest request
+    ) {
+        var msg = this.adminService.alterStatusComentarioById(id, request);
+        return ResponseEntity.ok(msg);
+    }
+
+
+
     @PatchMapping("/denuncia/{id}")
     @ApiResponses({
             @ApiResponse(responseCode = "200", useReturnTypeSchema = true),

@@ -5,6 +5,7 @@ import corallus.artConnect.artConnect.dto.request.publicacao.PublicacaoAdminPatc
 import corallus.artConnect.artConnect.dto.request.usuario.UsuarioAdminEditRequest;
 import corallus.artConnect.artConnect.dto.response.admin.RelatorioResponse;
 import corallus.artConnect.artConnect.dto.response.util.MessageApiResponse;
+import corallus.artConnect.artConnect.entity.Comentario;
 import corallus.artConnect.artConnect.entity.Denuncia;
 import corallus.artConnect.artConnect.entity.Publicacao;
 import corallus.artConnect.artConnect.entity.Status;
@@ -13,6 +14,7 @@ import corallus.artConnect.artConnect.enumeration.ETipoConta;
 import corallus.artConnect.artConnect.enumeration.ETipoStatus;
 import corallus.artConnect.artConnect.error.errors.ResourceNotFoundException;
 import corallus.artConnect.artConnect.error.errors.UserNotFoundException;
+import corallus.artConnect.artConnect.repository.ComentarioRepository;
 import corallus.artConnect.artConnect.repository.DenunciaRepository;
 import corallus.artConnect.artConnect.repository.PublicacaoRepository;
 import corallus.artConnect.artConnect.repository.arte.ArteRepository;
@@ -33,14 +35,16 @@ public class AdminService {
     private final PublicacaoRepository publicacaoRepository;
     private final StatusService statusService;
     private final DenunciaRepository denunciaRepository;
+    private final ComentarioRepository comentarioRepository;
 
     // INJEÇÃO DE DEPENDÊNCIA
-    public AdminService(UsuarioRepository usuarioRepository, ArteRepository arteRepository, PublicacaoRepository publicacaoRepository, StatusService statusService, DenunciaRepository denunciaRepository) {
+    public AdminService(UsuarioRepository usuarioRepository, ArteRepository arteRepository, PublicacaoRepository publicacaoRepository, StatusService statusService, DenunciaRepository denunciaRepository, ComentarioRepository comentarioRepository) {
         this.usuarioRepository = usuarioRepository;
         this.arteRepository = arteRepository;
         this.publicacaoRepository = publicacaoRepository;
         this.statusService = statusService;
         this.denunciaRepository = denunciaRepository;
+        this.comentarioRepository = comentarioRepository;
     }
 
     public RelatorioResponse getRelatorio() {
@@ -57,9 +61,6 @@ public class AdminService {
     public MessageApiResponse editUsuario(Long id, UsuarioAdminEditRequest editRequest) {
         Usuario usuario = this.usuarioRepository.findById(id).orElseThrow(UserNotFoundException::new);
 
-
-        usuario.setNome(editRequest.nome());
-        usuario.setEmail(editRequest.email());
         editRequest.status().setDataModificacao(LocalDateTime.now());
         usuario.setStatus(this.statusService.modifyStatus(editRequest.status().getId(), editRequest.status()));
 
@@ -77,6 +78,19 @@ public class AdminService {
         this.publicacaoRepository.save(publicacao);
         return new MessageApiResponse("Publicação excluida com sucesso");
     }
+
+    public MessageApiResponse alterStatusComentarioById(Long idComentario, PublicacaoAdminPatchStatusRequest request) {
+
+        Comentario comentario = this.comentarioRepository.findById(idComentario)
+                .orElseThrow(ResourceNotFoundException::new);
+
+        Status status = comentario.getStatus();
+        status.setTipoStatus(ETipoStatus.valueOf(request.tipoStatus()));
+        comentario.setStatus(this.statusService.modifyStatus(status.getId(), status));
+        this.comentarioRepository.save(comentario);
+        return new MessageApiResponse("Comentario excluida com sucesso");
+    }
+
 
     public MessageApiResponse alterStatusDenunciaById(Long idDenuncia, DenunciaPatchStatusRequest request) {
 

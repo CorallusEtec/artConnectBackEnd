@@ -54,7 +54,6 @@ public class ComentarioService {
      * @return Lista paginada com os detalhes do comentário.
      */
     public Page<ComentarioResponse> findByPost(Long postId, Pageable pageable, ComentarioFindByPostQF queryFilter, Usuario usuario) {
-        System.out.println(usuario);
         Page<Comentario> comentarios = this.comentarioRepository.findAllByPublicacao_Id(postId, pageable, queryFilter.getSpecification());
         return comentarios.map(c->this.comentarioMapper.toDTO(c, Objects.isNull(usuario)?null:usuario.getId()));
     }
